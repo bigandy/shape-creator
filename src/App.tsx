@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import { OutputBox } from "./OutputBox";
+import { OutputBoxAllShapes } from "./OutputBoxAllShapes";
 import { ClickArea } from "./ClickArea";
 import { Toolbar } from "./Toolbar";
 import { Sidebar } from "./Sidebar";
@@ -14,6 +15,7 @@ function App() {
   const [isEditing, setIsEditing] = useState(false);
   const [selectedImage, setSelectedImage] = useState("");
   const [savedStack, setSavedStack] = useState<Shape[]>([]);
+  const [useAllShapes, setUseAllShapes] = useState(false);
 
   const handleRemoveLastPoint = () => {
     setStack(
@@ -25,13 +27,19 @@ function App() {
     setIsEditing((editing) => !editing);
   };
 
-  const handleReset = () => setStack([]);
+  const handleResetCurrentStack = () => setStack([]);
+  const handleResetAllStacks = () => {
+    handleResetCurrentStack();
+    setSavedStack([]);
+  };
 
   const handleCloseSidebar = () => setIsEditing(false);
 
   const handleImageChange = (e) => {
     setSelectedImage(e.target.value);
   };
+
+  const handleUseAllShapesToggle = () => setUseAllShapes((useAll) => !useAll);
 
   // AHTODO!
   // This will enable the saving of multiple shapes within the shape().
@@ -43,22 +51,31 @@ function App() {
     setStack([]);
   };
 
-  console.log({ savedStack });
-
   return (
     <>
       <ClickArea stack={stack} setStack={setStack} isEditing={isEditing} />
 
-      <OutputBox stack={stack} selectedImage={selectedImage} />
+      {useAllShapes ? (
+        <OutputBoxAllShapes
+          savedStack={savedStack}
+          currentStack={stack}
+          selectedImage={selectedImage}
+        />
+      ) : (
+        <OutputBox stack={stack} selectedImage={selectedImage} />
+      )}
 
       <Toolbar
         isEditing={isEditing}
         selectedImage={selectedImage}
+        useAllShapes={useAllShapes}
         handleEditToggle={handleEditToggle}
         handleRemoveLastPoint={handleRemoveLastPoint}
-        handleReset={handleReset}
+        handleResetCurrentStack={handleResetCurrentStack}
+        handleResetAllStacks={handleResetAllStacks}
         handleImageChange={handleImageChange}
         handleSaveShape={handleSaveShape}
+        handleUseAllShapesToggle={handleUseAllShapesToggle}
       />
 
       <Sidebar

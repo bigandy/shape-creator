@@ -1,11 +1,14 @@
 type Props = {
   isEditing: boolean;
   selectedImage?: string;
+  useAllShapes: boolean;
   handleRemoveLastPoint: () => void;
   handleEditToggle: () => void;
-  handleReset: () => void;
+  handleResetCurrentStack: () => void;
+  handleResetAllStacks: () => void;
   handleImageChange: (imageUrl: string) => void;
   handleSaveShape: () => void;
+  handleUseAllShapesToggle: () => void;
 };
 
 const possibleImages = [
@@ -26,11 +29,14 @@ const possibleImages = [
 export const Toolbar = ({
   isEditing,
   selectedImage,
+  useAllShapes,
   handleRemoveLastPoint,
   handleEditToggle,
-  handleReset,
+  handleResetCurrentStack,
+  handleResetAllStacks,
   handleImageChange,
   handleSaveShape,
+  handleUseAllShapesToggle,
 }: Props) => {
   return (
     <div className="toolbar">
@@ -43,7 +49,9 @@ export const Toolbar = ({
           {isEditing ? "Save Points" : "Edit Points"}
         </button>
 
-        <button onClick={handleReset}>Reset</button>
+        <button onClick={handleResetCurrentStack}>Reset Current Shape</button>
+
+        <button onClick={handleResetAllStacks}>Reset All Shapes</button>
 
         <select onChange={handleImageChange} value={selectedImage}>
           <option value=""></option>
@@ -57,6 +65,10 @@ export const Toolbar = ({
         </select>
 
         <button onClick={handleSaveShape}>Save Shape</button>
+
+        <button onClick={handleUseAllShapesToggle}>
+          {useAllShapes ? "One Shape" : "All Shapes"}
+        </button>
       </div>
     </div>
   );
