@@ -26,6 +26,8 @@ function App() {
     setIsEditing((editing) => !editing);
   };
 
+  const handleReset = () => setStack([]);
+
   // AHTODO!
   // const handleSaveShape = () => {
   //   // add stack to savedStack
@@ -48,6 +50,7 @@ function App() {
         isEditing={isEditing}
         handleEditToggle={handleEditToggle}
         handleUndoLastMove={handleUndoLastMove}
+        handleReset={handleReset}
       />
     </>
   );

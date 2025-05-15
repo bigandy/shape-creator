@@ -2,12 +2,14 @@ type Props = {
   isEditing: boolean;
   handleUndoLastMove: () => void;
   handleEditToggle: () => void;
+  handleReset: () => void;
 };
 
 export const Toolbar = ({
   handleUndoLastMove,
   handleEditToggle,
   isEditing,
+  handleReset,
 }: Props) => {
   return (
     <div className="toolbar">
@@ -18,6 +20,8 @@ export const Toolbar = ({
       <button onClick={handleEditToggle}>
         {isEditing ? "Save Points" : "Edit Points"}
       </button>
+
+      <button onClick={handleReset}>Reset</button>
 
       {/* <button onClick={handleSaveShape}>Save Shape</button> */}
     </div>
