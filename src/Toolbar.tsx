@@ -1,22 +1,29 @@
+import { type ChangeEvent, type Dispatch, type SetStateAction } from "react";
+
 type Props = {
-  isEditing: boolean;
+  open: boolean;
   selectedImage?: string;
   useAllShapes: boolean;
+  drawingMode: DrawingMode;
+  setDrawingMode: Dispatch<SetStateAction<DrawingMode>>;
   handleRemoveLastPoint: () => void;
   handleEditToggle: () => void;
   handleResetCurrentStack: () => void;
   handleResetAllStacks: () => void;
-  handleImageChange: (imageUrl: string) => void;
+  handleImageChange: (e: ChangeEvent<HTMLSelectElement>) => void;
   handleSaveShape: () => void;
   handleUseAllShapesToggle: () => void;
 };
 
 import { possibleImages } from "./sharedImages";
+import type { DrawingMode } from "./Types";
 
 export const Toolbar = ({
-  isEditing,
+  drawingMode,
+  open,
   selectedImage,
   useAllShapes,
+  setDrawingMode,
   handleRemoveLastPoint,
   handleEditToggle,
   handleResetCurrentStack,
@@ -30,10 +37,33 @@ export const Toolbar = ({
       <h2>Toolbar</h2>
 
       <div className="buttons">
+        <label>
+          Line
+          <input
+            type="radio"
+            name="mode"
+            value="line"
+            checked={drawingMode === "line"}
+            onChange={() => setDrawingMode("line")}
+          />
+        </label>
+        <label>
+          Rectangle
+          <input
+            type="radio"
+            name="mode"
+            value="rectangle"
+            checked={drawingMode === "rectangle"}
+            onChange={() => setDrawingMode("rectangle")}
+          />
+        </label>
+      </div>
+
+      <div className="buttons">
         <button onClick={handleRemoveLastPoint}>Remove Last Point</button>
 
         <button onClick={handleEditToggle}>
-          {isEditing ? "Save Points" : "Edit Points"}
+          {open ? "Save Points" : "Edit Points"}
         </button>
 
         <button onClick={handleResetCurrentStack}>Reset Current Shape</button>

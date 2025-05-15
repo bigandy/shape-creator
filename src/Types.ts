@@ -4,3 +4,5 @@ export type Coords = {
 };
 
 export type Shape = Coords[];
+
+export type DrawingMode = "line" | "rectangle";

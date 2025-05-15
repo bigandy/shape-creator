@@ -43,11 +43,12 @@ body {
 }
 
 .plot-point {
-  position: absolute;
+  /* position: absolute;
   height: 3px;
   width: 3px;
   background: white;
   z-index: 1;
+  display: block; */
 
   &::after {
     content: attr(data-plot-number);
@@ -59,8 +60,12 @@ body {
 }
 
 .draggable-button {
+  height: 3px;
+  width: 3px;
   position: absolute;
   z-index: 1;
+  background: white;
+  border: unset;
 }
 
 .sidebar {

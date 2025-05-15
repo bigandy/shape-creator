@@ -1,16 +1,16 @@
-import { useState, useRef, type SetStateAction, type Dispatch } from "react";
+import { useRef, type SetStateAction, type Dispatch } from "react";
 import { Draggable } from "./Draggable";
 import { DndContext } from "@dnd-kit/core";
 
-import type { Coords } from "./Types";
+import type { Coords, DrawingMode } from "./Types";
 
 type Props = {
-  isEditing: boolean;
+  drawingMode: DrawingMode;
   setStack: Dispatch<SetStateAction<Coords[]>>;
   stack: Coords[];
 };
 
-export const ClickArea = ({ isEditing, setStack, stack }: Props) => {
+export const ClickArea = ({ setStack, stack }: Props) => {
   const clickAreaRef = useRef(null);
 
   /**
@@ -20,7 +20,6 @@ export const ClickArea = ({ isEditing, setStack, stack }: Props) => {
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     const { clientX, clientY } = event;
     const { width, height } = clickAreaRef?.current?.getBoundingClientRect();
-    // console.log({ width, height, clientX, clientY });
 
     const percentX = (clientX / width) * 100;
     const percentY = (clientY / height) * 100;
@@ -61,11 +60,20 @@ export const ClickArea = ({ isEditing, setStack, stack }: Props) => {
     setStack(nextStack);
   };
 
+  // const handleMouseDown = (e) => {
+  //   console.log("DOWN", e.screenX, e.screenY);
+  // };
+
+  // const handleMouseUp = (e) => {
+  //   console.log("UP", e.screenX, e.screenY);
+  // };
+
   return (
     <div
       className="click-area"
-      // onClick={!isEditing ? handleClick : undefined}
       onClick={handleClick}
+      // onMouseDown={handleMouseDown}
+      // onMouseUp={handleMouseUp}
       ref={clickAreaRef}
     >
       <DndContext onDragMove={handleDragMove}>

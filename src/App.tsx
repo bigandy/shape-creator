@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type ChangeEvent } from "react";
 
 import { OutputBox } from "./OutputBox";
 import { OutputBoxAllShapes } from "./OutputBoxAllShapes";
@@ -10,14 +10,15 @@ import { possibleImages } from "./sharedImages";
 
 import "./App.css";
 
-import type { Coords, Shape } from "./Types";
+import { type DrawingMode, type Coords, type Shape } from "./Types";
 
 function App() {
   const [stack, setStack] = useState<Coords[]>([]);
-  const [isEditing, setIsEditing] = useState(false);
+  const [open, setOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(possibleImages[0].url);
   const [savedStack, setSavedStack] = useState<Shape[]>([]);
   const [useAllShapes, setUseAllShapes] = useState(true);
+  const [drawingMode, setDrawingMode] = useState<DrawingMode>("line");
 
   const handleRemoveLastPoint = () => {
     setStack(
@@ -26,7 +27,7 @@ function App() {
   };
 
   const handleEditToggle = () => {
-    setIsEditing((editing) => !editing);
+    setOpen((open) => !open);
   };
 
   const handleResetCurrentStack = () => setStack([]);
@@ -35,27 +36,23 @@ function App() {
     setSavedStack([]);
   };
 
-  const handleCloseSidebar = () => setIsEditing(false);
+  const handleCloseSidebar = () => setOpen(false);
 
-  const handleImageChange = (e) => {
+  const handleImageChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setSelectedImage(e.target.value);
   };
 
   const handleUseAllShapesToggle = () => setUseAllShapes((useAll) => !useAll);
 
-  // AHTODO!
-  // This will enable the saving of multiple shapes within the shape().
   const handleSaveShape = () => {
-    // add stack to savedStack
-    const newStack = [...savedStack, stack];
-    setSavedStack(newStack);
-    // clear stack ??
+    setSavedStack([...savedStack, stack]);
+    // clear current stack
     setStack([]);
   };
 
   return (
     <>
-      <ClickArea stack={stack} setStack={setStack} isEditing={isEditing} />
+      <ClickArea stack={stack} setStack={setStack} drawingMode={drawingMode} />
 
       {useAllShapes ? (
         <OutputBoxAllShapes
@@ -68,9 +65,11 @@ function App() {
       )}
 
       <Toolbar
-        isEditing={isEditing}
+        open={open}
         selectedImage={selectedImage}
         useAllShapes={useAllShapes}
+        drawingMode={drawingMode}
+        setDrawingMode={setDrawingMode}
         handleEditToggle={handleEditToggle}
         handleRemoveLastPoint={handleRemoveLastPoint}
         handleResetCurrentStack={handleResetCurrentStack}
@@ -81,7 +80,7 @@ function App() {
       />
 
       <Sidebar
-        open={isEditing}
+        open={open}
         handleClose={handleCloseSidebar}
         stack={stack}
         setStack={setStack}
