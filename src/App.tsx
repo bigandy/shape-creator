@@ -3,6 +3,7 @@ import { useState } from "react";
 import { OutputBox } from "./OutputBox";
 import { ClickArea } from "./ClickArea";
 import { Toolbar } from "./Toolbar";
+import { Sidebar } from "./Sidebar";
 
 import "./App.css";
 
@@ -14,12 +15,10 @@ function App() {
 
   // const [savedStack, setSavedStack] = useState<Shape[]>([]);
 
-  const handleUndoLastMove = () => {
-    setStack((stack) => {
-      const newStack = [...stack];
-      newStack.pop();
-      return newStack;
-    });
+  const handleRemoveLastPoint = () => {
+    setStack(
+      stack.filter((_, index, stackArray) => index !== stackArray.length - 1)
+    );
   };
 
   const handleEditToggle = () => {
@@ -28,7 +27,10 @@ function App() {
 
   const handleReset = () => setStack([]);
 
+  const handleCloseSidebar = () => setIsEditing(false);
+
   // AHTODO!
+  // This will enable the saving of multiple shapes within the shape().
   // const handleSaveShape = () => {
   //   // add stack to savedStack
   //   // setSavedStack((prevState) => {
@@ -49,8 +51,15 @@ function App() {
       <Toolbar
         isEditing={isEditing}
         handleEditToggle={handleEditToggle}
-        handleUndoLastMove={handleUndoLastMove}
+        handleRemoveLastPoint={handleRemoveLastPoint}
         handleReset={handleReset}
+      />
+
+      <Sidebar
+        open={isEditing}
+        handleClose={handleCloseSidebar}
+        stack={stack}
+        setStack={setStack}
       />
     </>
   );

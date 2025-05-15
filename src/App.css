@@ -28,6 +28,12 @@ body {
   background: white;
   padding: 1rem;
   text-align: center;
+
+  :where(.buttons) {
+    display: flex;
+    gap: 1rem;
+    place-content: center;
+  }
 }
 
 .plot-point {
@@ -47,6 +53,17 @@ body {
 }
 
 .draggable-button {
-  position: relative;
+  position: absolute;
   z-index: 1;
+}
+
+.sidebar {
+  position: fixed;
+  right: 0;
+  top: 0;
+
+  z-index: 1;
+  width: 20vw;
+  background: white;
+  height: 100%;
 }

@@ -26,26 +26,7 @@ export const ClickArea = ({ isEditing, setStack, stack }: Props) => {
     const percentY = (clientY / height) * 100;
     const coords = { percentX, percentY };
 
-    setStack((stack) => {
-      const newStack = [...stack];
-      newStack.push(coords);
-      return newStack;
-    });
-  };
-
-  // AHTODO
-  //   const handleDragMove = (e) => {
-  //     if (!clickAreaRef.current) {
-  //       return;
-  //     }
-
-  //     console.log({ e });
-  //     const { width, height } = clickAreaRef.current.getBoundingClientRect();
-  //     // console.log({ width, height });
-  //   };
-
-  const handleUpdatePoint = (index, defs) => {
-    console.log(index, defs);
+    setStack([...stack, coords]);
   };
 
   const handleDragMove = (event) => {
@@ -92,28 +73,11 @@ export const ClickArea = ({ isEditing, setStack, stack }: Props) => {
               return (
                 <Draggable
                   index={index}
-                  //   handleDragMove={handleDragMove}
-                  //   updatePoint={(defs, index) => handleUpdatePoint(defs, index)}
-                  //   topPercent={item.percentX}
-                  //   leftPercent={item.percentY}
                   key={`item-${index}`}
-                  top={item.percentY + "%"}
-                  left={item.percentX + "%"}
-                  //   parentHeight={
-                  //     clickAreaRef.current.getBoundingClientRect().height
-                  //   }
-                  //   parentWidth={
-                  //     clickAreaRef.current.getBoundingClientRect().width
-                  //   }
+                  top={item.percentY}
+                  left={item.percentX}
                 >
-                  <div
-                    className="plot-point"
-                    data-plot-number={index + 1}
-                    // style={{
-                    //   top: item.percentY + "%",
-                    //   left: item.percentX + "%",
-                    // }}
-                  />
+                  <div className="plot-point" data-plot-number={index + 1} />
                 </Draggable>
               );
             })
