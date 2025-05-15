@@ -3,4 +3,4 @@ export type Coords = {
   percentY: number;
 };
 
-// export type Shape = Coords[];
+export type Shape = Coords[];

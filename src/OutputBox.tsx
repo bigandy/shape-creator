@@ -3,9 +3,10 @@ import type { Coords } from "./Types";
 
 type Props = {
   stack: Coords[];
+  selectedImage?: string;
 };
 
-export const OutputBox = ({ stack }: Props) => {
+export const OutputBox = ({ stack, selectedImage }: Props) => {
   const clipPathStyle = useMemo(() => {
     if (stack.length === 0) {
       return "";
@@ -27,8 +28,9 @@ export const OutputBox = ({ stack }: Props) => {
     <div
       className="output"
       style={{
-        background: "red",
-        clipPath: clipPathStyle,
+        backgroundColor: "red",
+        backgroundImage: selectedImage !== "" ? `url(${selectedImage})` : "",
+        clipPath: stack.length >= 3 ? clipPathStyle : "",
       }}
     ></div>
   );

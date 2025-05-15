@@ -8,9 +8,17 @@ type Props = {
   stack: Coords[];
   setStack: Dispatch<SetStateAction<Coords[]>>;
   currentIndex: number;
+  editable?: boolean;
 };
 
-export const SidebarItem = ({ x, y, stack, setStack, currentIndex }: Props) => {
+export const SidebarItem = ({
+  x,
+  y,
+  stack,
+  setStack,
+  currentIndex,
+  editable = true,
+}: Props) => {
   const handleDeletePoint = () => {
     setStack(stack.filter((_, index) => index !== currentIndex));
   };
@@ -37,12 +45,16 @@ export const SidebarItem = ({ x, y, stack, setStack, currentIndex }: Props) => {
     <li>
       y: {x} <br />
       x: {y} <br />
-      <button onClick={handleDeletePoint}>Delete Point</button>
-      {/* <button onClick={() => handleEditCurrentPoint(index)}>
+      {editable && (
+        <>
+          <button onClick={handleDeletePoint}>Delete Point</button>
+          {/* <button onClick={() => handleEditCurrentPoint(index)}>
                   Edit Point
                 </button> */}
-      <br />
-      <button onClick={handleInsertPoint}>Insert Point after</button>
+          <br />
+          <button onClick={handleInsertPoint}>Insert Point after</button>
+        </>
+      )}
     </li>
   );
 };

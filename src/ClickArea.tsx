@@ -64,7 +64,8 @@ export const ClickArea = ({ isEditing, setStack, stack }: Props) => {
   return (
     <div
       className="click-area"
-      onClick={!isEditing ? handleClick : undefined}
+      // onClick={!isEditing ? handleClick : undefined}
+      onClick={handleClick}
       ref={clickAreaRef}
     >
       <DndContext onDragMove={handleDragMove}>

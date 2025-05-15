@@ -1,13 +1,15 @@
 import { type SetStateAction, type Dispatch } from "react";
 
-import type { Coords } from "./Types";
+import type { Coords, Shape } from "./Types";
 
 import { SidebarItem } from "./SidebarItem";
 
 type SidebarProps = {
   open: boolean;
-  setStack: Dispatch<SetStateAction<Coords[]>>;
   stack: Coords[];
+  savedStack: Shape[];
+  setStack: Dispatch<SetStateAction<Coords[]>>;
+  handleClose: () => void;
 };
 
 export const Sidebar = ({
@@ -15,6 +17,7 @@ export const Sidebar = ({
   handleClose,
   setStack,
   stack,
+  savedStack,
 }: SidebarProps) => {
   // Insert a new point in between existing points. Put the new point half-way between the two existing points.
 
@@ -27,6 +30,33 @@ export const Sidebar = ({
   return (
     <div className="sidebar">
       <button onClick={handleClose}>Close</button>
+      {savedStack.length > 0 ? (
+        <ol>
+          {savedStack.map((stack) => {
+            return (
+              <li>
+                <ol>
+                  {stack.map(({ percentX, percentY }, index) => {
+                    return (
+                      <SidebarItem
+                        key={`item-${index}`}
+                        x={percentX}
+                        y={percentY}
+                        stack={stack}
+                        setStack={setStack}
+                        currentIndex={index}
+                        editable={false}
+                      />
+                    );
+                  })}
+                </ol>
+              </li>
+            );
+          })}
+        </ol>
+      ) : (
+        "No Shapes Added, Save One?"
+      )}
       {stack.length > 0 ? (
         <ol>
           {stack.map(({ percentX, percentY }, index) => {

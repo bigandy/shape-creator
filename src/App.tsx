@@ -7,13 +7,13 @@ import { Sidebar } from "./Sidebar";
 
 import "./App.css";
 
-import type { Coords } from "./Types";
+import type { Coords, Shape } from "./Types";
 
 function App() {
   const [stack, setStack] = useState<Coords[]>([]);
   const [isEditing, setIsEditing] = useState(false);
-
-  // const [savedStack, setSavedStack] = useState<Shape[]>([]);
+  const [selectedImage, setSelectedImage] = useState("");
+  const [savedStack, setSavedStack] = useState<Shape[]>([]);
 
   const handleRemoveLastPoint = () => {
     setStack(
@@ -29,30 +29,36 @@ function App() {
 
   const handleCloseSidebar = () => setIsEditing(false);
 
+  const handleImageChange = (e) => {
+    setSelectedImage(e.target.value);
+  };
+
   // AHTODO!
   // This will enable the saving of multiple shapes within the shape().
-  // const handleSaveShape = () => {
-  //   // add stack to savedStack
-  //   // setSavedStack((prevState) => {
-  //   //   const updatedStack = [...prevState];
-  //   //   updatedStack.push(stack);
-  //   //   return updatedStack;
-  //   // });
-  //   // clear stack ??
-  //   // setStack([]);
-  // };
+  const handleSaveShape = () => {
+    // add stack to savedStack
+    const newStack = [...savedStack, stack];
+    setSavedStack(newStack);
+    // clear stack ??
+    setStack([]);
+  };
+
+  console.log({ savedStack });
 
   return (
     <>
       <ClickArea stack={stack} setStack={setStack} isEditing={isEditing} />
 
-      <OutputBox stack={stack} />
+      <OutputBox stack={stack} selectedImage={selectedImage} />
 
       <Toolbar
         isEditing={isEditing}
+        selectedImage={selectedImage}
         handleEditToggle={handleEditToggle}
         handleRemoveLastPoint={handleRemoveLastPoint}
         handleReset={handleReset}
+        handleImageChange={handleImageChange}
+        handleSaveShape={handleSaveShape}
       />
 
       <Sidebar
@@ -60,6 +66,7 @@ function App() {
         handleClose={handleCloseSidebar}
         stack={stack}
         setStack={setStack}
+        savedStack={savedStack}
       />
     </>
   );

@@ -18,6 +18,12 @@ body {
 
 .output {
   pointer-events: none;
+  /* clip-path: unset !important; */
+  /* background-color: unset !important; */
+
+  /* background-position: cover; */
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .toolbar {
