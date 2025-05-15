@@ -1,25 +1,63 @@
 import React, { useId } from "react";
-import { useDraggable } from "@dnd-kit/core";
+import { useDraggable, useDndMonitor } from "@dnd-kit/core";
 
-export function Draggable(props) {
-  const id = useId();
+import { CSS } from "@dnd-kit/utilities";
+
+export function Draggable({
+  index,
+  handleDragMove,
+  children,
+  updatePoint,
+  top,
+  left,
+}) {
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
-    id: `draggable-${id}`,
+    id: `draggable-${index}`,
   });
 
-  console.log({ top: props.top });
+  // useDndMonitor({
+  //   onDragStart(event) {},
+  //   onDragMove(event) {
+  //     const initialX = event.activatorEvent.clientX;
+  //     const initialY = event.activatorEvent.clientY;
+  //     console.log("onDragMove", event.delta.x, event.delta.y);
+
+  //     const newX = initialX + event.delta.x;
+  //     const newY = initialY + event.delta.y;
+
+  //     console.log({ newX, newY });
+
+  //     updatePoint(index, { newX, newY });
+  //   },
+  //   onDragOver(event) {},
+  //   onDragEnd(event) {},
+  //   onDragCancel(event) {},
+  // });
+
+  // console.log({ transform });
 
   //   console.log({ props, index: props.index });
-  //   const style = transform
-  //     ? {
-  //         transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
-  //       }
-  //     : undefined;
+  // const style = transform
+  //   ? {
+  //       marginTop: `${transform.y}px`,
+  //       marginLeft: `${transform.x}px`,
+  //     }
+  //   : undefined;
 
-  const style = undefined;
+  const style = {
+    // transform: CSS.Translate.toString(transform),
+  };
+
+  // const style = undefined;
   return (
-    <button ref={setNodeRef} style={style} {...listeners} {...attributes}>
-      {props.children}
+    <button
+      ref={setNodeRef}
+      style={{ ...style, top, left, position: "absolute" }}
+      {...listeners}
+      {...attributes}
+      className="draggable-button"
+    >
+      {children}
     </button>
   );
 }
