@@ -1,0 +1,47 @@
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: unset;
+}
+
+.output,
+.click-area {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  background: black;
+}
+
+.output {
+  pointer-events: none;
+}
+
+.toolbar {
+  z-index: 1;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background: white;
+  padding: 1rem;
+  text-align: center;
+}
+
+.plot-point {
+  position: absolute;
+  height: 3px;
+  width: 3px;
+  background: white;
+  z-index: 1;
+
+  &::after {
+    content: attr(data-plot-number);
+    position: absolute;
+
+    display: block;
+    color: white;
+  }
+}
