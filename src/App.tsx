@@ -6,6 +6,8 @@ import { ClickArea } from "./ClickArea";
 import { Toolbar } from "./Toolbar";
 import { Sidebar } from "./Sidebar";
 
+import { possibleImages } from "./sharedImages";
+
 import "./App.css";
 
 import type { Coords, Shape } from "./Types";
@@ -13,9 +15,9 @@ import type { Coords, Shape } from "./Types";
 function App() {
   const [stack, setStack] = useState<Coords[]>([]);
   const [isEditing, setIsEditing] = useState(false);
-  const [selectedImage, setSelectedImage] = useState("");
+  const [selectedImage, setSelectedImage] = useState(possibleImages[0].url);
   const [savedStack, setSavedStack] = useState<Shape[]>([]);
-  const [useAllShapes, setUseAllShapes] = useState(false);
+  const [useAllShapes, setUseAllShapes] = useState(true);
 
   const handleRemoveLastPoint = () => {
     setStack(
@@ -29,7 +31,7 @@ function App() {
 
   const handleResetCurrentStack = () => setStack([]);
   const handleResetAllStacks = () => {
-    handleResetCurrentStack();
+    setStack([]);
     setSavedStack([]);
   };
 

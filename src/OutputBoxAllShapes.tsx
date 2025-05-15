@@ -13,6 +13,9 @@ export const OutputBoxAllShapes = ({
   selectedImage,
 }: Props) => {
   const clipPathStyle = useMemo(() => {
+    if (savedStack.length === 0 && currentStack.length === 0) {
+      return "";
+    }
     let clipPathString = "shape(";
     savedStack.forEach((stack, savedStackIndex) => {
       if (stack.length > 0) {

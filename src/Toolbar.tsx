@@ -11,20 +11,7 @@ type Props = {
   handleUseAllShapesToggle: () => void;
 };
 
-const possibleImages = [
-  {
-    title: "me 1",
-    url: "https://picsum.photos/seed/me1/1200/1300",
-  },
-  {
-    title: "me 2",
-    url: "https://picsum.photos/seed/me2/1200/1300",
-  },
-  {
-    title: "me 3",
-    url: "https://picsum.photos/seed/me3/1200/1300",
-  },
-];
+import { possibleImages } from "./sharedImages";
 
 export const Toolbar = ({
   isEditing,
