@@ -36,6 +36,9 @@ body {
   background: white;
   padding: 1rem;
   text-align: center;
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
 
   :where(.buttons) {
     display: flex;
@@ -68,6 +71,7 @@ body {
 
 .mouse-position {
   color: white;
+  pointer-events: none;
 }
 
 .sidebar {

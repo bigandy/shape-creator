@@ -32,6 +32,9 @@ export const ClickArea = ({ setStack, stack }: Props) => {
     setStack([...stack, coords]);
   };
 
+  /**
+   * This handles when the mouse cursor moves inside the click-area. It shows the position of the mouse with a div in the same style as the points on the DragAndDropPoints dots.
+   */
   const handleMouseMove = (event) => {
     if (!clickAreaRef.current) {
       return;
@@ -46,6 +49,7 @@ export const ClickArea = ({ setStack, stack }: Props) => {
     setMousePosition(coords);
   };
 
+  // AHTODO: handle case when moving the mouse and dragging a point at the same time. At the moment handleMouseLeave kicks in and the point does not go out of the box.
   const handleMouseLeave = () => setMousePosition(null);
 
   return (
