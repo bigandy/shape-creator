@@ -1,11 +1,13 @@
-import { type ChangeEvent, type Dispatch, type SetStateAction } from "react";
+import { type ChangeEvent } from "react";
 
 type Props = {
   open: boolean;
   selectedImage?: string;
-  useAllShapes: boolean;
   drawingMode: DrawingMode;
-  setDrawingMode: Dispatch<SetStateAction<DrawingMode>>;
+  useAllShapes: boolean;
+  stackActive: boolean;
+  showCode: boolean;
+  handleChangeDrawingMode: (drawingMode: DrawingMode) => void;
   handleRemoveLastPoint: () => void;
   handleEditToggle: () => void;
   handleResetCurrentStack: () => void;
@@ -13,17 +15,20 @@ type Props = {
   handleImageChange: (e: ChangeEvent<HTMLSelectElement>) => void;
   handleSaveShape: () => void;
   handleUseAllShapesToggle: () => void;
+  handleShowCodeToggle: () => void;
 };
 
 import { possibleImages } from "./sharedImages";
 import type { DrawingMode } from "./Types";
 
 export const Toolbar = ({
-  drawingMode,
   open,
   selectedImage,
   useAllShapes,
-  setDrawingMode,
+  drawingMode,
+  stackActive,
+  showCode,
+  handleChangeDrawingMode,
   handleRemoveLastPoint,
   handleEditToggle,
   handleResetCurrentStack,
@@ -31,6 +36,7 @@ export const Toolbar = ({
   handleImageChange,
   handleSaveShape,
   handleUseAllShapesToggle,
+  handleShowCodeToggle,
 }: Props) => {
   return (
     <div className="toolbar">
@@ -44,7 +50,7 @@ export const Toolbar = ({
             name="mode"
             value="line"
             checked={drawingMode === "line"}
-            onChange={() => setDrawingMode("line")}
+            onChange={() => handleChangeDrawingMode("line")}
           />
         </label>
         <label>
@@ -54,7 +60,7 @@ export const Toolbar = ({
             name="mode"
             value="rectangle"
             checked={drawingMode === "rectangle"}
-            onChange={() => setDrawingMode("rectangle")}
+            onChange={() => handleChangeDrawingMode("rectangle")}
           />
         </label>
       </div>
@@ -66,7 +72,9 @@ export const Toolbar = ({
           {open ? "Save Points" : "Edit Points"}
         </button>
 
-        <button onClick={handleResetCurrentStack}>Reset Current Shape</button>
+        <button onClick={handleResetCurrentStack} disabled={!stackActive}>
+          Reset Current Shape
+        </button>
 
         <button onClick={handleResetAllStacks}>Reset All Shapes</button>
 
@@ -85,6 +93,12 @@ export const Toolbar = ({
 
         <button onClick={handleUseAllShapesToggle}>
           {useAllShapes ? "One Shape" : "All Shapes"}
+        </button>
+      </div>
+
+      <div>
+        <button onClick={handleShowCodeToggle}>
+          {showCode ? "Hide" : "Show"} Code
         </button>
       </div>
     </div>

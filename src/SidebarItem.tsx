@@ -1,4 +1,4 @@
-import { type SetStateAction, type Dispatch } from "react";
+import { Fragment, type SetStateAction, type Dispatch } from "react";
 
 import type { Coords } from "./Types";
 
@@ -46,14 +46,14 @@ export const SidebarItem = ({
       y: {x} <br />
       x: {y} <br />
       {editable && (
-        <>
+        <Fragment>
           <button onClick={handleDeletePoint}>Delete Point</button>
           {/* <button onClick={() => handleEditCurrentPoint(index)}>
                   Edit Point
                 </button> */}
           <br />
           <button onClick={handleInsertPoint}>Insert Point after</button>
-        </>
+        </Fragment>
       )}
     </li>
   );

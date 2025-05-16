@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 html,
 body,
 #root {
@@ -77,4 +81,98 @@ body {
   width: 20vw;
   background: white;
   height: 100%;
+}
+
+.start-point,
+.end-point {
+  aspect-ratio: 1;
+  height: 10px;
+  border-radius: 50%;
+  /* translate: -50% -50%; */
+}
+
+.start-point {
+  anchor-name: --start-point;
+}
+
+.end-point {
+  anchor-name: --end-point;
+}
+
+[class$="-point"] {
+  z-index: 1;
+  position: absolute;
+}
+
+.middle-point {
+  /* --_from: var(--start-point);
+  --_to: var(--end-point); */
+
+  top: min(anchor(--start-point center), anchor(--end-point center));
+  left: min(anchor(--start-point center), anchor(--end-point center));
+  right: min(anchor(--start-point center), anchor(--end-point center));
+  bottom: min(anchor(--start-point center), anchor(--end-point center));
+
+  background: oklab(from hotpink l a calc(b * 3) / 1.75);
+
+  position: absolute;
+
+  /* Technique found here: https://css-irl.info/css-halftone-patterns/	 */
+  --dotSize: 0.15rem;
+  --bgSize: 0.5rem;
+  --bgPosition: calc(var(--bgSize) / 2);
+
+  background: radial-gradient(red, hotpink);
+
+  mask-image: radial-gradient(
+      circle at center,
+      black var(--dotSize),
+      transparent 0
+    ),
+    radial-gradient(circle at center, black var(--dotSize), transparent 0);
+  mask-size: var(--bgSize) var(--bgSize);
+  mask-position: 0 0, var(--bgPosition) var(--bgPosition);
+}
+
+.code-viewer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1;
+  background: white;
+
+  /* display: none; */
+  transition: height 0.2s ease-in-out;
+  transition-behavior: allow-discrete;
+  overflow: clip;
+  height: 0;
+
+  .inner {
+    padding: 1rem;
+  }
+
+  .close-button {
+    top: 0;
+    right: 0;
+  }
+
+  button {
+    position: absolute;
+  }
+
+  .copy-button {
+    bottom: 0;
+    right: 0;
+  }
+
+  @starting-style {
+    height: 0;
+  }
+}
+
+.code-viewer--open {
+  display: block;
+  height: max-content;
+  height: calc-size(max-content, size);
 }
