@@ -3,7 +3,7 @@ import { useRef, type SetStateAction, type Dispatch, useState } from "react";
 import type { Coords } from "./Types";
 
 import { Draggable } from "./Draggable";
-import { DndContext } from "@dnd-kit/core";
+import { DndContext, type DragMoveEvent } from "@dnd-kit/core";
 
 type Props = {
   setStack: Dispatch<SetStateAction<Coords[]>>;
@@ -12,22 +12,20 @@ type Props = {
 };
 
 export const DragAndDropPoints = ({ stack, setStack, clickAreaRef }: Props) => {
-  const handleDragMove = (event) => {
+  const handleDragMove = (event: DragMoveEvent) => {
     if (!clickAreaRef.current) {
       return;
     }
 
-    const indexToUpdate = event.activatorEvent.target.dataset.plotNumber - 1;
+    const indexToUpdate = event.activatorEvent.target.textContent - 1;
 
     const initialX = event.activatorEvent.clientX;
     const initialY = event.activatorEvent.clientY;
-    // console.log("onDragMove", event.delta.x, event.delta.y);
 
     const newX = initialX + event.delta.x;
     const newY = initialY + event.delta.y;
 
     const { width, height } = clickAreaRef.current.getBoundingClientRect();
-    // console.log({ width, height, clientX, clientY });
 
     const percentX = (newX / width) * 100;
     const percentY = (newY / height) * 100;
@@ -47,6 +45,7 @@ export const DragAndDropPoints = ({ stack, setStack, clickAreaRef }: Props) => {
 
     setStack(nextStack);
   };
+
   return (
     <DndContext onDragMove={handleDragMove}>
       {stack.length > 0
@@ -57,8 +56,9 @@ export const DragAndDropPoints = ({ stack, setStack, clickAreaRef }: Props) => {
                 key={`item-${index}`}
                 top={item.percentY}
                 left={item.percentX}
+                data-plot-number={index + 1}
               >
-                <div className="plot-point" data-plot-number={index + 1} />
+                <div>{index + 1}</div>
               </Draggable>
             );
           })

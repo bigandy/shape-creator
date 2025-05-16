@@ -77,7 +77,10 @@ export const ClickAreaRectangle = ({
       },
     ];
     const updatedState = [...stack, ...points];
-    setStack(updatedState);
+    // setStack(updatedState);
+
+    setInitialPoint(null);
+    setFinalPoint(null);
 
     handleSaveShapeToStack(updatedState);
   };

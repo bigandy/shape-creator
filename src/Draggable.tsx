@@ -7,7 +7,7 @@ interface Props extends React.PropsWithChildren {
 }
 
 export function Draggable({ index, top, left, children }: Props) {
-  const { attributes, listeners, setNodeRef, transform } = useDraggable({
+  const { attributes, listeners, setNodeRef } = useDraggable({
     id: `draggable-${index}`,
   });
 

@@ -66,7 +66,9 @@ export const Toolbar = ({
       </div>
 
       <div className="buttons">
-        <button onClick={handleRemoveLastPoint}>Remove Last Point</button>
+        <button onClick={handleRemoveLastPoint} disabled={!stackActive}>
+          Remove Last Point
+        </button>
 
         <button onClick={handleEditToggle}>
           {open ? "Save Points" : "Edit Points"}

@@ -21,7 +21,7 @@ function App() {
   const [selectedImage, setSelectedImage] = useState(possibleImages[0].url);
   const [savedStack, setSavedStack] = useState<Shape[]>([]);
   const [useAllShapes, setUseAllShapes] = useState(true);
-  const [drawingMode, setDrawingMode] = useState<DrawingMode>("rectangle");
+  const [drawingMode, setDrawingMode] = useState<DrawingMode>("line");
   const [showCode, setShowCode] = useState(false);
 
   const handleRemoveLastPoint = () => {
