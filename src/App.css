@@ -139,14 +139,21 @@ body {
 .circle-first-middle-point {
   top: anchor(--start-point center);
   left: anchor(--start-point center);
+  right: calc(anchor(--middle-point center));
+  bottom: calc(anchor(--middle-point center));
 
+  background: oklab(from hotpink l a calc(b / 3) / 0.75);
+
+  position: absolute;
+}
+
+.circle-second-middle-point {
+  top: anchor(--middle-point center);
+  left: anchor(--middle-point center);
   right: calc(anchor(--end-point center));
   bottom: calc(anchor(--end-point center));
-  /* left: min(anchor(--start-point center), anchor(--end-point center)); */
-  /* right: calc(anchor(--start-point center) - anchor(--end-point center)); */
-  /* bottom: calc(anchor(--start-point center) - anchor(--end-point center)); */
 
-  background: oklab(from hotpink l a calc(b * 3) / 1.75);
+  background: oklab(from hotpink l a calc(b * 10) / 0.75);
 
   position: absolute;
 }

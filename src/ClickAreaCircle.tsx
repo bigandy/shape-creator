@@ -4,6 +4,7 @@ import {
   type SetStateAction,
   type Dispatch,
   useState,
+  type CSSProperties,
 } from "react";
 
 import { DragAndDropPoints } from "./DragAndDropPoints";
@@ -86,7 +87,7 @@ export const ClickAreaCircle = ({
     setFinalPoint(upCoords);
 
     setRecording(false);
-    drawCircle();
+    // drawCircle();
   };
 
   const handleMouseOver = (e) => {
@@ -103,7 +104,7 @@ export const ClickAreaCircle = ({
       className="click-area"
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
-      //   onMouseMove={handleMouseOver}
+      onMouseMove={handleMouseOver}
       ref={clickAreaRef}
       //   style={
       //     {
@@ -125,6 +126,28 @@ export const ClickAreaCircle = ({
 
       {finalPoint !== null && (
         <Fragment>
+          <div
+            className="middle-point"
+            style={
+              {
+                anchorName: "--middle-point",
+                top:
+                  Math.min(initialPoint.percentY, finalPoint.percentY) +
+                  Math.abs(initialPoint.percentY - finalPoint.percentY) / 2 +
+                  "%",
+                left:
+                  Math.min(initialPoint.percentX, finalPoint.percentX) +
+                  Math.abs(initialPoint.percentX - finalPoint.percentX) / 2 +
+                  "%",
+                background: "blue",
+                position: "absolute",
+                aspectRatio: 1,
+                height: 1,
+                zIndex: 1,
+                borderRadius: "50%",
+              } as CSSProperties
+            }
+          ></div>
           <div
             className="end-point"
             style={{
