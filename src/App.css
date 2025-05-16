@@ -106,7 +106,7 @@ body {
   position: absolute;
 }
 
-.middle-point {
+.rectangle-middle-point {
   /* --_from: var(--start-point);
   --_to: var(--end-point); */
 
@@ -134,6 +134,21 @@ body {
     radial-gradient(circle at center, black var(--dotSize), transparent 0);
   mask-size: var(--bgSize) var(--bgSize);
   mask-position: 0 0, var(--bgPosition) var(--bgPosition);
+}
+
+.circle-first-middle-point {
+  top: anchor(--start-point center);
+  left: anchor(--start-point center);
+
+  right: calc(anchor(--end-point center));
+  bottom: calc(anchor(--end-point center));
+  /* left: min(anchor(--start-point center), anchor(--end-point center)); */
+  /* right: calc(anchor(--start-point center) - anchor(--end-point center)); */
+  /* bottom: calc(anchor(--start-point center) - anchor(--end-point center)); */
+
+  background: oklab(from hotpink l a calc(b * 3) / 1.75);
+
+  position: absolute;
 }
 
 .code-viewer {

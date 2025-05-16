@@ -6,13 +6,14 @@ import { ClickArea } from "./ClickArea";
 import { Toolbar } from "./Toolbar";
 import { Sidebar } from "./Sidebar";
 import { CodeViewer } from "./CodeViewer";
+import { ClickAreaRectangle } from "./ClickAreaRectangle";
+import { ClickAreaCircle } from "./ClickAreaCircle";
 
 import { possibleImages } from "./sharedImages";
 
 import "./App.css";
 
 import { type DrawingMode, type Coords, type Shape } from "./Types";
-import { ClickAreaRectangle } from "./ClickAreaRectangle";
 
 function App() {
   const countRef = useRef(0);
@@ -21,7 +22,7 @@ function App() {
   const [selectedImage, setSelectedImage] = useState(possibleImages[0].url);
   const [savedStack, setSavedStack] = useState<Shape[]>([]);
   const [useAllShapes, setUseAllShapes] = useState(true);
-  const [drawingMode, setDrawingMode] = useState<DrawingMode>("line");
+  const [drawingMode, setDrawingMode] = useState<DrawingMode>("circle");
   const [showCode, setShowCode] = useState(false);
 
   const handleRemoveLastPoint = () => {
@@ -82,14 +83,23 @@ function App() {
 
   return (
     <Fragment>
-      {drawingMode === "rectangle" ? (
+      {drawingMode === "rectangle" && (
         <ClickAreaRectangle
           stack={stack}
           setStack={setStack}
           handleSaveShapeToStack={handleSaveShapeToStack}
         />
-      ) : (
+      )}
+      {drawingMode === "line" && (
         <ClickArea stack={stack} setStack={setStack} key={countRef.current} />
+      )}
+
+      {drawingMode === "circle" && (
+        <ClickAreaCircle
+          stack={stack}
+          setStack={setStack}
+          key={countRef.current}
+        />
       )}
 
       {useAllShapes ? (

@@ -16,7 +16,7 @@ type Props = {
   handleSaveShapeToStack: (stack: Coords[]) => void;
 };
 
-export const ClickAreaRectangle = ({
+export const ClickAreaCircle = ({
   setStack,
   stack,
   handleSaveShapeToStack,
@@ -52,37 +52,19 @@ export const ClickAreaRectangle = ({
     return coords;
   };
 
-  const drawRectangle = () => {
+  const drawCircle = () => {
     if (initialPoint === null || finalPoint === null) {
       return;
     }
-    const points = [
-      {
-        percentX: initialPoint.percentX,
-        percentY: initialPoint.percentY,
-      },
-      {
-        percentX: initialPoint.percentX,
-        percentY: finalPoint.percentY,
-      },
 
-      // Third Point
-      {
-        percentX: finalPoint.percentX,
-        percentY: finalPoint.percentY,
-      },
-      {
-        percentX: finalPoint.percentX,
-        percentY: initialPoint.percentY,
-      },
-    ];
-    const updatedState = [...stack, ...points];
+    // TODO: How to draw a circle in shape() ?
+    const points = undefined;
     // setStack(updatedState);
 
     setInitialPoint(null);
     setFinalPoint(null);
 
-    handleSaveShapeToStack(updatedState);
+    // handleSaveShapeToStack(updatedState);
   };
 
   const handleMouseDown = (e) => {
@@ -104,7 +86,7 @@ export const ClickAreaRectangle = ({
     setFinalPoint(upCoords);
 
     setRecording(false);
-    drawRectangle();
+    drawCircle();
   };
 
   const handleMouseOver = (e) => {
@@ -121,8 +103,14 @@ export const ClickAreaRectangle = ({
       className="click-area"
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
-      onMouseMove={handleMouseOver}
+      //   onMouseMove={handleMouseOver}
       ref={clickAreaRef}
+      //   style={
+      //     {
+      //       "--mouse-left": mousePointer?.percentX,
+      //       "--mouse-right": mousePointer?.percentY,
+      //     } as React.CSSProperties
+      //   }
     >
       {initialPoint !== null && (
         <div
@@ -150,7 +138,8 @@ export const ClickAreaRectangle = ({
               borderRadius: "50%",
             }}
           ></div>
-          <div className="rectangle-middle-point"></div>
+          <div className="circle-first-middle-point"></div>
+          <div className="circle-second-middle-point"></div>
         </Fragment>
       )}
 

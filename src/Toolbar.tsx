@@ -21,6 +21,21 @@ type Props = {
 import { possibleImages } from "./sharedImages";
 import type { DrawingMode } from "./Types";
 
+const shapeOptions: Array<{ label: string; id: DrawingMode }> = [
+  {
+    label: "Line",
+    id: "line",
+  },
+  {
+    label: "Rectangle",
+    id: "rectangle",
+  },
+  {
+    label: "Circle",
+    id: "circle",
+  },
+];
+
 export const Toolbar = ({
   open,
   selectedImage,
@@ -43,26 +58,20 @@ export const Toolbar = ({
       <h2>Toolbar</h2>
 
       <div className="buttons">
-        <label>
-          Line
-          <input
-            type="radio"
-            name="mode"
-            value="line"
-            checked={drawingMode === "line"}
-            onChange={() => handleChangeDrawingMode("line")}
-          />
-        </label>
-        <label>
-          Rectangle
-          <input
-            type="radio"
-            name="mode"
-            value="rectangle"
-            checked={drawingMode === "rectangle"}
-            onChange={() => handleChangeDrawingMode("rectangle")}
-          />
-        </label>
+        {shapeOptions.map((option) => {
+          return (
+            <label key={option.id}>
+              {option.label}
+              <input
+                type="radio"
+                name="mode"
+                value={option.id}
+                checked={drawingMode === option.id}
+                onChange={() => handleChangeDrawingMode(option.id)}
+              />
+            </label>
+          );
+        })}
       </div>
 
       <div className="buttons">
