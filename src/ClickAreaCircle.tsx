@@ -25,12 +25,12 @@ export const ClickAreaCircle = ({
   const [recording, setRecording] = useState(false);
   const clickAreaRef = useRef<HTMLInputElement>(null);
   const [initialPoint, setInitialPoint] = useState<Coords | null>({
-    percentX: 0,
-    percentY: 0,
+    percentX: 20,
+    percentY: 20,
   });
   const [finalPoint, setFinalPoint] = useState<Coords | null>({
-    percentX: 0,
-    percentY: 0,
+    percentX: 50,
+    percentY: 50,
   });
 
   //   const [mousePointer, setMousePointer] = useState<Coords | null>({
@@ -124,30 +124,12 @@ export const ClickAreaCircle = ({
         ></div>
       )}
 
-      {finalPoint !== null && (
+      {finalPoint !== null && initialPoint !== null && (
         <Fragment>
-          <div
-            className="middle-point"
-            style={
-              {
-                anchorName: "--middle-point",
-                top:
-                  Math.min(initialPoint.percentY, finalPoint.percentY) +
-                  Math.abs(initialPoint.percentY - finalPoint.percentY) / 2 +
-                  "%",
-                left:
-                  Math.min(initialPoint.percentX, finalPoint.percentX) +
-                  Math.abs(initialPoint.percentX - finalPoint.percentX) / 2 +
-                  "%",
-                background: "blue",
-                position: "absolute",
-                aspectRatio: 1,
-                height: 1,
-                zIndex: 1,
-                borderRadius: "50%",
-              } as CSSProperties
-            }
-          ></div>
+          <CircleMiddlePoint
+            initialPoint={initialPoint}
+            finalPoint={finalPoint}
+          />
           <div
             className="end-point"
             style={{
@@ -161,8 +143,6 @@ export const ClickAreaCircle = ({
               borderRadius: "50%",
             }}
           ></div>
-          <div className="circle-first-middle-point"></div>
-          <div className="circle-second-middle-point"></div>
         </Fragment>
       )}
 
@@ -172,5 +152,91 @@ export const ClickAreaCircle = ({
         clickAreaRef={clickAreaRef}
       />
     </div>
+  );
+};
+
+const CircleMiddlePoint = ({
+  initialPoint,
+  finalPoint,
+}: {
+  initialPoint: Coords;
+  finalPoint: Coords;
+}) => {
+  const top = Math.min(initialPoint.percentY, finalPoint.percentY);
+  const left = Math.min(initialPoint.percentX, finalPoint.percentX);
+  const height =
+    Math.max(initialPoint.percentY, finalPoint.percentY) -
+    Math.min(initialPoint.percentY, finalPoint.percentY);
+  const width =
+    Math.max(initialPoint.percentX, finalPoint.percentX) -
+    Math.min(initialPoint.percentX, finalPoint.percentX);
+
+  const midPoint = {
+    x: (initialPoint.percentX + finalPoint.percentX) / 2,
+    y: (initialPoint.percentY + finalPoint.percentY) / 2,
+  };
+
+  const d =
+    Math.pow(midPoint.x - initialPoint.percentX, 2) +
+    Math.pow(midPoint.y - initialPoint.percentY, 2);
+
+  //   const d2 =
+  //     Math.pow(midPoint.x - finalPoint.percentX, 2) +
+  //     Math.pow(midPoint.y - finalPoint.percentY, 2);
+
+  console.log({ d });
+
+  //   const dy = height;
+  //   const dx = width;
+  //   const angle = Math.atan2(dy, dx);
+  //   const degrees = (angle * 180) / Math.PI;
+
+  return (
+    <Fragment>
+      <div
+        className="circle-middle-point"
+        style={
+          {
+            top: top + "%",
+            left: left + "%",
+            height: height + "%",
+            width: width + "%",
+            transformOrigin: "0 0",
+            //   transform: `rotate(${degrees}deg) translateY(-100%) translateX(-100%)`,
+            //   transformOrigin: "100% 0",
+          } as CSSProperties
+        }
+      >
+        {/* <div>Degrees: {degrees}</div> */}
+
+        {/* <div>
+          start point: {initialPoint.percentX},{initialPoint.percentY}
+        </div>
+        <div>
+          end point: {finalPoint.percentX},{finalPoint.percentY}
+        </div>
+
+        <div>
+          Mid-point: {midPoint.x}, {midPoint.y}
+        </div>
+
+        <div>d: {d}</div> */}
+        {/* <div>d2: {d2}</div> */}
+      </div>
+      <div
+        className="mid-point"
+        style={{
+          top: midPoint.y + "%",
+          left: midPoint.x + "%",
+          height: Math.sqrt(d) * 2 + "%",
+          borderRadius: "10%",
+          aspectRatio: 1,
+          background: "orange",
+          opacity: 0.5,
+          position: "absolute",
+          translate: "-50% -50%",
+        }}
+      ></div>
+    </Fragment>
   );
 };
