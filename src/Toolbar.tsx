@@ -7,6 +7,8 @@ type Props = {
   useAllShapes: boolean;
   stackActive: boolean;
   showCode: boolean;
+  canRemoveShapes: boolean;
+  handleRemoveLastShape: () => void;
   handleChangeDrawingMode: (drawingMode: DrawingMode) => void;
   handleRemoveLastPoint: () => void;
   handleEditToggle: () => void;
@@ -42,7 +44,9 @@ export const Toolbar = ({
   useAllShapes,
   drawingMode,
   stackActive,
+  canRemoveShapes,
   showCode,
+  handleRemoveLastShape,
   handleChangeDrawingMode,
   handleRemoveLastPoint,
   handleEditToggle,
@@ -75,6 +79,10 @@ export const Toolbar = ({
       </div>
 
       <div className="buttons">
+        <button onClick={handleRemoveLastShape} disabled={!canRemoveShapes}>
+          Remove Last Shape
+        </button>
+
         <button onClick={handleRemoveLastPoint} disabled={!stackActive}>
           Remove Last Point
         </button>

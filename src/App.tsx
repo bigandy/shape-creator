@@ -80,7 +80,13 @@ function App() {
 
   const handleShowCodeToggle = () => setShowCode((o) => !o);
 
-  console.log({ savedStack });
+  const handleRemoveLastShape = () => {
+    setSavedStack((savedStack) =>
+      savedStack.filter(
+        (_, index, stackArray) => index !== stackArray.length - 1
+      )
+    );
+  };
 
   return (
     <Fragment>
@@ -125,6 +131,8 @@ function App() {
         useAllShapes={useAllShapes}
         drawingMode={drawingMode}
         showCode={showCode}
+        canRemoveShapes={savedStack.length !== 0}
+        handleRemoveLastShape={handleRemoveLastShape}
         handleChangeDrawingMode={handleChangeDrawingMode}
         handleEditToggle={handleEditToggle}
         handleRemoveLastPoint={handleRemoveLastPoint}
