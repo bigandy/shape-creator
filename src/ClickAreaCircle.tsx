@@ -9,12 +9,13 @@ import {
 
 import { DragAndDropPoints } from "./DragAndDropPoints";
 
-import type { Coords } from "./Types";
+import type { Coords, DrawingMode } from "./Types";
+type NumCoords = { x: number; y: number };
 
 type Props = {
   setStack: Dispatch<SetStateAction<Coords[]>>;
   stack: Coords[];
-  handleSaveShapeToStack: (stack: Coords[]) => void;
+  handleSaveShapeToStack: (stack: Coords[], type: DrawingMode) => void;
 };
 
 export const ClickAreaCircle = ({
@@ -24,13 +25,13 @@ export const ClickAreaCircle = ({
 }: Props) => {
   const [recording, setRecording] = useState(false);
   const clickAreaRef = useRef<HTMLInputElement>(null);
-  const [initialPoint, setInitialPoint] = useState<Coords | null>({
-    percentX: 20,
-    percentY: 20,
+  const [initialPoint, setInitialPoint] = useState<NumCoords | null>({
+    x: 20,
+    y: 20,
   });
-  const [finalPoint, setFinalPoint] = useState<Coords | null>({
-    percentX: 50,
-    percentY: 50,
+  const [finalPoint, setFinalPoint] = useState<NumCoords | null>({
+    x: 50,
+    y: 50,
   });
 
   //   const [mousePointer, setMousePointer] = useState<Coords | null>({
@@ -46,9 +47,11 @@ export const ClickAreaCircle = ({
     const { clientX, clientY } = event;
     const { width, height } = clickAreaRef.current.getBoundingClientRect();
 
-    const percentX = (clientX / width) * 100;
-    const percentY = (clientY / height) * 100;
-    const coords = { percentX, percentY };
+    // const percentX = (clientX / width) * 100;
+    // const percentY = (clientY / height) * 100;
+    // const coords = { percentX, percentY };
+
+    const coords = { x: clientX, y: clientY };
 
     return coords;
   };
@@ -58,14 +61,35 @@ export const ClickAreaCircle = ({
       return;
     }
 
-    // TODO: How to draw a circle in shape() ?
-    const points = undefined;
+    if (!clickAreaRef.current) {
+      return;
+    }
+
+    const { x: initialX, y: initialY } = initialPoint;
+    const { x: finalX, y: finalY } = finalPoint;
+    const { width, height } = clickAreaRef.current.getBoundingClientRect();
+
+    const initialPercentX = (initialX / width) * 100;
+    const initialPercentY = (initialY / height) * 100;
+
+    const finalPercentX = (finalX / width) * 100;
+    const finalPercentY = (finalY / height) * 100;
+
+    const points = [
+      { percentX: initialPercentX, percentY: initialPercentY },
+
+      { percentX: finalPercentX, percentY: finalPercentY },
+    ];
+    const updatedState = [...stack, ...points];
     // setStack(updatedState);
 
     setInitialPoint(null);
     setFinalPoint(null);
 
-    // handleSaveShapeToStack(updatedState);
+    // AHTODO: THis currently only works exactly correctly when the background is a square i.e. height === width. Need to investigate why!
+    // Possibly a difference between pixel value at recording time and percent in this function??
+
+    handleSaveShapeToStack(updatedState, "circle");
   };
 
   const handleMouseDown = (e) => {
@@ -87,7 +111,7 @@ export const ClickAreaCircle = ({
     setFinalPoint(upCoords);
 
     setRecording(false);
-    // drawCircle();
+    drawCircle();
   };
 
   const handleMouseOver = (e) => {
@@ -106,19 +130,13 @@ export const ClickAreaCircle = ({
       onMouseUp={handleMouseUp}
       onMouseMove={handleMouseOver}
       ref={clickAreaRef}
-      //   style={
-      //     {
-      //       "--mouse-left": mousePointer?.percentX,
-      //       "--mouse-right": mousePointer?.percentY,
-      //     } as React.CSSProperties
-      //   }
     >
       {initialPoint !== null && (
         <div
           className="start-point"
           style={{
-            top: initialPoint.percentY + "%",
-            left: initialPoint.percentX + "%",
+            top: initialPoint.y,
+            left: initialPoint.x,
             background: "green",
           }}
         ></div>
@@ -133,8 +151,8 @@ export const ClickAreaCircle = ({
           <div
             className="end-point"
             style={{
-              top: finalPoint.percentY + "%",
-              left: finalPoint.percentX + "%",
+              top: finalPoint.y,
+              left: finalPoint.x,
               background: "red",
               position: "absolute",
               aspectRatio: 1,
@@ -159,81 +177,53 @@ const CircleMiddlePoint = ({
   initialPoint,
   finalPoint,
 }: {
-  initialPoint: Coords;
-  finalPoint: Coords;
+  initialPoint: NumCoords;
+  finalPoint: NumCoords;
 }) => {
-  const top = Math.min(initialPoint.percentY, finalPoint.percentY);
-  const left = Math.min(initialPoint.percentX, finalPoint.percentX);
+  const top = Math.min(initialPoint.y, finalPoint.y);
+  const left = Math.min(initialPoint.x, finalPoint.x);
   const height =
-    Math.max(initialPoint.percentY, finalPoint.percentY) -
-    Math.min(initialPoint.percentY, finalPoint.percentY);
+    Math.max(initialPoint.y, finalPoint.y) -
+    Math.min(initialPoint.y, finalPoint.y);
   const width =
-    Math.max(initialPoint.percentX, finalPoint.percentX) -
-    Math.min(initialPoint.percentX, finalPoint.percentX);
+    Math.max(initialPoint.x, finalPoint.x) -
+    Math.min(initialPoint.x, finalPoint.x);
 
   const midPoint = {
-    x: (initialPoint.percentX + finalPoint.percentX) / 2,
-    y: (initialPoint.percentY + finalPoint.percentY) / 2,
+    x: (initialPoint.x + finalPoint.x) / 2,
+    y: (initialPoint.y + finalPoint.y) / 2,
   };
 
   const d =
-    Math.pow(midPoint.x - initialPoint.percentX, 2) +
-    Math.pow(midPoint.y - initialPoint.percentY, 2);
-
-  //   const d2 =
-  //     Math.pow(midPoint.x - finalPoint.percentX, 2) +
-  //     Math.pow(midPoint.y - finalPoint.percentY, 2);
-
-  console.log({ d });
-
-  //   const dy = height;
-  //   const dx = width;
-  //   const angle = Math.atan2(dy, dx);
-  //   const degrees = (angle * 180) / Math.PI;
+    Math.pow(midPoint.x - initialPoint.x, 2) +
+    Math.pow(midPoint.y - initialPoint.y, 2);
 
   return (
     <Fragment>
+      {/* The rectangle that goes from the points */}
       <div
         className="circle-middle-point"
         style={
           {
-            top: top + "%",
-            left: left + "%",
-            height: height + "%",
-            width: width + "%",
+            top: top + "px",
+            left: left + "px",
+            height: height + "px",
+            width: width + "px",
             transformOrigin: "0 0",
-            //   transform: `rotate(${degrees}deg) translateY(-100%) translateX(-100%)`,
-            //   transformOrigin: "100% 0",
           } as CSSProperties
         }
-      >
-        {/* <div>Degrees: {degrees}</div> */}
-
-        {/* <div>
-          start point: {initialPoint.percentX},{initialPoint.percentY}
-        </div>
-        <div>
-          end point: {finalPoint.percentX},{finalPoint.percentY}
-        </div>
-
-        <div>
-          Mid-point: {midPoint.x}, {midPoint.y}
-        </div>
-
-        <div>d: {d}</div> */}
-        {/* <div>d2: {d2}</div> */}
-      </div>
+      ></div>
       <div
         className="mid-point"
         style={{
-          top: midPoint.y + "%",
-          left: midPoint.x + "%",
-          height: Math.sqrt(d) * 2 + "%",
-          borderRadius: "10%",
+          top: midPoint.y + "px",
+          left: midPoint.x + "px",
+          height: Math.sqrt(d) * 2 + "px",
+          borderRadius: "50%",
           aspectRatio: 1,
           background: "orange",
           opacity: 0.5,
-          position: "absolute",
+          //   position: "absolute",
           translate: "-50% -50%",
         }}
       ></div>

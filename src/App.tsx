@@ -2,7 +2,7 @@ import { Fragment, useState, type ChangeEvent, useRef } from "react";
 
 import { OutputBox } from "./OutputBox";
 import { OutputBoxAllShapes } from "./OutputBoxAllShapes";
-import { ClickArea } from "./ClickArea";
+import { ClickAreaLine } from "./ClickAreaLine";
 import { Toolbar } from "./Toolbar";
 import { Sidebar } from "./Sidebar";
 import { CodeViewer } from "./CodeViewer";
@@ -59,20 +59,19 @@ function App() {
     //   return;
     // }
     // console.log("save shape", [...savedStack, stack]);
-    setSavedStack([...savedStack, stack]);
+    setSavedStack([...savedStack, { shape: drawingMode, coords: stack }]);
     // clear current stack
     setStack([]);
   };
 
-  const handleSaveShapeToStack = (stack) => {
-    console.log({ stack });
-    setSavedStack((savedStack) => [...savedStack, stack]);
+  const handleSaveShapeToStack = (coords: Coords[], shape: DrawingMode) => {
+    setSavedStack((savedStack) => [...savedStack, { shape, coords }]);
     setStack([]);
   };
 
   const handleChangeDrawingMode = (drawingMode: DrawingMode) => {
     if (stack.length > 0) {
-      setSavedStack([...savedStack, stack]);
+      setSavedStack([...savedStack, { shape: drawingMode, coords: stack }]);
       setStack([]);
     }
 
@@ -80,6 +79,8 @@ function App() {
   };
 
   const handleShowCodeToggle = () => setShowCode((o) => !o);
+
+  console.log({ savedStack });
 
   return (
     <Fragment>
@@ -91,7 +92,11 @@ function App() {
         />
       )}
       {drawingMode === "line" && (
-        <ClickArea stack={stack} setStack={setStack} key={countRef.current} />
+        <ClickAreaLine
+          stack={stack}
+          setStack={setStack}
+          key={countRef.current}
+        />
       )}
 
       {drawingMode === "circle" && (
@@ -99,6 +104,7 @@ function App() {
           stack={stack}
           setStack={setStack}
           key={countRef.current}
+          handleSaveShapeToStack={handleSaveShapeToStack}
         />
       )}
 

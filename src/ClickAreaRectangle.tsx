@@ -8,12 +8,12 @@ import {
 
 import { DragAndDropPoints } from "./DragAndDropPoints";
 
-import type { Coords } from "./Types";
+import type { Coords, DrawingMode } from "./Types";
 
 type Props = {
   setStack: Dispatch<SetStateAction<Coords[]>>;
   stack: Coords[];
-  handleSaveShapeToStack: (stack: Coords[]) => void;
+  handleSaveShapeToStack: (stack: Coords[], type: DrawingMode) => void;
 };
 
 export const ClickAreaRectangle = ({
@@ -82,7 +82,7 @@ export const ClickAreaRectangle = ({
     setInitialPoint(null);
     setFinalPoint(null);
 
-    handleSaveShapeToStack(updatedState);
+    handleSaveShapeToStack(updatedState, "rectangle");
   };
 
   const handleMouseDown = (e) => {

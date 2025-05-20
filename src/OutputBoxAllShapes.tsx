@@ -18,17 +18,33 @@ export const OutputBoxAllShapes = ({
     }
     let clipPathString = "shape(";
     savedStack.forEach((stack, savedStackIndex) => {
-      if (stack.length > 0) {
-        stack.forEach((stackItem, stackIndex) => {
-          if (savedStackIndex === 0 && stackIndex === 0) {
-            clipPathString += `from ${stackItem.percentX}% ${stackItem.percentY}%, `;
-          } else if (stackIndex === 0) {
-            clipPathString += `move to ${stackItem.percentX}% ${stackItem.percentY}%, `;
-          } else {
-            clipPathString += `line to ${stackItem.percentX}% ${stackItem.percentY}%, `;
-          }
-        });
-        // clipPathString += " close, ";
+      if (stack.shape !== "circle") {
+        if (stack.coords.length > 0) {
+          stack.coords.forEach((stackItem, stackIndex) => {
+            if (savedStackIndex === 0 && stackIndex === 0) {
+              clipPathString += `from ${stackItem.percentX}% ${stackItem.percentY}%, `;
+            } else if (stackIndex === 0) {
+              clipPathString += `move to ${stackItem.percentX}% ${stackItem.percentY}%, `;
+            } else {
+              clipPathString += `line to ${stackItem.percentX}% ${stackItem.percentY}%, `;
+            }
+          });
+        }
+      } else {
+        // Circle so need the first and the last points.
+        if (stack.coords.length > 0) {
+          stack.coords.forEach((stackItem, stackIndex, stackArray) => {
+            if (savedStackIndex === 0 && stackIndex === 0) {
+              clipPathString += `from ${stackItem.percentX}% ${stackItem.percentY}%, `;
+            } else if (stackIndex === 0) {
+              clipPathString += `move to ${stackItem.percentX}% ${stackItem.percentY}%, `;
+            } else {
+              clipPathString += `arc to ${stackItem.percentX}% ${stackItem.percentY}% of 1% cw, `;
+
+              clipPathString += `arc to ${stackArray[0].percentX}% ${stackArray[0].percentY}% of 1% cw, `;
+            }
+          });
+        }
       }
     });
 

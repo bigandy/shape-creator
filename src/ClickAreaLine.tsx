@@ -9,7 +9,7 @@ type Props = {
   stack: Coords[];
 };
 
-export const ClickArea = ({ setStack, stack }: Props) => {
+export const ClickAreaLine = ({ setStack, stack }: Props) => {
   const clickAreaRef = useRef<HTMLInputElement>(null);
 
   const [mousePosition, setMousePosition] = useState<Coords | null>(null);

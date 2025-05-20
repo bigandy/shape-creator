@@ -3,6 +3,6 @@ export type Coords = {
   percentY: number;
 };
 
-export type Shape = Coords[];
+export type Shape = { shape: DrawingMode; coords: Coords[] };
 
 export type DrawingMode = "line" | "rectangle" | "circle";

@@ -18,6 +18,7 @@ body {
   inset: 0;
   height: 100%;
   background: black;
+  overflow: hidden;
 }
 
 .output {
@@ -39,6 +40,7 @@ body {
   display: flex;
   gap: 1rem;
   flex-direction: column;
+  /* display: none; */
 
   :where(.buttons) {
     display: flex;
@@ -90,7 +92,8 @@ body {
   aspect-ratio: 1;
   height: 10px;
   border-radius: 50%;
-  /* translate: -50% -50%; */
+  translate: -50% -50%;
+  z-index: 1;
 }
 
 .start-point {
@@ -162,7 +165,6 @@ body {
   z-index: 1;
   background: white;
 
-  /* display: none; */
   transition: height 0.2s ease-in-out;
   transition-behavior: allow-discrete;
   overflow: clip;
