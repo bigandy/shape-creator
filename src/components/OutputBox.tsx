@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import type { Coords } from "./Types";
+import type { Coords } from "@/Types";
 
 type Props = {
   stack: Coords[];

@@ -1,4 +1,21 @@
 import { Fragment, type ChangeEvent } from "react";
+import { possibleImages } from "./sharedImages";
+import type { DrawingMode } from "@/Types";
+
+const shapeOptions: Array<{ label: string; id: DrawingMode }> = [
+  {
+    label: "Line",
+    id: "line",
+  },
+  {
+    label: "Rectangle",
+    id: "rectangle",
+  },
+  {
+    label: "Circle",
+    id: "circle",
+  },
+];
 
 type Props = {
   open: boolean;
@@ -20,24 +37,6 @@ type Props = {
   handleShowCodeToggle: () => void;
   handleCloseToolbar: () => void;
 };
-
-import { possibleImages } from "./sharedImages";
-import type { DrawingMode } from "./Types";
-
-const shapeOptions: Array<{ label: string; id: DrawingMode }> = [
-  {
-    label: "Line",
-    id: "line",
-  },
-  {
-    label: "Rectangle",
-    id: "rectangle",
-  },
-  {
-    label: "Circle",
-    id: "circle",
-  },
-];
 
 export const Toolbar = ({
   open,

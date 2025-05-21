@@ -1,8 +1,8 @@
 import { type SetStateAction, type Dispatch } from "react";
 
-import type { Coords, Shape } from "./Types";
+import type { Coords, Shape } from "@/Types";
 
-import { SidebarItem } from "./SidebarItem";
+// import { SidebarItem } from "@components/SidebarItem";
 
 type SidebarProps = {
   open: boolean;

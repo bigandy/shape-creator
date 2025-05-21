@@ -7,9 +7,9 @@ import {
   type CSSProperties,
 } from "react";
 
-import { DragAndDropPoints } from "./DragAndDropPoints";
+import { DragAndDropPoints } from "@components/DragAndDropPoints";
 
-import type { Coords, DrawingMode } from "./Types";
+import type { Coords, DrawingMode } from "@/Types";
 type NumCoords = { x: number; y: number };
 
 type Props = {

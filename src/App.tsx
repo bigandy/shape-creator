@@ -1,15 +1,15 @@
 import { Fragment, useState, type ChangeEvent, useRef } from "react";
 
-import { OutputBox } from "./OutputBox";
-import { OutputBoxAllShapes } from "./OutputBoxAllShapes";
-import { ClickAreaLine } from "./ClickAreaLine";
-import { Toolbar } from "./Toolbar";
-import { Sidebar } from "./Sidebar";
-import { CodeViewer } from "./CodeViewer";
-import { ClickAreaRectangle } from "./ClickAreaRectangle";
-import { ClickAreaCircle } from "./ClickAreaCircle";
+import { OutputBox } from "@components/OutputBox";
+import { OutputBoxAllShapes } from "@components/OutputBoxAllShapes";
+import { ClickAreaLine } from "@components/ClickAreaLine";
+import { Toolbar } from "@components/Toolbar";
+import { Sidebar } from "@components/Sidebar";
+import { CodeViewer } from "@components/CodeViewer";
+import { ClickAreaRectangle } from "@components/ClickAreaRectangle";
+import { ClickAreaCircle } from "@components/ClickAreaCircle";
 
-import { possibleImages } from "./sharedImages";
+import { possibleImages } from "@components/sharedImages";
 
 import "./App.css";
 

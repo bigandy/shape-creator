@@ -1,8 +1,8 @@
 import { useRef, useState, type SetStateAction, type Dispatch } from "react";
 
-import { DragAndDropPoints } from "./DragAndDropPoints";
+import { DragAndDropPoints } from "@components/DragAndDropPoints";
 
-import type { Coords } from "./Types";
+import type { Coords } from "@/Types";
 
 type Props = {
   setStack: Dispatch<SetStateAction<Coords[]>>;

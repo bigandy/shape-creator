@@ -1,26 +1,17 @@
 import { useMemo } from "react";
-
-import { useCopyToClipboard } from "usehooks-ts";
-
-import type { Shape, Coords } from "./Types";
+import type { Shape, Coords } from "@/Types";
 
 type Props = {
   savedStack: Shape[];
   currentStack: Coords[];
-  open: boolean;
-  handleClose: () => void;
+  selectedImage?: string;
 };
 
-export const CodeViewer = ({
+export const OutputBoxAllShapes = ({
   savedStack,
   currentStack,
-  open,
-  handleClose,
+  selectedImage,
 }: Props) => {
-  const [_, copy] = useCopyToClipboard();
-
-  // AHTODO: Extract this into a hook...or re-usable something.
-  // AHTODO: change precision as probably should use less.
   const clipPathStyle = useMemo(() => {
     if (savedStack.length === 0 && currentStack.length === 0) {
       return "";
@@ -73,36 +64,14 @@ export const CodeViewer = ({
     return clipPathString;
   }, [savedStack, currentStack]);
 
-  const handleCopyText = () => {
-    copy("clip-path:" + clipPathStyle + ";")
-      .then(() => {
-        // AHTODO: Show a toast or some other visual que that this has been done.
-        console.log("Copied!", { clipPathStyle });
-      })
-      .catch((error) => {
-        console.error("Failed to copy!", error);
-
-        // AHTODO: show an error toast.
-      });
-  };
-
   return (
-    <div className={`code-viewer ${open ? "code-viewer--open" : ""}`}>
-      <div className="inner">
-        {clipPathStyle || "there is no code"}
-
-        <button onClick={handleClose} className="close-button">
-          Close
-        </button>
-
-        <button
-          disabled={clipPathStyle === ""}
-          onClick={handleCopyText}
-          //   className="copy-button"
-        >
-          Copy Text
-        </button>
-      </div>
-    </div>
+    <div
+      className="output"
+      style={{
+        backgroundColor: "green",
+        backgroundImage: selectedImage !== "" ? `url(${selectedImage})` : "",
+        clipPath: clipPathStyle,
+      }}
+    ></div>
   );
 };

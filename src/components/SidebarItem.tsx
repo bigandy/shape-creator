@@ -1,6 +1,6 @@
 import { Fragment, type SetStateAction, type Dispatch } from "react";
 
-import type { Coords } from "./Types";
+import type { Coords } from "@/Types";
 
 type Props = {
   x: number;

@@ -1,9 +1,9 @@
-import { useRef, type SetStateAction, type Dispatch, useState } from "react";
-
-import type { Coords } from "./Types";
-
-import { Draggable } from "./Draggable";
+import { type Dispatch, type SetStateAction } from "react";
 import { DndContext, type DragMoveEvent } from "@dnd-kit/core";
+
+import type { Coords } from "@/Types";
+
+import { Draggable } from "@components/Draggable";
 
 type Props = {
   setStack: Dispatch<SetStateAction<Coords[]>>;
