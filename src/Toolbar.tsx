@@ -1,4 +1,4 @@
-import { type ChangeEvent } from "react";
+import { Fragment, type ChangeEvent } from "react";
 
 type Props = {
   open: boolean;
@@ -88,16 +88,27 @@ export const Toolbar = ({
             Remove Last Shape
           </button>
 
-          <button onClick={handleRemoveLastPoint} disabled={!stackActive}>
-            Remove Last Point
-          </button>
-
-          <button onClick={handleResetCurrentStack} disabled={!stackActive}>
-            Reset Current Shape
-          </button>
+          {drawingMode === "line" && (
+            <Fragment>
+              <button onClick={handleRemoveLastPoint} disabled={!stackActive}>
+                Remove Last Point
+              </button>
+              <button onClick={handleResetCurrentStack} disabled={!stackActive}>
+                Reset Current Shape
+              </button>
+            </Fragment>
+          )}
 
           <button onClick={handleResetAllStacks}>Reset All Shapes</button>
 
+          <button onClick={handleSaveShape}>Save Shape</button>
+
+          <button onClick={handleUseAllShapesToggle}>
+            {useAllShapes ? "One Shape" : "All Shapes"}
+          </button>
+          {/* <button onClick={handleEditToggle}>Open Sidebar - Edit Points</button> */}
+        </div>
+        <div>
           <select onChange={handleImageChange} value={selectedImage}>
             <option value=""></option>
             {possibleImages.map((image, index) => {
@@ -108,13 +119,6 @@ export const Toolbar = ({
               );
             })}
           </select>
-
-          <button onClick={handleSaveShape}>Save Shape</button>
-
-          <button onClick={handleUseAllShapesToggle}>
-            {useAllShapes ? "One Shape" : "All Shapes"}
-          </button>
-          {/* <button onClick={handleEditToggle}>Open Sidebar - Edit Points</button> */}
         </div>
 
         <div>
