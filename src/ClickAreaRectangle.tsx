@@ -86,7 +86,6 @@ export const ClickAreaRectangle = ({
   };
 
   const handleMouseDown = (e) => {
-    console.log("DOWN", e.screenX, e.screenY);
     setFinalPoint(null);
     const coords = getCoords(e)!;
 
@@ -96,8 +95,6 @@ export const ClickAreaRectangle = ({
 
   const handleMouseUp = (e) => {
     // AHTODO: How to handle mouseup or out of bounds movement of the mouse?
-
-    console.log("UP", e.screenX, e.screenY);
 
     const upCoords = getCoords(e)!;
 

@@ -18,12 +18,13 @@ import { type DrawingMode, type Coords, type Shape } from "./Types";
 function App() {
   const countRef = useRef(0);
   const [stack, setStack] = useState<Coords[]>([]);
-  const [open, setOpen] = useState(false);
+  const [toolbarOpen, setToolbarOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(possibleImages[0].url);
   const [savedStack, setSavedStack] = useState<Shape[]>([]);
   const [useAllShapes, setUseAllShapes] = useState(true);
   const [drawingMode, setDrawingMode] = useState<DrawingMode>("circle");
   const [showCode, setShowCode] = useState(false);
+  const [editbarOpen, setEditbarOpen] = useState(false);
 
   const handleRemoveLastPoint = () => {
     setStack(
@@ -32,7 +33,7 @@ function App() {
   };
 
   const handleEditToggle = () => {
-    setOpen((open) => !open);
+    setEditbarOpen((open) => !open);
   };
 
   const handleResetCurrentStack = () => {
@@ -45,7 +46,7 @@ function App() {
     countRef.current = countRef.current + 1;
   };
 
-  const handleCloseSidebar = () => setOpen(false);
+  const handleCloseSidebar = () => setEditbarOpen(false);
 
   const handleImageChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setSelectedImage(e.target.value);
@@ -79,6 +80,8 @@ function App() {
   };
 
   const handleShowCodeToggle = () => setShowCode((o) => !o);
+  const handleToolbarToggle = () => setToolbarOpen((o) => !o);
+  const handleCloseToolbar = () => setToolbarOpen(false);
 
   const handleRemoveLastShape = () => {
     setSavedStack((savedStack) =>
@@ -90,6 +93,9 @@ function App() {
 
   return (
     <Fragment>
+      <button className="toolbar-toggle-button" onClick={handleToolbarToggle}>
+        Toolbar Toggle
+      </button>
       {drawingMode === "rectangle" && (
         <ClickAreaRectangle
           stack={stack}
@@ -126,7 +132,7 @@ function App() {
 
       <Toolbar
         stackActive={stack.length !== 0}
-        open={open}
+        open={toolbarOpen}
         selectedImage={selectedImage}
         useAllShapes={useAllShapes}
         drawingMode={drawingMode}
@@ -142,10 +148,11 @@ function App() {
         handleSaveShape={handleSaveShape}
         handleUseAllShapesToggle={handleUseAllShapesToggle}
         handleShowCodeToggle={handleShowCodeToggle}
+        handleCloseToolbar={handleCloseToolbar}
       />
 
       <Sidebar
-        open={open}
+        open={editbarOpen}
         handleClose={handleCloseSidebar}
         stack={stack}
         setStack={setStack}

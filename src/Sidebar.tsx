@@ -21,16 +21,10 @@ export const Sidebar = ({
 }: SidebarProps) => {
   // Insert a new point in between existing points. Put the new point half-way between the two existing points.
 
-  // AHTODO: it in CSS instead
-  // This way could animate it in, etc.
-  if (!open) {
-    return null;
-  }
-
   return (
-    <div className="sidebar">
+    <div className={`sidebar ${open ? "sidebar--open" : ""}`}>
       <button onClick={handleClose}>Close</button>
-      {savedStack.length > 0 ? (
+      {/* {savedStack.length > 0 ? (
         <ol>
           {savedStack.map((stack) => {
             return (
@@ -74,7 +68,7 @@ export const Sidebar = ({
         </ol>
       ) : (
         "No points set. Add one?"
-      )}
+      )} */}
     </div>
   );
 };

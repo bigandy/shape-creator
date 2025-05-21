@@ -18,6 +18,7 @@ type Props = {
   handleSaveShape: () => void;
   handleUseAllShapesToggle: () => void;
   handleShowCodeToggle: () => void;
+  handleCloseToolbar: () => void;
 };
 
 import { possibleImages } from "./sharedImages";
@@ -56,69 +57,71 @@ export const Toolbar = ({
   handleSaveShape,
   handleUseAllShapesToggle,
   handleShowCodeToggle,
+  handleCloseToolbar,
 }: Props) => {
   return (
-    <div className="toolbar">
-      <h2>Toolbar</h2>
-
-      <div className="buttons">
-        {shapeOptions.map((option) => {
-          return (
-            <label key={option.id}>
-              {option.label}
-              <input
-                type="radio"
-                name="mode"
-                value={option.id}
-                checked={drawingMode === option.id}
-                onChange={() => handleChangeDrawingMode(option.id)}
-              />
-            </label>
-          );
-        })}
-      </div>
-
-      <div className="buttons">
-        <button onClick={handleRemoveLastShape} disabled={!canRemoveShapes}>
-          Remove Last Shape
+    <div className={`toolbar ${open ? "toolbar--open" : ""}`}>
+      <div className="inner">
+        <button className="toolbar-toggle-button" onClick={handleCloseToolbar}>
+          Close
         </button>
 
-        <button onClick={handleRemoveLastPoint} disabled={!stackActive}>
-          Remove Last Point
-        </button>
-
-        <button onClick={handleEditToggle}>
-          {open ? "Save Points" : "Edit Points"}
-        </button>
-
-        <button onClick={handleResetCurrentStack} disabled={!stackActive}>
-          Reset Current Shape
-        </button>
-
-        <button onClick={handleResetAllStacks}>Reset All Shapes</button>
-
-        <select onChange={handleImageChange} value={selectedImage}>
-          <option value=""></option>
-          {possibleImages.map((image, index) => {
+        <div className="buttons">
+          {shapeOptions.map((option) => {
             return (
-              <option value={image.url} key={`image-${index}`}>
-                {image.title}
-              </option>
+              <label key={option.id}>
+                {option.label}
+                <input
+                  type="radio"
+                  name="mode"
+                  value={option.id}
+                  checked={drawingMode === option.id}
+                  onChange={() => handleChangeDrawingMode(option.id)}
+                />
+              </label>
             );
           })}
-        </select>
+        </div>
 
-        <button onClick={handleSaveShape}>Save Shape</button>
+        <div className="buttons">
+          <button onClick={handleRemoveLastShape} disabled={!canRemoveShapes}>
+            Remove Last Shape
+          </button>
 
-        <button onClick={handleUseAllShapesToggle}>
-          {useAllShapes ? "One Shape" : "All Shapes"}
-        </button>
-      </div>
+          <button onClick={handleRemoveLastPoint} disabled={!stackActive}>
+            Remove Last Point
+          </button>
 
-      <div>
-        <button onClick={handleShowCodeToggle}>
-          {showCode ? "Hide" : "Show"} Code
-        </button>
+          <button onClick={handleResetCurrentStack} disabled={!stackActive}>
+            Reset Current Shape
+          </button>
+
+          <button onClick={handleResetAllStacks}>Reset All Shapes</button>
+
+          <select onChange={handleImageChange} value={selectedImage}>
+            <option value=""></option>
+            {possibleImages.map((image, index) => {
+              return (
+                <option value={image.url} key={`image-${index}`}>
+                  {image.title}
+                </option>
+              );
+            })}
+          </select>
+
+          <button onClick={handleSaveShape}>Save Shape</button>
+
+          <button onClick={handleUseAllShapesToggle}>
+            {useAllShapes ? "One Shape" : "All Shapes"}
+          </button>
+          {/* <button onClick={handleEditToggle}>Open Sidebar - Edit Points</button> */}
+        </div>
+
+        <div>
+          <button onClick={handleShowCodeToggle}>
+            {showCode ? "Hide" : "Show"} Code
+          </button>
+        </div>
       </div>
     </div>
   );

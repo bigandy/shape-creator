@@ -25,19 +25,8 @@ export const ClickAreaCircle = ({
 }: Props) => {
   const [recording, setRecording] = useState(false);
   const clickAreaRef = useRef<HTMLInputElement>(null);
-  const [initialPoint, setInitialPoint] = useState<NumCoords | null>({
-    x: 20,
-    y: 20,
-  });
-  const [finalPoint, setFinalPoint] = useState<NumCoords | null>({
-    x: 50,
-    y: 50,
-  });
-
-  //   const [mousePointer, setMousePointer] = useState<Coords | null>({
-  //     percentX: 10,
-  //     percentY: 50,
-  //   });
+  const [initialPoint, setInitialPoint] = useState<NumCoords | null>(null);
+  const [finalPoint, setFinalPoint] = useState<NumCoords | null>(null);
 
   const getCoords = (event) => {
     if (!clickAreaRef.current) {
@@ -45,11 +34,6 @@ export const ClickAreaCircle = ({
     }
 
     const { clientX, clientY } = event;
-    const { width, height } = clickAreaRef.current.getBoundingClientRect();
-
-    // const percentX = (clientX / width) * 100;
-    // const percentY = (clientY / height) * 100;
-    // const coords = { percentX, percentY };
 
     const coords = { x: clientX, y: clientY };
 
@@ -93,7 +77,6 @@ export const ClickAreaCircle = ({
   };
 
   const handleMouseDown = (e) => {
-    console.log("DOWN", e.screenX, e.screenY);
     setFinalPoint(null);
     const coords = getCoords(e)!;
 
@@ -103,8 +86,6 @@ export const ClickAreaCircle = ({
 
   const handleMouseUp = (e) => {
     // AHTODO: How to handle mouseup or out of bounds movement of the mouse?
-
-    console.log("UP", e.screenX, e.screenY);
 
     const upCoords = getCoords(e)!;
 
