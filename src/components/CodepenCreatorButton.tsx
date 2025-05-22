@@ -24,6 +24,8 @@ body {
 
 body {
 	background: black;
+    position: relative;
+    margin: unset;
 
 	&::after {
 		background: red;
@@ -36,15 +38,20 @@ body {
 }
 *, *::after, *::before { box-sizing: border-box; }
     `;
+
+    // List of available options to pass:
+    // https://blog.codepen.io/documentation/prefill/
     const data = {
-      title: "New pen!",
-      description: "A cool new pen!",
+      title: "Created with shaper.andrewhudson.dev",
+      description: "A clip-path: shape() creation from @bigandy",
       html_pre_processor: "none",
       css_pre_processor: "none",
       js_pre_processor: "none",
       html: "",
       css: style,
       js: "",
+      private: true,
+      tags: ["clip-path", "clip-path: shape()"], // an array of strings
     };
     const json = JSON.stringify(data)
       .replace(/"/g, "&quot;")
