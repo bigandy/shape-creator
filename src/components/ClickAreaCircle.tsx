@@ -204,7 +204,6 @@ const CircleMiddlePoint = ({
           aspectRatio: 1,
           background: "orange",
           opacity: 0.5,
-          //   position: "absolute",
           translate: "-50% -50%",
         }}
       ></div>

@@ -1,4 +1,4 @@
-import { Fragment, type ChangeEvent } from "react";
+import { Fragment, type ChangeEvent, type ChangeEventHandler } from "react";
 import { backgroundImages } from "./sharedImages";
 import type { DrawingMode } from "@/Types";
 
@@ -27,6 +27,7 @@ type Props = {
   stackActive: boolean;
   showCode: boolean;
   canRemoveShapes: boolean;
+  precision: number;
   handleRemoveLastShape: () => void;
   handleChangeDrawingMode: (drawingMode: DrawingMode) => void;
   handleRemoveLastPoint: () => void;
@@ -38,6 +39,7 @@ type Props = {
   handleUseAllShapesToggle: () => void;
   handleShowCodeToggle: () => void;
   handleCloseToolbar: () => void;
+  handleSetPrecision: ChangeEventHandler<HTMLInputElement>;
 };
 
 export const Toolbar = ({
@@ -48,6 +50,7 @@ export const Toolbar = ({
   stackActive,
   canRemoveShapes,
   showCode,
+  precision,
   handleRemoveLastShape,
   handleChangeDrawingMode,
   handleRemoveLastPoint,
@@ -59,6 +62,7 @@ export const Toolbar = ({
   handleUseAllShapesToggle,
   handleShowCodeToggle,
   handleCloseToolbar,
+  handleSetPrecision,
 }: Props) => {
   return (
     <div className={`toolbar ${open ? "toolbar--open" : ""}`}>
@@ -82,6 +86,31 @@ export const Toolbar = ({
               </label>
             );
           })}
+
+          <label>
+            Select a background Image:{" "}
+            <select onChange={handleImageChange} value={selectedImage}>
+              <option value=""></option>
+              {backgroundImages.map((image, index) => {
+                return (
+                  <option value={image.url} key={`image-${index}`}>
+                    {image.title}
+                  </option>
+                );
+              })}
+            </select>
+          </label>
+
+          <label>
+            Precision
+            <input
+              type="number"
+              value={precision}
+              onChange={handleSetPrecision}
+              min="0"
+              max="21"
+            />
+          </label>
         </div>
 
         <div className="buttons">
@@ -104,23 +133,15 @@ export const Toolbar = ({
 
           <button onClick={handleSaveShape}>Save Shape</button>
 
-          <button onClick={handleUseAllShapesToggle}>
-            {useAllShapes ? "One Shape" : "All Shapes"}
-          </button>
+          {drawingMode === "line" && (
+            <button onClick={handleUseAllShapesToggle}>
+              {useAllShapes ? "One Shape" : "All Shapes"}
+            </button>
+          )}
+
           {/* <button onClick={handleEditToggle}>Open Sidebar - Edit Points</button> */}
         </div>
-        <div>
-          <select onChange={handleImageChange} value={selectedImage}>
-            <option value=""></option>
-            {backgroundImages.map((image, index) => {
-              return (
-                <option value={image.url} key={`image-${index}`}>
-                  {image.title}
-                </option>
-              );
-            })}
-          </select>
-        </div>
+        <div></div>
 
         <div>
           <button onClick={handleShowCodeToggle}>

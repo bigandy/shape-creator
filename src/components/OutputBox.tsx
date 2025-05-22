@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useClipPathStyle } from "@/hooks/useClipPathStyle";
 import type { Coords } from "@/Types";
 
 type Props = {
@@ -7,22 +7,7 @@ type Props = {
 };
 
 export const OutputBox = ({ stack, backgroundImage }: Props) => {
-  const clipPathStyle = useMemo(() => {
-    if (stack.length === 0) {
-      return "";
-    } else {
-      let clipPathString = "";
-      stack.forEach((item, index) => {
-        if (index === 0) {
-          clipPathString = `shape(from ${item.percentX}% ${item.percentY}%, `;
-        } else {
-          clipPathString += `line to ${item.percentX}% ${item.percentY}%, `;
-        }
-      });
-
-      return clipPathString + " close)";
-    }
-  }, [stack]);
+  const clipPathStyle = useClipPathStyle({ currentStack: stack });
 
   return (
     <div

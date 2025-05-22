@@ -27,6 +27,7 @@ function App() {
   const [drawingMode, setDrawingMode] = useState<DrawingMode>("circle");
   const [showCode, setShowCode] = useState(false);
   const [editbarOpen, setEditbarOpen] = useState(false);
+  const [precision, setPrecision] = useState(2);
 
   const handleRemoveLastPoint = () => {
     setStack(
@@ -93,6 +94,12 @@ function App() {
     );
   };
 
+  const handleSetPrecision = (e) => {
+    console.log(e.target.value);
+
+    setPrecision(e.target.value);
+  };
+
   return (
     <Fragment>
       <button className="toolbar-toggle-button" onClick={handleToolbarToggle}>
@@ -122,14 +129,19 @@ function App() {
         />
       )}
 
-      {useAllShapes ? (
+      {useAllShapes || drawingMode !== "line" ? (
         <OutputBoxAllShapes
           savedStack={savedStack}
           currentStack={stack}
           backgroundImage={backgroundImage}
+          precision={precision}
         />
       ) : (
-        <OutputBox stack={stack} backgroundImage={backgroundImage} />
+        <OutputBox
+          stack={stack}
+          backgroundImage={backgroundImage}
+          precision={precision}
+        />
       )}
 
       <Toolbar
@@ -140,6 +152,7 @@ function App() {
         drawingMode={drawingMode}
         showCode={showCode}
         canRemoveShapes={savedStack.length !== 0}
+        precision={precision}
         handleRemoveLastShape={handleRemoveLastShape}
         handleChangeDrawingMode={handleChangeDrawingMode}
         handleEditToggle={handleEditToggle}
@@ -151,6 +164,7 @@ function App() {
         handleUseAllShapesToggle={handleUseAllShapesToggle}
         handleShowCodeToggle={handleShowCodeToggle}
         handleCloseToolbar={handleCloseToolbar}
+        handleSetPrecision={handleSetPrecision}
       />
 
       <Sidebar
@@ -166,6 +180,7 @@ function App() {
         savedStack={savedStack}
         currentStack={stack}
         handleClose={() => setShowCode(false)}
+        precision={precision}
       />
     </Fragment>
   );
