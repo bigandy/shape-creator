@@ -143,7 +143,7 @@ export const ClickAreaRectangle = ({
               borderRadius: "50%",
             }}
           ></div>
-          <div className="rectangle-middle-point"></div>
+          <div className="rectangle-middle-point dot-bg"></div>
         </Fragment>
       )}
 

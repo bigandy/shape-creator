@@ -117,11 +117,10 @@ body {
   left: min(anchor(--start-point center), anchor(--end-point center));
   right: min(anchor(--start-point center), anchor(--end-point center));
   bottom: min(anchor(--start-point center), anchor(--end-point center));
-
-  background: oklab(from hotpink l a calc(b * 3) / 1.75);
-
   position: absolute;
+}
 
+.dot-bg {
   /* Technique found here: https://css-irl.info/css-halftone-patterns/	 */
   --dotSize: 0.15rem;
   --bgSize: 0.5rem;
@@ -139,19 +138,11 @@ body {
   mask-position: 0 0, var(--bgPosition) var(--bgPosition);
 }
 
-.circle-middle-point {
-  border: 1px solid;
-  background: oklab(from hotpink l a calc(b / 3) / 0.75);
-  transform-origin: 0 0;
-}
-
 .circle-circle {
   position: absolute;
   z-index: 1;
   border-radius: 50%;
   aspect-ratio: 1;
-  background: orange;
-  opacity: 0.5;
   translate: -50% -50%;
 }
 

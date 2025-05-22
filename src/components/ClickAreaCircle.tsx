@@ -5,7 +5,6 @@ import React, {
   type Dispatch,
   useState,
   type MouseEvent,
-  type CSSProperties,
 } from "react";
 
 import { DragAndDropPoints } from "@components/DragAndDropPoints";
@@ -163,14 +162,14 @@ const CircleMiddlePoint = React.memo(
     initialPoint: NumCoords;
     finalPoint: NumCoords;
   }) => {
-    const top = Math.min(initialPoint.y, finalPoint.y);
-    const left = Math.min(initialPoint.x, finalPoint.x);
-    const height =
-      Math.max(initialPoint.y, finalPoint.y) -
-      Math.min(initialPoint.y, finalPoint.y);
-    const width =
-      Math.max(initialPoint.x, finalPoint.x) -
-      Math.min(initialPoint.x, finalPoint.x);
+    // const top = Math.min(initialPoint.y, finalPoint.y);
+    // const left = Math.min(initialPoint.x, finalPoint.x);
+    // const height =
+    //   Math.max(initialPoint.y, finalPoint.y) -
+    //   Math.min(initialPoint.y, finalPoint.y);
+    // const width =
+    //   Math.max(initialPoint.x, finalPoint.x) -
+    //   Math.min(initialPoint.x, finalPoint.x);
 
     const midPoint = {
       x: (initialPoint.x + finalPoint.x) / 2,
@@ -184,7 +183,7 @@ const CircleMiddlePoint = React.memo(
     return (
       <Fragment>
         {/* The rectangle that goes from the points */}
-        <div
+        {/* <div
           className="circle-middle-point"
           style={
             {
@@ -192,12 +191,12 @@ const CircleMiddlePoint = React.memo(
               left: left + "px",
               height: height + "px",
               width: width + "px",
-            } as CSSProperties
+            }
           }
-        ></div>
+        ></div> */}
         {/* The circle that goes between the two points and over the two points */}
         <div
-          className="circle-circle"
+          className="dot-bg circle-circle"
           style={{
             top: midPoint.y + "px",
             left: midPoint.x + "px",
