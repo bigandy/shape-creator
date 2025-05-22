@@ -1,8 +1,10 @@
 import { Fragment, type ChangeEvent } from "react";
-import { possibleImages } from "./sharedImages";
+import { backgroundImages } from "./sharedImages";
 import type { DrawingMode } from "@/Types";
 
-const shapeOptions: Array<{ label: string; id: DrawingMode }> = [
+type ShapeOption = { label: string; id: DrawingMode };
+
+const shapeOptions: Array<ShapeOption> = [
   {
     label: "Line",
     id: "line",
@@ -110,7 +112,7 @@ export const Toolbar = ({
         <div>
           <select onChange={handleImageChange} value={selectedImage}>
             <option value=""></option>
-            {possibleImages.map((image, index) => {
+            {backgroundImages.map((image, index) => {
               return (
                 <option value={image.url} key={`image-${index}`}>
                   {image.title}

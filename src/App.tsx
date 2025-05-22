@@ -9,7 +9,7 @@ import { CodeViewer } from "@components/CodeViewer";
 import { ClickAreaRectangle } from "@components/ClickAreaRectangle";
 import { ClickAreaCircle } from "@components/ClickAreaCircle";
 
-import { possibleImages } from "@components/sharedImages";
+import { backgroundImages } from "@components/sharedImages";
 
 import "./App.css";
 
@@ -19,7 +19,9 @@ function App() {
   const countRef = useRef(0);
   const [stack, setStack] = useState<Coords[]>([]);
   const [toolbarOpen, setToolbarOpen] = useState(false);
-  const [selectedImage, setSelectedImage] = useState(possibleImages[0].url);
+  const [backgroundImage, setBackgroundImage] = useState(
+    backgroundImages[0].url
+  );
   const [savedStack, setSavedStack] = useState<Shape[]>([]);
   const [useAllShapes, setUseAllShapes] = useState(true);
   const [drawingMode, setDrawingMode] = useState<DrawingMode>("circle");
@@ -49,7 +51,7 @@ function App() {
   const handleCloseSidebar = () => setEditbarOpen(false);
 
   const handleImageChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    setSelectedImage(e.target.value);
+    setBackgroundImage(e.target.value);
   };
 
   const handleUseAllShapesToggle = () => setUseAllShapes((useAll) => !useAll);
@@ -124,16 +126,16 @@ function App() {
         <OutputBoxAllShapes
           savedStack={savedStack}
           currentStack={stack}
-          selectedImage={selectedImage}
+          backgroundImage={backgroundImage}
         />
       ) : (
-        <OutputBox stack={stack} selectedImage={selectedImage} />
+        <OutputBox stack={stack} backgroundImage={backgroundImage} />
       )}
 
       <Toolbar
         stackActive={stack.length !== 0}
         open={toolbarOpen}
-        selectedImage={selectedImage}
+        selectedImage={backgroundImage}
         useAllShapes={useAllShapes}
         drawingMode={drawingMode}
         showCode={showCode}

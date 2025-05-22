@@ -16,3 +16,6 @@
 - [ ] Extract the clipPathStyle into a re-usable hook
 - [x] Move components into src/components directory
 - [ ] Think about styles
+## Images
+
+- [x] Store the images locally so there's a quicker loading time

@@ -4,13 +4,13 @@ import type { Shape, Coords } from "@/Types";
 type Props = {
   savedStack: Shape[];
   currentStack: Coords[];
-  selectedImage?: string;
+  backgroundImage?: string;
 };
 
 export const OutputBoxAllShapes = ({
   savedStack,
   currentStack,
-  selectedImage,
+  backgroundImage,
 }: Props) => {
   const clipPathStyle = useMemo(() => {
     if (savedStack.length === 0 && currentStack.length === 0) {
@@ -69,7 +69,8 @@ export const OutputBoxAllShapes = ({
       className="output"
       style={{
         backgroundColor: "green",
-        backgroundImage: selectedImage !== "" ? `url(${selectedImage})` : "",
+        backgroundImage:
+          backgroundImage !== "" ? `url(${backgroundImage})` : "",
         clipPath: clipPathStyle,
       }}
     ></div>
