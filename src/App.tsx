@@ -1,7 +1,6 @@
-import { Fragment, useState, type ChangeEvent, useRef } from "react";
+import { Fragment, useState, useRef, type ChangeEvent } from "react";
 
 import { OutputBox } from "@components/OutputBox";
-import { OutputBoxAllShapes } from "@components/OutputBoxAllShapes";
 import { ClickAreaLine } from "@components/ClickAreaLine";
 import { Toolbar } from "@components/Toolbar";
 import { Sidebar } from "@components/Sidebar";
@@ -9,7 +8,7 @@ import { CodeViewer } from "@components/CodeViewer";
 import { ClickAreaRectangle } from "@components/ClickAreaRectangle";
 import { ClickAreaCircle } from "@components/ClickAreaCircle";
 
-import { backgroundImages } from "@components/sharedImages";
+import { backgroundImages } from "@/sharedImages";
 
 import "./App.css";
 
@@ -94,10 +93,8 @@ function App() {
     );
   };
 
-  const handleSetPrecision = (e) => {
-    console.log(e.target.value);
-
-    setPrecision(e.target.value);
+  const handleSetPrecision = (e: ChangeEvent<HTMLInputElement>) => {
+    setPrecision(Number(e.target.value));
   };
 
   return (
@@ -119,7 +116,6 @@ function App() {
           key={countRef.current}
         />
       )}
-
       {drawingMode === "circle" && (
         <ClickAreaCircle
           stack={stack}
@@ -129,20 +125,12 @@ function App() {
         />
       )}
 
-      {useAllShapes || drawingMode !== "line" ? (
-        <OutputBoxAllShapes
-          savedStack={savedStack}
-          currentStack={stack}
-          backgroundImage={backgroundImage}
-          precision={precision}
-        />
-      ) : (
-        <OutputBox
-          stack={stack}
-          backgroundImage={backgroundImage}
-          precision={precision}
-        />
-      )}
+      <OutputBox
+        savedStack={savedStack}
+        currentStack={stack}
+        backgroundImage={backgroundImage}
+        precision={precision}
+      />
 
       <Toolbar
         stackActive={stack.length !== 0}
@@ -150,7 +138,6 @@ function App() {
         selectedImage={backgroundImage}
         useAllShapes={useAllShapes}
         drawingMode={drawingMode}
-        showCode={showCode}
         canRemoveShapes={savedStack.length !== 0}
         precision={precision}
         handleRemoveLastShape={handleRemoveLastShape}
@@ -162,7 +149,6 @@ function App() {
         handleImageChange={handleImageChange}
         handleSaveShape={handleSaveShape}
         handleUseAllShapesToggle={handleUseAllShapesToggle}
-        handleShowCodeToggle={handleShowCodeToggle}
         handleCloseToolbar={handleCloseToolbar}
         handleSetPrecision={handleSetPrecision}
       />
@@ -182,6 +168,9 @@ function App() {
         handleClose={() => setShowCode(false)}
         precision={precision}
       />
+      <button className="toggle-code-button" onClick={handleShowCodeToggle}>
+        {showCode ? "Hide" : "Show"} Code
+      </button>
     </Fragment>
   );
 }

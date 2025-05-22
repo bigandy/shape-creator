@@ -1,9 +1,10 @@
 import {
   Fragment,
   useRef,
+  useState,
   type SetStateAction,
   type Dispatch,
-  useState,
+  type MouseEvent,
 } from "react";
 
 import { DragAndDropPoints } from "@components/DragAndDropPoints";
@@ -32,12 +33,7 @@ export const ClickAreaRectangle = ({
     percentY: 0,
   });
 
-  //   const [mousePointer, setMousePointer] = useState<Coords | null>({
-  //     percentX: 10,
-  //     percentY: 50,
-  //   });
-
-  const getCoords = (event) => {
+  const getCoords = (event: MouseEvent<HTMLDivElement>) => {
     if (!clickAreaRef.current) {
       return;
     }
@@ -85,7 +81,7 @@ export const ClickAreaRectangle = ({
     handleSaveShapeToStack(updatedState, "rectangle");
   };
 
-  const handleMouseDown = (e) => {
+  const handleMouseDown = (e: MouseEvent<HTMLDivElement>) => {
     setFinalPoint(null);
     const coords = getCoords(e)!;
 
@@ -93,7 +89,7 @@ export const ClickAreaRectangle = ({
     setRecording(true);
   };
 
-  const handleMouseUp = (e) => {
+  const handleMouseUp = (e: MouseEvent<HTMLDivElement>) => {
     // AHTODO: How to handle mouseup or out of bounds movement of the mouse?
 
     const upCoords = getCoords(e)!;
@@ -104,7 +100,7 @@ export const ClickAreaRectangle = ({
     drawRectangle();
   };
 
-  const handleMouseOver = (e) => {
+  const handleMouseOver = (e: MouseEvent<HTMLDivElement>) => {
     if (initialPoint === null || recording === false) {
       return;
     }

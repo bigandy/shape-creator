@@ -1,9 +1,10 @@
-import {
+import React, {
   Fragment,
   useRef,
   type SetStateAction,
   type Dispatch,
   useState,
+  type MouseEvent,
   type CSSProperties,
 } from "react";
 
@@ -28,7 +29,7 @@ export const ClickAreaCircle = ({
   const [initialPoint, setInitialPoint] = useState<NumCoords | null>(null);
   const [finalPoint, setFinalPoint] = useState<NumCoords | null>(null);
 
-  const getCoords = (event) => {
+  const getCoords = (event: MouseEvent<HTMLDivElement>) => {
     if (!clickAreaRef.current) {
       return;
     }
@@ -76,7 +77,7 @@ export const ClickAreaCircle = ({
     handleSaveShapeToStack(updatedState, "circle");
   };
 
-  const handleMouseDown = (e) => {
+  const handleMouseDown = (e: MouseEvent<HTMLDivElement>) => {
     setFinalPoint(null);
     const coords = getCoords(e)!;
 
@@ -84,7 +85,7 @@ export const ClickAreaCircle = ({
     setRecording(true);
   };
 
-  const handleMouseUp = (e) => {
+  const handleMouseUp = (e: MouseEvent<HTMLDivElement>) => {
     // AHTODO: How to handle mouseup or out of bounds movement of the mouse?
 
     const upCoords = getCoords(e)!;
@@ -95,7 +96,7 @@ export const ClickAreaCircle = ({
     drawCircle();
   };
 
-  const handleMouseOver = (e) => {
+  const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
     if (initialPoint === null || recording === false) {
       return;
     }
@@ -109,7 +110,7 @@ export const ClickAreaCircle = ({
       className="click-area"
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
-      onMouseMove={handleMouseOver}
+      onMouseMove={handleMouseMove}
       ref={clickAreaRef}
     >
       {initialPoint !== null && (
@@ -154,59 +155,56 @@ export const ClickAreaCircle = ({
   );
 };
 
-const CircleMiddlePoint = ({
-  initialPoint,
-  finalPoint,
-}: {
-  initialPoint: NumCoords;
-  finalPoint: NumCoords;
-}) => {
-  const top = Math.min(initialPoint.y, finalPoint.y);
-  const left = Math.min(initialPoint.x, finalPoint.x);
-  const height =
-    Math.max(initialPoint.y, finalPoint.y) -
-    Math.min(initialPoint.y, finalPoint.y);
-  const width =
-    Math.max(initialPoint.x, finalPoint.x) -
-    Math.min(initialPoint.x, finalPoint.x);
+const CircleMiddlePoint = React.memo(
+  ({
+    initialPoint,
+    finalPoint,
+  }: {
+    initialPoint: NumCoords;
+    finalPoint: NumCoords;
+  }) => {
+    const top = Math.min(initialPoint.y, finalPoint.y);
+    const left = Math.min(initialPoint.x, finalPoint.x);
+    const height =
+      Math.max(initialPoint.y, finalPoint.y) -
+      Math.min(initialPoint.y, finalPoint.y);
+    const width =
+      Math.max(initialPoint.x, finalPoint.x) -
+      Math.min(initialPoint.x, finalPoint.x);
 
-  const midPoint = {
-    x: (initialPoint.x + finalPoint.x) / 2,
-    y: (initialPoint.y + finalPoint.y) / 2,
-  };
+    const midPoint = {
+      x: (initialPoint.x + finalPoint.x) / 2,
+      y: (initialPoint.y + finalPoint.y) / 2,
+    };
 
-  const d =
-    Math.pow(midPoint.x - initialPoint.x, 2) +
-    Math.pow(midPoint.y - initialPoint.y, 2);
+    const diameter =
+      Math.pow(midPoint.x - initialPoint.x, 2) +
+      Math.pow(midPoint.y - initialPoint.y, 2);
 
-  return (
-    <Fragment>
-      {/* The rectangle that goes from the points */}
-      <div
-        className="circle-middle-point"
-        style={
-          {
-            top: top + "px",
-            left: left + "px",
-            height: height + "px",
-            width: width + "px",
-            transformOrigin: "0 0",
-          } as CSSProperties
-        }
-      ></div>
-      <div
-        className="mid-point"
-        style={{
-          top: midPoint.y + "px",
-          left: midPoint.x + "px",
-          height: Math.sqrt(d) * 2 + "px",
-          borderRadius: "50%",
-          aspectRatio: 1,
-          background: "orange",
-          opacity: 0.5,
-          translate: "-50% -50%",
-        }}
-      ></div>
-    </Fragment>
-  );
-};
+    return (
+      <Fragment>
+        {/* The rectangle that goes from the points */}
+        <div
+          className="circle-middle-point"
+          style={
+            {
+              top: top + "px",
+              left: left + "px",
+              height: height + "px",
+              width: width + "px",
+            } as CSSProperties
+          }
+        ></div>
+        {/* The circle that goes between the two points and over the two points */}
+        <div
+          className="circle-circle"
+          style={{
+            top: midPoint.y + "px",
+            left: midPoint.x + "px",
+            height: Math.sqrt(diameter) * 2 + "px",
+          }}
+        ></div>
+      </Fragment>
+    );
+  }
+);

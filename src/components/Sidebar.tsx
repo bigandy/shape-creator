@@ -15,10 +15,10 @@ type SidebarProps = {
 export const Sidebar = ({
   open,
   handleClose,
-  setStack,
-  stack,
-  savedStack,
-}: SidebarProps) => {
+}: // setStack,
+// stack,
+// savedStack,
+SidebarProps) => {
   // Insert a new point in between existing points. Put the new point half-way between the two existing points.
 
   return (

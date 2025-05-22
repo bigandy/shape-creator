@@ -1,22 +1,32 @@
-import { useClipPathStyle } from "@/hooks/useClipPathStyle";
-import type { Coords } from "@/Types";
+import type { Shape, Coords } from "@/Types";
+import { useClipPathStyle } from "@hooks/useClipPathStyle";
 
 type Props = {
-  stack: Coords[];
+  savedStack: Shape[];
+  currentStack: Coords[];
   backgroundImage?: string;
+  precision: number;
 };
 
-export const OutputBox = ({ stack, backgroundImage }: Props) => {
-  const clipPathStyle = useClipPathStyle({ currentStack: stack });
+export const OutputBox = ({
+  savedStack,
+  currentStack,
+  backgroundImage,
+  precision,
+}: Props) => {
+  const clipPath = useClipPathStyle({
+    currentStack,
+    savedStack,
+    precision,
+  });
 
   return (
     <div
       className="output"
       style={{
-        backgroundColor: "red",
         backgroundImage:
           backgroundImage !== "" ? `url(${backgroundImage})` : "",
-        clipPath: stack.length >= 3 ? clipPathStyle : "",
+        clipPath,
       }}
     ></div>
   );

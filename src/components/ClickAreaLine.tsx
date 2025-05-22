@@ -1,4 +1,10 @@
-import { useRef, useState, type SetStateAction, type Dispatch } from "react";
+import {
+  useRef,
+  useState,
+  type SetStateAction,
+  type Dispatch,
+  type MouseEvent,
+} from "react";
 
 import { DragAndDropPoints } from "@components/DragAndDropPoints";
 
@@ -18,7 +24,7 @@ export const ClickAreaLine = ({ setStack, stack }: Props) => {
    * Handles clicks on the Click area. Used for recording new points
    * and is used for the clip-path: shape() generation
    */
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+  const handleClick = (event: MouseEvent<HTMLElement>) => {
     if (!clickAreaRef.current) {
       return;
     }
@@ -35,7 +41,7 @@ export const ClickAreaLine = ({ setStack, stack }: Props) => {
   /**
    * This handles when the mouse cursor moves inside the click-area. It shows the position of the mouse with a div in the same style as the points on the DragAndDropPoints dots.
    */
-  const handleMouseMove = (event) => {
+  const handleMouseMove = (event: MouseEvent<HTMLElement>) => {
     if (!clickAreaRef.current) {
       return;
     }

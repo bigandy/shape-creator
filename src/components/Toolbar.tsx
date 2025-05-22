@@ -1,5 +1,5 @@
 import { Fragment, type ChangeEvent, type ChangeEventHandler } from "react";
-import { backgroundImages } from "./sharedImages";
+import { backgroundImages } from "@/sharedImages";
 import type { DrawingMode } from "@/Types";
 
 type ShapeOption = { label: string; id: DrawingMode };
@@ -25,7 +25,6 @@ type Props = {
   drawingMode: DrawingMode;
   useAllShapes: boolean;
   stackActive: boolean;
-  showCode: boolean;
   canRemoveShapes: boolean;
   precision: number;
   handleRemoveLastShape: () => void;
@@ -37,7 +36,6 @@ type Props = {
   handleImageChange: (e: ChangeEvent<HTMLSelectElement>) => void;
   handleSaveShape: () => void;
   handleUseAllShapesToggle: () => void;
-  handleShowCodeToggle: () => void;
   handleCloseToolbar: () => void;
   handleSetPrecision: ChangeEventHandler<HTMLInputElement>;
 };
@@ -49,18 +47,15 @@ export const Toolbar = ({
   drawingMode,
   stackActive,
   canRemoveShapes,
-  showCode,
   precision,
   handleRemoveLastShape,
   handleChangeDrawingMode,
   handleRemoveLastPoint,
-  handleEditToggle,
   handleResetCurrentStack,
   handleResetAllStacks,
   handleImageChange,
   handleSaveShape,
   handleUseAllShapesToggle,
-  handleShowCodeToggle,
   handleCloseToolbar,
   handleSetPrecision,
 }: Props) => {
@@ -140,13 +135,6 @@ export const Toolbar = ({
           )}
 
           {/* <button onClick={handleEditToggle}>Open Sidebar - Edit Points</button> */}
-        </div>
-        <div></div>
-
-        <div>
-          <button onClick={handleShowCodeToggle}>
-            {showCode ? "Hide" : "Show"} Code
-          </button>
         </div>
       </div>
     </div>

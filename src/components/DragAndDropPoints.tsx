@@ -16,10 +16,12 @@ export const DragAndDropPoints = ({ stack, setStack, clickAreaRef }: Props) => {
     if (!clickAreaRef.current) {
       return;
     }
-
+    //@ts-expect-error AHTODO: Fix this
     const indexToUpdate = event.activatorEvent.target.textContent - 1;
 
+    //@ts-expect-error AHTODO: Fix this
     const initialX = event.activatorEvent.clientX;
+    //@ts-expect-error AHTODO: Fix this
     const initialY = event.activatorEvent.clientY;
 
     const newX = initialX + event.delta.x;
