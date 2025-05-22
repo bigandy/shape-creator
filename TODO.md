@@ -1,5 +1,9 @@
 # Todo List
 
+## Code Viewer
+
+- [x] Button in CodeViewer that creates a codepen with the code
+
 ## Images
 
 - [x] Store the images locally so there's a quicker loading time
@@ -18,10 +22,6 @@
 
 - [ ] Center the click area in the viewport
 - [ ] Handle the centered viewport in the setting of the points
-
-## Code Viewer
-
-- [ ] Button in CodeViewer that creates a codepen with the code
 
 ## Sidebar
 

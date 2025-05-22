@@ -1,5 +1,7 @@
 import { useCopyToClipboard } from "usehooks-ts";
 
+import { CodepenCreatorButton } from "@components/CodepenCreatorButton";
+
 import type { Shape, Coords } from "@/Types";
 import { useClipPathStyle } from "@hooks/useClipPathStyle";
 
@@ -26,6 +28,8 @@ export const CodeViewer = ({
     precision,
   });
 
+  const buttonsDisabled = clipPathStyle === "";
+
   const handleCopyText = () => {
     copy("clip-path:" + clipPathStyle + ";")
       .then(() => {
@@ -48,9 +52,14 @@ export const CodeViewer = ({
           Close
         </button>
 
-        <button disabled={clipPathStyle === ""} onClick={handleCopyText}>
+        <button disabled={buttonsDisabled} onClick={handleCopyText}>
           Copy Text
         </button>
+
+        <CodepenCreatorButton
+          clipPathStyle={clipPathStyle}
+          disabled={buttonsDisabled}
+        />
       </div>
     </div>
   );

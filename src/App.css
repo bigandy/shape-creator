@@ -159,9 +159,6 @@ body {
   .close-button {
     top: 0;
     right: 0;
-  }
-
-  button {
     position: absolute;
   }
 

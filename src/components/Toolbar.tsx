@@ -90,7 +90,7 @@ export const Toolbar = ({
           <label>
             Select a background Image:{" "}
             <select onChange={handleImageChange} value={selectedImage}>
-              <option value=""></option>
+              <option value="">-- No Image --</option>
               {backgroundImages.map((image, index) => {
                 return (
                   <option value={image.url} key={`image-${index}`}>

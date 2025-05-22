@@ -5,7 +5,6 @@ import type { Coords, Shape } from "@/Types";
 type Args = {
   currentStack: Coords[];
   savedStack?: Shape[];
-  // AHTODO: change precision as probably should use less.
   precision?: number;
 };
 
