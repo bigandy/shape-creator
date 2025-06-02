@@ -23,7 +23,7 @@ function App() {
   );
   const [savedStack, setSavedStack] = useState<Shape[]>([]);
   const [useAllShapes, setUseAllShapes] = useState(true);
-  const [drawingMode, setDrawingMode] = useState<DrawingMode>("circle");
+  const [drawingMode, setDrawingMode] = useState<DrawingMode>("rectangle");
   const [showCode, setShowCode] = useState(false);
   const [editbarOpen, setEditbarOpen] = useState(false);
   const [precision, setPrecision] = useState(2);

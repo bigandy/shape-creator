@@ -1,5 +1,10 @@
 # Todo List
 
+## ClickArea
+
+- [x] Center the click area in the viewport
+- [x] Handle the centered viewport in the setting of the points
+
 ## Code Viewer
 
 - [x] Button in CodeViewer that creates a codepen with the code
@@ -17,11 +22,6 @@
 - [ ] Custom Image
 - [ ] Move all points i.e. drag a selector and move all the points in the selected area by the amount that the selected area moves by.
 - [ ] Toast messages for e.g. when copied text to clipboard / error messages etc
-
-## ClickArea
-
-- [ ] Center the click area in the viewport
-- [ ] Handle the centered viewport in the setting of the points
 
 ## Sidebar
 

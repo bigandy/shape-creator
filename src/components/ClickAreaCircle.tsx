@@ -10,6 +10,9 @@ import React, {
 import { DragAndDropPoints } from "@components/DragAndDropPoints";
 
 import type { Coords, DrawingMode } from "@/Types";
+
+import { getCoordsAsNumber } from "@/utils/coordinates";
+
 type NumCoords = { x: number; y: number };
 
 type Props = {
@@ -27,18 +30,6 @@ export const ClickAreaCircle = ({
   const clickAreaRef = useRef<HTMLInputElement>(null);
   const [initialPoint, setInitialPoint] = useState<NumCoords | null>(null);
   const [finalPoint, setFinalPoint] = useState<NumCoords | null>(null);
-
-  const getCoords = (event: MouseEvent<HTMLDivElement>) => {
-    if (!clickAreaRef.current) {
-      return;
-    }
-
-    const { clientX, clientY } = event;
-
-    const coords = { x: clientX, y: clientY };
-
-    return coords;
-  };
 
   const drawCircle = () => {
     if (initialPoint === null || finalPoint === null) {
@@ -65,7 +56,6 @@ export const ClickAreaCircle = ({
       { percentX: finalPercentX, percentY: finalPercentY },
     ];
     const updatedState = [...stack, ...points];
-    // setStack(updatedState);
 
     setInitialPoint(null);
     setFinalPoint(null);
@@ -78,7 +68,7 @@ export const ClickAreaCircle = ({
 
   const handleMouseDown = (e: MouseEvent<HTMLDivElement>) => {
     setFinalPoint(null);
-    const coords = getCoords(e)!;
+    const coords = getCoordsAsNumber(e, clickAreaRef)!;
 
     setInitialPoint(coords);
     setRecording(true);
@@ -87,7 +77,7 @@ export const ClickAreaCircle = ({
   const handleMouseUp = (e: MouseEvent<HTMLDivElement>) => {
     // AHTODO: How to handle mouseup or out of bounds movement of the mouse?
 
-    const upCoords = getCoords(e)!;
+    const upCoords = getCoordsAsNumber(e, clickAreaRef)!;
 
     setFinalPoint(upCoords);
 
@@ -99,7 +89,7 @@ export const ClickAreaCircle = ({
     if (initialPoint === null || recording === false) {
       return;
     }
-    const coords = getCoords(e)!;
+    const coords = getCoordsAsNumber(e, clickAreaRef)!;
 
     setFinalPoint(coords);
   };

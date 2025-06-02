@@ -11,6 +11,8 @@ import { DragAndDropPoints } from "@components/DragAndDropPoints";
 
 import type { Coords, DrawingMode } from "@/Types";
 
+import { getCoords } from "@/utils/coordinates";
+
 type Props = {
   setStack: Dispatch<SetStateAction<Coords[]>>;
   stack: Coords[];
@@ -32,21 +34,6 @@ export const ClickAreaRectangle = ({
     percentX: 0,
     percentY: 0,
   });
-
-  const getCoords = (event: MouseEvent<HTMLDivElement>) => {
-    if (!clickAreaRef.current) {
-      return;
-    }
-
-    const { clientX, clientY } = event;
-    const { width, height } = clickAreaRef.current.getBoundingClientRect();
-
-    const percentX = (clientX / width) * 100;
-    const percentY = (clientY / height) * 100;
-    const coords = { percentX, percentY };
-
-    return coords;
-  };
 
   const drawRectangle = () => {
     if (initialPoint === null || finalPoint === null) {
@@ -83,7 +70,7 @@ export const ClickAreaRectangle = ({
 
   const handleMouseDown = (e: MouseEvent<HTMLDivElement>) => {
     setFinalPoint(null);
-    const coords = getCoords(e)!;
+    const coords = getCoords(e, clickAreaRef)!;
 
     setInitialPoint(coords);
     setRecording(true);
@@ -92,7 +79,7 @@ export const ClickAreaRectangle = ({
   const handleMouseUp = (e: MouseEvent<HTMLDivElement>) => {
     // AHTODO: How to handle mouseup or out of bounds movement of the mouse?
 
-    const upCoords = getCoords(e)!;
+    const upCoords = getCoords(e, clickAreaRef)!;
 
     setFinalPoint(upCoords);
 
@@ -104,7 +91,7 @@ export const ClickAreaRectangle = ({
     if (initialPoint === null || recording === false) {
       return;
     }
-    const coords = getCoords(e)!;
+    const coords = getCoords(e, clickAreaRef)!;
 
     setFinalPoint(coords);
   };

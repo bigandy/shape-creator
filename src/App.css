@@ -20,6 +20,7 @@ body {
   background: black;
   overflow: hidden;
   aspect-ratio: 1;
+  margin-inline: auto;
 }
 
 .output {
@@ -153,6 +154,14 @@ body {
   width: 100%;
   z-index: 1;
   background: white;
+
+  form {
+    display: inline-block;
+  }
+
+  button {
+    margin-inline-end: 1rem;
+  }
 
   .inner {
     padding: 1rem;
