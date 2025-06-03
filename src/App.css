@@ -91,24 +91,6 @@ body {
   height: 100%;
 }
 
-/* .start-point,
-.end-point {
-  aspect-ratio: 1;
-  height: 10px;
-  border-radius: 50%;
-  translate: -50% -50%;
-  z-index: 1;
-  position: absolute;
-}
-
-.start-point {
-  background: green;
-}
-
-.end-point {
-  background: red;
-} */
-
 [class$="-point"] {
   z-index: 1;
   position: absolute;

@@ -9,7 +9,7 @@ import {
 import { DragAndDropPoints } from "@components/DragAndDropPoints";
 
 import type { Coords } from "@/Types";
-import { getCoords } from "@/utils/coordinates";
+import { getCoords } from "@utils/coordinates";
 
 type Props = {
   setStack: Dispatch<SetStateAction<Coords[]>>;

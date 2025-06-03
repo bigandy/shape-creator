@@ -8,11 +8,9 @@ import React, {
 
 import { DragAndDropPoints } from "@components/DragAndDropPoints";
 
-import type { Coords, DrawingMode } from "@/Types";
+import type { Coords, DrawingMode, NumCoords } from "@/Types";
 
-import { getCoordsAsNumber } from "@/utils/coordinates";
-
-import type { NumCoords } from "@/Types";
+import { getCoordsAsNumber } from "@utils/coordinates";
 
 type Props = {
   setStack: Dispatch<SetStateAction<Coords[]>>;

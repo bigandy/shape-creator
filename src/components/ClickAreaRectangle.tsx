@@ -1,4 +1,5 @@
 import React, {
+  Fragment,
   useRef,
   useState,
   type SetStateAction,
@@ -10,7 +11,7 @@ import { DragAndDropPoints } from "@components/DragAndDropPoints";
 
 import type { Coords, DrawingMode } from "@/Types";
 
-import { getCoords } from "@/utils/coordinates";
+import { getCoords } from "@utils/coordinates";
 
 type Props = {
   setStack: Dispatch<SetStateAction<Coords[]>>;
@@ -53,6 +54,7 @@ export const ClickAreaRectangle = ({
       },
     ];
     const updatedState = [...stack, ...points];
+    // setStack(updatedState);
 
     setInitialPoint(null);
     setFinalPoint(null);
@@ -119,7 +121,7 @@ const MiddlePoint = React.memo(
   }) => {
     return (
       <div
-        className="rectangle-middle-point dot-bg"
+        className="dot-bg rectangle-middle-point"
         style={{
           top: Math.min(initialPoint.percentY, finalPoint.percentY) + "%",
           left: Math.min(initialPoint.percentX, finalPoint.percentX) + "%",
