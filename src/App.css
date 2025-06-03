@@ -91,33 +91,26 @@ body {
   height: 100%;
 }
 
-.start-point,
+/* .start-point,
 .end-point {
   aspect-ratio: 1;
   height: 10px;
   border-radius: 50%;
   translate: -50% -50%;
   z-index: 1;
-}
-
-.start-point {
-  anchor-name: --start-point;
-}
-
-.end-point {
-  anchor-name: --end-point;
-}
-
-[class$="-point"] {
-  z-index: 1;
   position: absolute;
 }
 
-.rectangle-middle-point {
-  top: min(anchor(--start-point center), anchor(--end-point center));
-  left: min(anchor(--start-point center), anchor(--end-point center));
-  right: min(anchor(--start-point center), anchor(--end-point center));
-  bottom: min(anchor(--start-point center), anchor(--end-point center));
+.start-point {
+  background: green;
+}
+
+.end-point {
+  background: red;
+} */
+
+[class$="-point"] {
+  z-index: 1;
   position: absolute;
 }
 

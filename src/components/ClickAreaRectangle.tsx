@@ -1,5 +1,4 @@
-import {
-  Fragment,
+import React, {
   useRef,
   useState,
   type SetStateAction,
@@ -26,14 +25,8 @@ export const ClickAreaRectangle = ({
 }: Props) => {
   const [recording, setRecording] = useState(false);
   const clickAreaRef = useRef<HTMLInputElement>(null);
-  const [initialPoint, setInitialPoint] = useState<Coords | null>({
-    percentX: 0,
-    percentY: 0,
-  });
-  const [finalPoint, setFinalPoint] = useState<Coords | null>({
-    percentX: 0,
-    percentY: 0,
-  });
+  const [initialPoint, setInitialPoint] = useState<Coords | null>(null);
+  const [finalPoint, setFinalPoint] = useState<Coords | null>(null);
 
   const drawRectangle = () => {
     if (initialPoint === null || finalPoint === null) {
@@ -60,7 +53,6 @@ export const ClickAreaRectangle = ({
       },
     ];
     const updatedState = [...stack, ...points];
-    // setStack(updatedState);
 
     setInitialPoint(null);
     setFinalPoint(null);
@@ -104,34 +96,8 @@ export const ClickAreaRectangle = ({
       onMouseMove={handleMouseOver}
       ref={clickAreaRef}
     >
-      {initialPoint !== null && (
-        <div
-          className="start-point"
-          style={{
-            top: initialPoint.percentY + "%",
-            left: initialPoint.percentX + "%",
-            background: "green",
-          }}
-        ></div>
-      )}
-
-      {finalPoint !== null && (
-        <Fragment>
-          <div
-            className="end-point"
-            style={{
-              top: finalPoint.percentY + "%",
-              left: finalPoint.percentX + "%",
-              background: "red",
-              position: "absolute",
-              aspectRatio: 1,
-              height: 10,
-              zIndex: 1,
-              borderRadius: "50%",
-            }}
-          ></div>
-          <div className="rectangle-middle-point dot-bg"></div>
-        </Fragment>
+      {finalPoint !== null && initialPoint !== null && (
+        <MiddlePoint initialPoint={initialPoint} finalPoint={finalPoint} />
       )}
 
       <DragAndDropPoints
@@ -142,3 +108,25 @@ export const ClickAreaRectangle = ({
     </div>
   );
 };
+
+const MiddlePoint = React.memo(
+  ({
+    initialPoint,
+    finalPoint,
+  }: {
+    initialPoint: Coords;
+    finalPoint: Coords;
+  }) => {
+    return (
+      <div
+        className="rectangle-middle-point dot-bg"
+        style={{
+          top: Math.min(initialPoint.percentY, finalPoint.percentY) + "%",
+          left: Math.min(initialPoint.percentX, finalPoint.percentX) + "%",
+          height: Math.abs(initialPoint.percentY - finalPoint.percentY) + "%",
+          width: Math.abs(initialPoint.percentX - finalPoint.percentX) + "%",
+        }}
+      />
+    );
+  }
+);

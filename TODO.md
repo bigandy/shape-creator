@@ -1,9 +1,14 @@
 # Todo List
 
+## Rectangle
+
+- [x] Fix position of dots/rectangle during creation.
+
 ## ClickArea
 
 - [x] Center the click area in the viewport
 - [x] Handle the centered viewport in the setting of the points
+- [x] Remove dots for Rectangle and Circle as not adding value
 
 ## Code Viewer
 

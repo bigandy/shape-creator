@@ -1,5 +1,4 @@
 import React, {
-  Fragment,
   useRef,
   type SetStateAction,
   type Dispatch,
@@ -13,7 +12,7 @@ import type { Coords, DrawingMode } from "@/Types";
 
 import { getCoordsAsNumber } from "@/utils/coordinates";
 
-type NumCoords = { x: number; y: number };
+import type { NumCoords } from "@/Types";
 
 type Props = {
   setStack: Dispatch<SetStateAction<Coords[]>>;
@@ -102,37 +101,11 @@ export const ClickAreaCircle = ({
       onMouseMove={handleMouseMove}
       ref={clickAreaRef}
     >
-      {initialPoint !== null && (
-        <div
-          className="start-point"
-          style={{
-            top: initialPoint.y,
-            left: initialPoint.x,
-            background: "green",
-          }}
-        ></div>
-      )}
-
       {finalPoint !== null && initialPoint !== null && (
-        <Fragment>
-          <CircleMiddlePoint
-            initialPoint={initialPoint}
-            finalPoint={finalPoint}
-          />
-          <div
-            className="end-point"
-            style={{
-              top: finalPoint.y,
-              left: finalPoint.x,
-              background: "red",
-              position: "absolute",
-              aspectRatio: 1,
-              height: 10,
-              zIndex: 1,
-              borderRadius: "50%",
-            }}
-          ></div>
-        </Fragment>
+        <CircleMiddlePoint
+          initialPoint={initialPoint}
+          finalPoint={finalPoint}
+        />
       )}
 
       <DragAndDropPoints
@@ -152,15 +125,6 @@ const CircleMiddlePoint = React.memo(
     initialPoint: NumCoords;
     finalPoint: NumCoords;
   }) => {
-    // const top = Math.min(initialPoint.y, finalPoint.y);
-    // const left = Math.min(initialPoint.x, finalPoint.x);
-    // const height =
-    //   Math.max(initialPoint.y, finalPoint.y) -
-    //   Math.min(initialPoint.y, finalPoint.y);
-    // const width =
-    //   Math.max(initialPoint.x, finalPoint.x) -
-    //   Math.min(initialPoint.x, finalPoint.x);
-
     const midPoint = {
       x: (initialPoint.x + finalPoint.x) / 2,
       y: (initialPoint.y + finalPoint.y) / 2,
@@ -171,29 +135,14 @@ const CircleMiddlePoint = React.memo(
       Math.pow(midPoint.y - initialPoint.y, 2);
 
     return (
-      <Fragment>
-        {/* The rectangle that goes from the points */}
-        {/* <div
-          className="circle-middle-point"
-          style={
-            {
-              top: top + "px",
-              left: left + "px",
-              height: height + "px",
-              width: width + "px",
-            }
-          }
-        ></div> */}
-        {/* The circle that goes between the two points and over the two points */}
-        <div
-          className="dot-bg circle-circle"
-          style={{
-            top: midPoint.y + "px",
-            left: midPoint.x + "px",
-            height: Math.sqrt(diameter) * 2 + "px",
-          }}
-        ></div>
-      </Fragment>
+      <div
+        className="dot-bg circle-circle"
+        style={{
+          top: midPoint.y + "px",
+          left: midPoint.x + "px",
+          height: Math.sqrt(diameter) * 2 + "px",
+        }}
+      />
     );
   }
 );
