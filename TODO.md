@@ -1,8 +1,19 @@
 # Todo List
 
+## General
+
+- [ ] Toast messages for e.g. when copied text to clipboard / error messages etc
+- [ ] Think about styles
+- [ ] Save to localStorage a set of shape(s)
+- [ ] Custom Image(s)
+- [ ] Move all points i.e. drag a selector and move all the points in the selected area by the amount that the selected area moves by.
+
+- [x] Extract the clipPathStyle into a re-usable hook useClipPathStyle
+- [x] Move components into src/components directory
+
 ## DragAndDropPoints
 
-- [ ] Fix bug in moving positions of points (following the change to a centered click area.)
+- [x] Fix bug in moving positions of points (following the change to a centered click area.)
 
 ## ClickArea
 
@@ -22,16 +33,6 @@
 ## Images
 
 - [x] Store the images locally so there's a quicker loading time
-
-## General
-
-- [x] Extract the clipPathStyle into a re-usable hook useClipPathStyle
-- [x] Move components into src/components directory
-- [ ] Think about styles
-- [ ] Save to localStorage a set of shape(s)
-- [ ] Custom Image(s)
-- [ ] Move all points i.e. drag a selector and move all the points in the selected area by the amount that the selected area moves by.
-- [ ] Toast messages for e.g. when copied text to clipboard / error messages etc
 
 ## Sidebar
 
