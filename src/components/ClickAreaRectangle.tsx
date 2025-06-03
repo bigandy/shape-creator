@@ -1,5 +1,4 @@
 import React, {
-  Fragment,
   useRef,
   useState,
   type SetStateAction,
@@ -130,5 +129,5 @@ const MiddlePoint = React.memo(
         }}
       />
     );
-  }
+  },
 );

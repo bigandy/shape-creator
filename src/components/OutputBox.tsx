@@ -15,6 +15,7 @@ export const OutputBox = ({
   backgroundImage,
   precision,
 }: Props) => {
+  // AHTODO: move this up to parent?
   const clipPath = useClipPathStyle({
     currentStack,
     savedStack,

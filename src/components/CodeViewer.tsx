@@ -1,3 +1,4 @@
+import { type ChangeEventHandler } from "react";
 import toast from "react-hot-toast";
 import { useCopyToClipboard } from "usehooks-ts";
 
@@ -12,6 +13,7 @@ type Props = {
   open: boolean;
   handleClose: () => void;
   precision: number;
+  handleSetPrecision: ChangeEventHandler<HTMLInputElement>;
 };
 
 export const CodeViewer = ({
@@ -20,6 +22,7 @@ export const CodeViewer = ({
   open,
   handleClose,
   precision,
+  handleSetPrecision,
 }: Props) => {
   const [_, copy] = useCopyToClipboard(); // eslint-disable-line  @typescript-eslint/no-unused-vars
 
@@ -34,7 +37,6 @@ export const CodeViewer = ({
   const handleCopyText = () => {
     copy("clip-path:" + clipPathStyle + ";")
       .then(() => {
-        // AHTODO: Show a toast or some other visual que that this has been done.
         console.log("Copied!", { clipPathStyle });
         toast.success("Copied Successfully");
       })
@@ -48,6 +50,17 @@ export const CodeViewer = ({
   return (
     <div className={`code-viewer ${open ? "code-viewer--open" : ""}`}>
       <div className="inner">
+        <label>
+          Precision
+          <input
+            type="number"
+            value={precision}
+            onChange={handleSetPrecision}
+            min="0"
+            max="21"
+          />
+        </label>
+
         {clipPathStyle || "there is no code"}
 
         <button onClick={handleClose} className="close-button">

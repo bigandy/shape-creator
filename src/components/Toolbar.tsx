@@ -1,4 +1,4 @@
-import { Fragment, type ChangeEvent, type ChangeEventHandler } from "react";
+import { Fragment, type ChangeEvent } from "react";
 import { backgroundImages } from "@/sharedImages";
 import type { DrawingMode } from "@/Types";
 
@@ -26,7 +26,6 @@ type Props = {
   useAllShapes: boolean;
   stackActive: boolean;
   canRemoveShapes: boolean;
-  precision: number;
   handleRemoveLastShape: () => void;
   handleChangeDrawingMode: (drawingMode: DrawingMode) => void;
   handleRemoveLastPoint: () => void;
@@ -37,7 +36,6 @@ type Props = {
   handleSaveShape: () => void;
   handleUseAllShapesToggle: () => void;
   handleCloseToolbar: () => void;
-  handleSetPrecision: ChangeEventHandler<HTMLInputElement>;
 };
 
 export const Toolbar = ({
@@ -47,7 +45,6 @@ export const Toolbar = ({
   drawingMode,
   stackActive,
   canRemoveShapes,
-  precision,
   handleRemoveLastShape,
   handleChangeDrawingMode,
   handleRemoveLastPoint,
@@ -57,7 +54,6 @@ export const Toolbar = ({
   handleSaveShape,
   handleUseAllShapesToggle,
   handleCloseToolbar,
-  handleSetPrecision,
 }: Props) => {
   return (
     <div className={`toolbar ${open ? "toolbar--open" : ""}`}>
@@ -94,17 +90,6 @@ export const Toolbar = ({
                 );
               })}
             </select>
-          </label>
-
-          <label>
-            Precision
-            <input
-              type="number"
-              value={precision}
-              onChange={handleSetPrecision}
-              min="0"
-              max="21"
-            />
           </label>
         </div>
 
