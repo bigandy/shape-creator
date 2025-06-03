@@ -12,6 +12,7 @@ body {
   margin: unset;
 }
 
+.output-hover,
 .output,
 .click-area {
   position: absolute;
@@ -23,11 +24,21 @@ body {
   margin-inline: auto;
 }
 
-.output {
+.output,
+.output-hover {
   pointer-events: none;
   background-repeat: no-repeat;
   background-size: cover;
   background-position: 0;
+}
+
+.output-hover {
+  opacity: 0;
+  transition: opacity 300ms;
+}
+
+.click-area:hover ~ .output-hover {
+  opacity: 0.75;
 }
 
 .toolbar {
