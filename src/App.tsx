@@ -1,5 +1,7 @@
 import { Fragment, useState, useRef, type ChangeEvent } from "react";
 
+import { Toaster } from "react-hot-toast";
+
 import { OutputBox } from "@components/OutputBox";
 import { ClickAreaLine } from "@components/ClickAreaLine";
 import { Toolbar } from "@components/Toolbar";
@@ -139,7 +141,6 @@ function App() {
         useAllShapes={useAllShapes}
         drawingMode={drawingMode}
         canRemoveShapes={savedStack.length !== 0}
-        precision={precision}
         handleRemoveLastShape={handleRemoveLastShape}
         handleChangeDrawingMode={handleChangeDrawingMode}
         handleEditToggle={handleEditToggle}
@@ -150,7 +151,6 @@ function App() {
         handleSaveShape={handleSaveShape}
         handleUseAllShapesToggle={handleUseAllShapesToggle}
         handleCloseToolbar={handleCloseToolbar}
-        handleSetPrecision={handleSetPrecision}
       />
 
       <Sidebar
@@ -167,10 +167,12 @@ function App() {
         currentStack={stack}
         handleClose={() => setShowCode(false)}
         precision={precision}
+        handleSetPrecision={handleSetPrecision}
       />
       <button className="toggle-code-button" onClick={handleShowCodeToggle}>
         {showCode ? "Hide" : "Show"} Code
       </button>
+      <Toaster position="bottom-center" />
     </Fragment>
   );
 }

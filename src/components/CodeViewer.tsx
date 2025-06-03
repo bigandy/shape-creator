@@ -1,3 +1,4 @@
+import toast from "react-hot-toast";
 import { useCopyToClipboard } from "usehooks-ts";
 
 import { CodepenCreatorButton } from "@components/CodepenCreatorButton";
@@ -35,11 +36,12 @@ export const CodeViewer = ({
       .then(() => {
         // AHTODO: Show a toast or some other visual que that this has been done.
         console.log("Copied!", { clipPathStyle });
+        toast.success("Copied Successfully");
       })
       .catch((error) => {
         console.error("Failed to copy!", error);
 
-        // AHTODO: show an error toast.
+        toast.error("Failed to copy!", error);
       });
   };
 
