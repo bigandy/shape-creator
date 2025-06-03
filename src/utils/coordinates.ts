@@ -1,6 +1,8 @@
 import { type MouseEvent, type RefObject } from "react";
 
-export const getCoords = (
+import { type DragMoveEvent } from "@dnd-kit/core";
+
+export const getCoordsAsPercentages = (
   event: MouseEvent<HTMLElement>,
   ref: RefObject<HTMLElement | null>
 ) => {
@@ -37,4 +39,33 @@ export const getCoordsAsNumber = (
   const coords = { x: deltaX, y: deltaY };
 
   return coords;
+};
+
+export const getDragDropCoords = (
+  event: DragMoveEvent,
+  ref: RefObject<HTMLElement | null>
+) => {
+  if (!ref.current) {
+    return;
+  }
+
+  //@ts-expect-error AHTODO: Fix this
+  const initialX = event.activatorEvent.clientX;
+  //@ts-expect-error AHTODO: Fix this
+  const initialY = event.activatorEvent.clientY;
+
+  const { width, height, left, top } = ref.current.getBoundingClientRect();
+
+  const newX = initialX + event.delta.x - left;
+  const newY = initialY + event.delta.y - top;
+
+  const percentX = (newX / width) * 100;
+  const percentY = (newY / height) * 100;
+
+  const updatedStackValue = {
+    percentX,
+    percentY,
+  };
+
+  return updatedStackValue;
 };

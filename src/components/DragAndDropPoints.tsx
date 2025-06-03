@@ -5,6 +5,8 @@ import type { Coords } from "@/Types";
 
 import { Draggable } from "@components/Draggable";
 
+import { getDragDropCoords } from "@utils/coordinates";
+
 type Props = {
   setStack: Dispatch<SetStateAction<Coords[]>>;
   stack: Coords[];
@@ -13,33 +15,14 @@ type Props = {
 
 export const DragAndDropPoints = ({ stack, setStack, clickAreaRef }: Props) => {
   const handleDragMove = (event: DragMoveEvent) => {
-    if (!clickAreaRef.current) {
-      return;
-    }
+    const coords = getDragDropCoords(event, clickAreaRef)!;
+
     //@ts-expect-error AHTODO: Fix this
     const indexToUpdate = event.activatorEvent.target.textContent - 1;
 
-    //@ts-expect-error AHTODO: Fix this
-    const initialX = event.activatorEvent.clientX;
-    //@ts-expect-error AHTODO: Fix this
-    const initialY = event.activatorEvent.clientY;
-
-    const newX = initialX + event.delta.x;
-    const newY = initialY + event.delta.y;
-
-    const { width, height } = clickAreaRef.current.getBoundingClientRect();
-
-    const percentX = (newX / width) * 100;
-    const percentY = (newY / height) * 100;
-
-    const updatedStackValue = {
-      percentX,
-      percentY,
-    };
-
     const nextStack = stack.map((c, i) => {
       if (i === indexToUpdate) {
-        return updatedStackValue;
+        return coords;
       } else {
         return c;
       }

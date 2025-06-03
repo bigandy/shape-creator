@@ -1,8 +1,8 @@
 # Todo List
 
-## Line Area
+## DragAndDropPoints
 
-- [ ] Fix bug in positioning
+- [ ] Fix bug in moving positions of points (following the change to a centered click area.)
 
 ## ClickArea
 
