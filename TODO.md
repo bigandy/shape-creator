@@ -2,12 +2,10 @@
 
 ## General
 
-- [ ] Toast messages for e.g. when copied text to clipboard / error messages etc
 - [ ] Think about styles
 - [ ] Save to localStorage a set of shape(s)
 - [ ] Custom Image(s)
-- [ ] Move all points i.e. drag a selector and move all the points in the selected area by the amount that the selected area moves by.
-
+- [x] Toast messages for e.g. when copied text to clipboard / error messages etc
 - [x] Extract the clipPathStyle into a re-usable hook useClipPathStyle
 - [x] Move components into src/components directory
 
@@ -34,6 +32,7 @@
 
 - [x] Store the images locally so there's a quicker loading time
 
-## Sidebar
+## Moving / Editing Existing Shapes
 
 - [ ] Edit shape functionality
+- [ ] Move all points i.e. drag a selector and move all the points in the selected area by the amount that the selected area moves by.
