@@ -23,7 +23,9 @@ SidebarProps) => {
 
   return (
     <div className={`sidebar ${open ? "sidebar--open" : ""}`}>
-      <button onClick={handleClose}>Close</button>
+      {/* <button onClick={handleClose} className="close-button">
+        Close
+      </button> */}
       {/* {savedStack.length > 0 ? (
         <ol>
           {savedStack.map((stack) => {

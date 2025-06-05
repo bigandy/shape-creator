@@ -12,16 +12,35 @@ body {
   margin: unset;
 }
 
+#root {
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  aspect-ratio: 1;
+  margin-inline: auto;
+
+  height: 100%;
+  max-width: 100%;
+
+  background: red;
+  position: relative;
+}
+
 .output-hover,
 .output,
 .click-area {
   position: absolute;
   inset: 0;
   height: 100%;
+  width: 100%;
   background: black;
+  /* display: none; */
   overflow: hidden;
-  aspect-ratio: 1;
-  margin-inline: auto;
+
+  /* aspect-ratio: 1; */
+  /*  */
 }
 
 .output,
@@ -43,8 +62,8 @@ body {
 
 .toolbar {
   z-index: 1;
-  position: fixed;
-  top: 0;
+  /* position: fixed; */
+  /* top: 0; */
   width: 100%;
   background: white;
 
@@ -134,12 +153,11 @@ body {
 }
 
 .code-viewer {
-  position: fixed;
-  bottom: 0;
-  left: 0;
+  anchor-name: --code-viewer;
   width: 100%;
   z-index: 1;
   background: white;
+  position: relative;
 
   form {
     display: inline-block;
@@ -165,12 +183,6 @@ body {
   }
 }
 
-.toggle-code-button {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-}
-
 .code-viewer,
 .toolbar {
   transition: height 0.2s ease-in-out;
@@ -188,6 +200,7 @@ body {
   transition-behavior: allow-discrete;
   overflow: clip;
   width: 0;
+  anchor-name: --sidebar;
 
   @starting-style {
     width: 0;
@@ -196,6 +209,8 @@ body {
 
 .toolbar {
   background: rgb(from white r g b / 0.75);
+  anchor-name: --toolbar;
+  position: relative;
 }
 
 .toolbar--open,
@@ -213,14 +228,32 @@ body {
 
 .sidebar--open {
   display: block;
-  width: max-content;
-  width: calc-size(max-content, size);
+  width: 300px;
+  /* width: calc-size(max-content, size); */
   border: 1px solid;
 }
 
-.toolbar-toggle-button {
+.toggle-toolbar-button {
   position: absolute;
-  top: 0;
-  right: 0;
+  position-anchor: --toolbar;
+  position-area: bottom center;
   z-index: 1;
+}
+
+.toggle-code-button {
+  position: absolute;
+  position-anchor: --code-viewer;
+  position-area: top center;
+}
+
+.toggle-sidebar-button {
+  position: absolute;
+  position-anchor: --sidebar;
+  position-area: left;
+}
+
+.close-button {
+  position: absolute;
+  top: 1rlh;
+  right: 1rlh;
 }

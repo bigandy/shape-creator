@@ -63,10 +63,6 @@ export const CodeViewer = ({
 
         {clipPathStyle || "there is no code"}
 
-        <button onClick={handleClose} className="close-button">
-          Close
-        </button>
-
         <button disabled={buttonsDisabled} onClick={handleCopyText}>
           Copy Text
         </button>
@@ -75,6 +71,10 @@ export const CodeViewer = ({
           clipPathStyle={clipPathStyle}
           disabled={buttonsDisabled}
         />
+
+        <button onClick={handleClose} className="close-button">
+          Close
+        </button>
       </div>
     </div>
   );

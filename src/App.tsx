@@ -20,14 +20,15 @@ function App() {
   const countRef = useRef(0);
   const [stack, setStack] = useState<Coords[]>([]);
   const [toolbarOpen, setToolbarOpen] = useState(false);
+  const [codeViewerOpen, setCodeViewerOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [backgroundImage, setBackgroundImage] = useState(
     backgroundImages[0].url
   );
   const [savedStack, setSavedStack] = useState<Shape[]>([]);
   const [useAllShapes, setUseAllShapes] = useState(true);
   const [drawingMode, setDrawingMode] = useState<DrawingMode>("rectangle");
-  const [showCode, setShowCode] = useState(false);
-  const [editbarOpen, setEditbarOpen] = useState(false);
+
   const [precision, setPrecision] = useState(2);
 
   const handleRemoveLastPoint = () => {
@@ -37,7 +38,7 @@ function App() {
   };
 
   const handleEditToggle = () => {
-    setEditbarOpen((open) => !open);
+    setSidebarOpen((open) => !open);
   };
 
   const handleResetCurrentStack = () => {
@@ -50,7 +51,7 @@ function App() {
     countRef.current = countRef.current + 1;
   };
 
-  const handleCloseSidebar = () => setEditbarOpen(false);
+  const handleCloseSidebar = () => setSidebarOpen(false);
 
   const handleImageChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setBackgroundImage(e.target.value);
@@ -83,9 +84,10 @@ function App() {
     setDrawingMode(drawingMode);
   };
 
-  const handleShowCodeToggle = () => setShowCode((o) => !o);
+  const handleShowCodeToggle = () => setCodeViewerOpen((o) => !o);
   const handleToolbarToggle = () => setToolbarOpen((o) => !o);
   const handleCloseToolbar = () => setToolbarOpen(false);
+  const handleSidebarToggle = () => setSidebarOpen((o) => !o);
 
   const handleRemoveLastShape = () => {
     setSavedStack((savedStack) =>
@@ -101,39 +103,6 @@ function App() {
 
   return (
     <Fragment>
-      <button className="toolbar-toggle-button" onClick={handleToolbarToggle}>
-        Toolbar Toggle
-      </button>
-      {drawingMode === "rectangle" && (
-        <ClickAreaRectangle
-          stack={stack}
-          setStack={setStack}
-          handleSaveShapeToStack={handleSaveShapeToStack}
-        />
-      )}
-      {drawingMode === "line" && (
-        <ClickAreaLine
-          stack={stack}
-          setStack={setStack}
-          key={countRef.current}
-        />
-      )}
-      {drawingMode === "circle" && (
-        <ClickAreaCircle
-          stack={stack}
-          setStack={setStack}
-          key={countRef.current}
-          handleSaveShapeToStack={handleSaveShapeToStack}
-        />
-      )}
-
-      <OutputBox
-        savedStack={savedStack}
-        currentStack={stack}
-        backgroundImage={backgroundImage}
-        precision={precision}
-      />
-
       <Toolbar
         stackActive={stack.length !== 0}
         open={toolbarOpen}
@@ -152,9 +121,40 @@ function App() {
         handleUseAllShapesToggle={handleUseAllShapesToggle}
         handleCloseToolbar={handleCloseToolbar}
       />
+      <main>
+        {drawingMode === "rectangle" && (
+          <ClickAreaRectangle
+            stack={stack}
+            setStack={setStack}
+            handleSaveShapeToStack={handleSaveShapeToStack}
+          />
+        )}
+        {drawingMode === "line" && (
+          <ClickAreaLine
+            stack={stack}
+            setStack={setStack}
+            key={countRef.current}
+          />
+        )}
+        {drawingMode === "circle" && (
+          <ClickAreaCircle
+            stack={stack}
+            setStack={setStack}
+            key={countRef.current}
+            handleSaveShapeToStack={handleSaveShapeToStack}
+          />
+        )}
+
+        <OutputBox
+          savedStack={savedStack}
+          currentStack={stack}
+          backgroundImage={backgroundImage}
+          precision={precision}
+        />
+      </main>
 
       <Sidebar
-        open={editbarOpen}
+        open={sidebarOpen}
         handleClose={handleCloseSidebar}
         stack={stack}
         setStack={setStack}
@@ -162,16 +162,24 @@ function App() {
       />
 
       <CodeViewer
-        open={showCode}
+        open={codeViewerOpen}
         savedStack={savedStack}
         currentStack={stack}
-        handleClose={() => setShowCode(false)}
+        handleClose={() => setCodeViewerOpen(false)}
         precision={precision}
         handleSetPrecision={handleSetPrecision}
       />
       <button className="toggle-code-button" onClick={handleShowCodeToggle}>
-        {showCode ? "Hide" : "Show"} Code
+        {codeViewerOpen ? "Hide" : "Show"} Code
       </button>
+
+      <button className="toggle-toolbar-button" onClick={handleToolbarToggle}>
+        {toolbarOpen ? "Hide" : "Show"} Toolbar
+      </button>
+
+      {/* <button className="toggle-sidebar-button" onClick={handleSidebarToggle}>
+        {sidebarOpen ? "Hide" : "Show"} Sidebar
+      </button> */}
       <Toaster position="bottom-center" />
     </Fragment>
   );

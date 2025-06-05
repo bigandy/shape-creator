@@ -58,9 +58,11 @@ export const Toolbar = ({
   return (
     <div className={`toolbar ${open ? "toolbar--open" : ""}`}>
       <div className="inner">
-        <button className="toolbar-toggle-button" onClick={handleCloseToolbar}>
-          Close
-        </button>
+        <div>
+          <button onClick={handleCloseToolbar} className="close-button">
+            Close
+          </button>
+        </div>
 
         <div className="buttons">
           {shapeOptions.map((option) => {
