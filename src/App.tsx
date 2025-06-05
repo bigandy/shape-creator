@@ -23,7 +23,7 @@ function App() {
   const [codeViewerOpen, setCodeViewerOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [backgroundImage, setBackgroundImage] = useState(
-    backgroundImages[0].url
+    backgroundImages[0].url,
   );
   const [savedStack, setSavedStack] = useState<Shape[]>([]);
   const [useAllShapes, setUseAllShapes] = useState(true);
@@ -33,7 +33,7 @@ function App() {
 
   const handleRemoveLastPoint = () => {
     setStack(
-      stack.filter((_, index, stackArray) => index !== stackArray.length - 1)
+      stack.filter((_, index, stackArray) => index !== stackArray.length - 1),
     );
   };
 
@@ -87,13 +87,13 @@ function App() {
   const handleShowCodeToggle = () => setCodeViewerOpen((o) => !o);
   const handleToolbarToggle = () => setToolbarOpen((o) => !o);
   const handleCloseToolbar = () => setToolbarOpen(false);
-  const handleSidebarToggle = () => setSidebarOpen((o) => !o);
+  // const handleSidebarToggle = () => setSidebarOpen((o) => !o);
 
   const handleRemoveLastShape = () => {
     setSavedStack((savedStack) =>
       savedStack.filter(
-        (_, index, stackArray) => index !== stackArray.length - 1
-      )
+        (_, index, stackArray) => index !== stackArray.length - 1,
+      ),
     );
   };
 
@@ -156,9 +156,9 @@ function App() {
       <Sidebar
         open={sidebarOpen}
         handleClose={handleCloseSidebar}
-        stack={stack}
-        setStack={setStack}
-        savedStack={savedStack}
+        // stack={stack}
+        // setStack={setStack}
+        // savedStack={savedStack}
       />
 
       <CodeViewer

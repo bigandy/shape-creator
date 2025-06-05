@@ -1,20 +1,20 @@
-import { type SetStateAction, type Dispatch } from "react";
+// import { type SetStateAction, type Dispatch } from "react";
 
-import type { Coords, Shape } from "@/Types";
+// import type { Coords, Shape } from "@/Types";
 
 // import { SidebarItem } from "@components/SidebarItem";
 
 type SidebarProps = {
   open: boolean;
-  stack: Coords[];
-  savedStack: Shape[];
-  setStack: Dispatch<SetStateAction<Coords[]>>;
+  // stack: Coords[];
+  // savedStack: Shape[];
+  // setStack: Dispatch<SetStateAction<Coords[]>>;
   handleClose: () => void;
 };
 
 export const Sidebar = ({
   open,
-  handleClose,
+  // handleClose,
 }: // setStack,
 // stack,
 // savedStack,
