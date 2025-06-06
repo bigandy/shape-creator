@@ -21,13 +21,12 @@ function App() {
   const [stack, setStack] = useState<Coords[]>([]);
   const [toolbarOpen, setToolbarOpen] = useState(true);
   const [codeViewerOpen, setCodeViewerOpen] = useState(true);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
   const [backgroundImage, setBackgroundImage] = useState(
     backgroundImages[0].url
   );
   const [savedStack, setSavedStack] = useState<Shape[]>([]);
-  const [useAllShapes, setUseAllShapes] = useState(true);
-  const [drawingMode, setDrawingMode] = useState<DrawingMode>("circle");
+  const [drawingMode, setDrawingMode] = useState<DrawingMode>("line");
 
   const [precision, setPrecision] = useState(2);
 
@@ -45,7 +44,7 @@ function App() {
     countRef.current = countRef.current + 1;
     setStack([]);
   };
-  const handleResetAllStacks = () => {
+  const handleDeleteAllStacks = () => {
     setStack([]);
     setSavedStack([]);
     countRef.current = countRef.current + 1;
@@ -57,16 +56,8 @@ function App() {
     setBackgroundImage(e.target.value);
   };
 
-  const handleUseAllShapesToggle = () => setUseAllShapes((useAll) => !useAll);
-
   const handleSaveShape = () => {
-    // if (stack.length === 0) {
-    //   console.log("cannot save, nothing to save");
-    //   return;
-    // }
-    // console.log("save shape", [...savedStack, stack]);
     setSavedStack([...savedStack, { shape: drawingMode, coords: stack }]);
-    // clear current stack
     setStack([]);
   };
 
@@ -86,8 +77,7 @@ function App() {
 
   const handleShowCodeToggle = () => setCodeViewerOpen((o) => !o);
   const handleToolbarToggle = () => setToolbarOpen((o) => !o);
-  const handleCloseToolbar = () => setToolbarOpen(false);
-  // const handleSidebarToggle = () => setSidebarOpen((o) => !o);
+  const handleSidebarToggle = () => setSidebarOpen((o) => !o);
 
   const handleRemoveLastShape = () => {
     setSavedStack((savedStack) =>
@@ -107,7 +97,6 @@ function App() {
         stackActive={stack.length !== 0}
         open={toolbarOpen}
         selectedImage={backgroundImage}
-        useAllShapes={useAllShapes}
         drawingMode={drawingMode}
         canRemoveShapes={savedStack.length !== 0}
         handleRemoveLastShape={handleRemoveLastShape}
@@ -115,11 +104,9 @@ function App() {
         handleEditToggle={handleEditToggle}
         handleRemoveLastPoint={handleRemoveLastPoint}
         handleResetCurrentStack={handleResetCurrentStack}
-        handleResetAllStacks={handleResetAllStacks}
+        handleDeleteAllStacks={handleDeleteAllStacks}
         handleImageChange={handleImageChange}
         handleSaveShape={handleSaveShape}
-        handleUseAllShapesToggle={handleUseAllShapesToggle}
-        handleCloseToolbar={handleCloseToolbar}
       />
       <main>
         {drawingMode === "rectangle" && (
@@ -156,9 +143,10 @@ function App() {
       <Sidebar
         open={sidebarOpen}
         handleClose={handleCloseSidebar}
-        // stack={stack}
-        // setStack={setStack}
-        // savedStack={savedStack}
+        stack={stack}
+        setStack={setStack}
+        savedStack={savedStack}
+        drawingMode={drawingMode}
       />
 
       <CodeViewer
@@ -177,9 +165,9 @@ function App() {
         {toolbarOpen ? "Hide" : "Show"} Toolbar
       </button>
 
-      {/* <button className="toggle-sidebar-button" onClick={handleSidebarToggle}>
+      <button className="toggle-sidebar-button" onClick={handleSidebarToggle}>
         {sidebarOpen ? "Hide" : "Show"} Sidebar
-      </button> */}
+      </button>
       <Toaster position="bottom-center" />
     </Fragment>
   );

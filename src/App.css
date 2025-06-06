@@ -110,17 +110,6 @@ main {
   pointer-events: none;
 }
 
-.sidebar {
-  position: fixed;
-  right: 0;
-  top: 0;
-
-  z-index: 1;
-  width: 20vw;
-  background: white;
-  height: 100%;
-}
-
 [class$="-point"] {
   z-index: 1;
   position: absolute;
@@ -196,6 +185,14 @@ main {
 }
 
 .sidebar {
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: 1;
+  /* width: 20vw; */
+  background: white;
+  height: 100%;
+
   transition: width 0.2s ease-in-out;
   transition-behavior: allow-discrete;
   overflow: clip;
@@ -205,6 +202,11 @@ main {
   @starting-style {
     width: 0;
   }
+}
+
+.sidebar-inner {
+  padding-inline: 1rem;
+  padding-block-start: 3rem;
 }
 
 .toolbar {

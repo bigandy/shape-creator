@@ -1,6 +1,8 @@
-import { Fragment, type SetStateAction, type Dispatch } from "react";
+import { Fragment, type SetStateAction, type Dispatch, useState } from "react";
 
 import type { Coords } from "@/Types";
+
+import { Dialog } from "@components/Dialog";
 
 type Props = {
   x: number;
@@ -19,8 +21,10 @@ export const SidebarItem = ({
   currentIndex,
   editable = true,
 }: Props) => {
+  const [dialogOpen, setDialogOpen] = useState(false);
   const handleDeletePoint = () => {
-    setStack(stack.filter((_, index) => index !== currentIndex));
+    // setDialogOpen(true);
+    // AHTODO: the dialog!
   };
 
   const handleInsertPoint = () => {
@@ -41,10 +45,16 @@ export const SidebarItem = ({
     setStack(nextStack);
   };
 
+  const confirmDeletion = () => {
+    setStack(stack.filter((_, index) => index !== currentIndex));
+  };
+
+  const handleDialogClose = () => setDialogOpen(false);
+
   return (
     <li>
-      y: {x} <br />
-      x: {y} <br />
+      y: {x.toFixed(2)}% <br />
+      x: {y.toFixed(2)}% <br />
       {editable && (
         <Fragment>
           <button onClick={handleDeletePoint}>Delete Point</button>
@@ -55,6 +65,11 @@ export const SidebarItem = ({
           <button onClick={handleInsertPoint}>Insert Point after</button>
         </Fragment>
       )}
+      <Dialog
+        open={dialogOpen}
+        positiveCallback={confirmDeletion}
+        negativeCallback={handleDialogClose}
+      />
     </li>
   );
 };

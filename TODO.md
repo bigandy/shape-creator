@@ -1,8 +1,23 @@
 # Todo List
 
+## Sidebar - Moving / Editing Existing Shapes
+
+- [ ] Fix Insert Point After (line mode)
+- [ ] Edit shape functionality
+- [ ] Move all points i.e. drag a selector and move all the points in the selected area by the amount that the selected area moves by.
+- [ ] Circle Editor
+- [ ] Line Editor
+- [ ] Rectangle Editor
+- [ ] Hover over point / shape in sidebar - could show something in the main click-area to show that shape is being edited??
+
+## Styles
+
+- [ ] Think about styles
+- [ ] Use modular self-contained styles. CSS / CSS-in-JS / SCSS??
+
 ## Code Viewer
 
-- [ ] Height changes when adding more shapes. Need to fix the height so not causing the main click area to jump.
+- [x] Height changes when adding more shapes. Need to fix the height so not causing the main click area to jump.
 - [x] Button in CodeViewer that creates a codepen with the code
 
 ## Circle
@@ -11,7 +26,6 @@
 
 ## General
 
-- [ ] Think about styles
 - [ ] Save to localStorage a set of shape(s)
 - [ ] Custom Image(s)
 - [x] Toast messages for e.g. when copied text to clipboard / error messages etc
@@ -36,8 +50,3 @@
 ## Images
 
 - [x] Store the images locally so there's a quicker loading time
-
-## Moving / Editing Existing Shapes
-
-- [ ] Edit shape functionality
-- [ ] Move all points i.e. drag a selector and move all the points in the selected area by the amount that the selected area moves by.

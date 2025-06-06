@@ -23,7 +23,6 @@ type Props = {
   open: boolean;
   selectedImage?: string;
   drawingMode: DrawingMode;
-  useAllShapes: boolean;
   stackActive: boolean;
   canRemoveShapes: boolean;
   handleRemoveLastShape: () => void;
@@ -31,17 +30,14 @@ type Props = {
   handleRemoveLastPoint: () => void;
   handleEditToggle: () => void;
   handleResetCurrentStack: () => void;
-  handleResetAllStacks: () => void;
+  handleDeleteAllStacks: () => void;
   handleImageChange: (e: ChangeEvent<HTMLSelectElement>) => void;
   handleSaveShape: () => void;
-  handleUseAllShapesToggle: () => void;
-  handleCloseToolbar: () => void;
 };
 
 export const Toolbar = ({
   open,
   selectedImage,
-  useAllShapes,
   drawingMode,
   stackActive,
   canRemoveShapes,
@@ -49,20 +45,18 @@ export const Toolbar = ({
   handleChangeDrawingMode,
   handleRemoveLastPoint,
   handleResetCurrentStack,
-  handleResetAllStacks,
+  handleDeleteAllStacks,
   handleImageChange,
   handleSaveShape,
-  handleUseAllShapesToggle,
-  handleCloseToolbar,
 }: Props) => {
   return (
     <div className={`toolbar ${open ? "toolbar--open" : ""}`}>
       <div className="inner">
-        <div>
+        {/* <div>
           <button onClick={handleCloseToolbar} className="close-button">
             Close
           </button>
-        </div>
+        </div> */}
 
         <div className="buttons">
           {shapeOptions.map((option) => {
@@ -108,20 +102,13 @@ export const Toolbar = ({
               <button onClick={handleResetCurrentStack} disabled={!stackActive}>
                 Reset Current Shape
               </button>
+              <button onClick={handleSaveShape}>Save Shape</button>
             </Fragment>
           )}
 
-          <button onClick={handleResetAllStacks}>Reset All Shapes</button>
-
-          <button onClick={handleSaveShape}>Save Shape</button>
-
-          {drawingMode === "line" && (
-            <button onClick={handleUseAllShapesToggle}>
-              {useAllShapes ? "One Shape" : "All Shapes"}
-            </button>
-          )}
-
-          {/* <button onClick={handleEditToggle}>Open Sidebar - Edit Points</button> */}
+          <button onClick={handleDeleteAllStacks} disabled={!stackActive}>
+            Delete All Shapes
+          </button>
         </div>
       </div>
     </div>
