@@ -9,7 +9,7 @@ import {
 import { DragAndDropPoints } from "@components/DragAndDropPoints";
 
 import type { Coords } from "@/Types";
-import { getCoordsAsPercentages } from "@utils/coordinates";
+import { getCoordsAsPercent } from "@utils/coordinates";
 
 type Props = {
   setStack: Dispatch<SetStateAction<Coords[]>>;
@@ -26,7 +26,7 @@ export const ClickAreaLine = ({ setStack, stack }: Props) => {
    * and is used for the clip-path: shape() generation
    */
   const handleClick = (event: MouseEvent<HTMLElement>) => {
-    const coords = getCoordsAsPercentages(event, clickAreaRef)!;
+    const coords = getCoordsAsPercent(event, clickAreaRef)!;
 
     setStack([...stack, coords]);
   };
@@ -35,7 +35,7 @@ export const ClickAreaLine = ({ setStack, stack }: Props) => {
    * This handles when the mouse cursor moves inside the click-area. It shows the position of the mouse with a div in the same style as the points on the DragAndDropPoints dots.
    */
   const handleMouseMove = (event: MouseEvent<HTMLElement>) => {
-    const coords = getCoordsAsPercentages(event, clickAreaRef)!;
+    const coords = getCoordsAsPercent(event, clickAreaRef)!;
 
     setMousePosition(coords);
   };

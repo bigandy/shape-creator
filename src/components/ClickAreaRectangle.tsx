@@ -10,7 +10,7 @@ import { DragAndDropPoints } from "@components/DragAndDropPoints";
 
 import type { Coords, DrawingMode } from "@/Types";
 
-import { getCoordsAsPercentages } from "@utils/coordinates";
+import { getCoordsAsPercent } from "@utils/coordinates";
 
 type Props = {
   setStack: Dispatch<SetStateAction<Coords[]>>;
@@ -63,7 +63,7 @@ export const ClickAreaRectangle = ({
 
   const handleMouseDown = (e: MouseEvent<HTMLDivElement>) => {
     setFinalPoint(null);
-    const coords = getCoordsAsPercentages(e, clickAreaRef)!;
+    const coords = getCoordsAsPercent(e, clickAreaRef)!;
 
     setInitialPoint(coords);
     setRecording(true);
@@ -72,7 +72,7 @@ export const ClickAreaRectangle = ({
   const handleMouseUp = (e: MouseEvent<HTMLDivElement>) => {
     // AHTODO: How to handle mouseup or out of bounds movement of the mouse?
 
-    const upCoords = getCoordsAsPercentages(e, clickAreaRef)!;
+    const upCoords = getCoordsAsPercent(e, clickAreaRef)!;
 
     setFinalPoint(upCoords);
 
@@ -84,7 +84,7 @@ export const ClickAreaRectangle = ({
     if (initialPoint === null || recording === false) {
       return;
     }
-    const coords = getCoordsAsPercentages(e, clickAreaRef)!;
+    const coords = getCoordsAsPercent(e, clickAreaRef)!;
 
     setFinalPoint(coords);
   };
@@ -129,5 +129,5 @@ const MiddlePoint = React.memo(
         }}
       />
     );
-  },
+  }
 );

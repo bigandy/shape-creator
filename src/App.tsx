@@ -19,21 +19,21 @@ import { type DrawingMode, type Coords, type Shape } from "./Types";
 function App() {
   const countRef = useRef(0);
   const [stack, setStack] = useState<Coords[]>([]);
-  const [toolbarOpen, setToolbarOpen] = useState(false);
-  const [codeViewerOpen, setCodeViewerOpen] = useState(false);
+  const [toolbarOpen, setToolbarOpen] = useState(true);
+  const [codeViewerOpen, setCodeViewerOpen] = useState(true);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [backgroundImage, setBackgroundImage] = useState(
-    backgroundImages[0].url,
+    backgroundImages[0].url
   );
   const [savedStack, setSavedStack] = useState<Shape[]>([]);
   const [useAllShapes, setUseAllShapes] = useState(true);
-  const [drawingMode, setDrawingMode] = useState<DrawingMode>("rectangle");
+  const [drawingMode, setDrawingMode] = useState<DrawingMode>("circle");
 
   const [precision, setPrecision] = useState(2);
 
   const handleRemoveLastPoint = () => {
     setStack(
-      stack.filter((_, index, stackArray) => index !== stackArray.length - 1),
+      stack.filter((_, index, stackArray) => index !== stackArray.length - 1)
     );
   };
 
@@ -92,8 +92,8 @@ function App() {
   const handleRemoveLastShape = () => {
     setSavedStack((savedStack) =>
       savedStack.filter(
-        (_, index, stackArray) => index !== stackArray.length - 1,
-      ),
+        (_, index, stackArray) => index !== stackArray.length - 1
+      )
     );
   };
 

@@ -8,9 +8,9 @@ import React, {
 
 import { DragAndDropPoints } from "@components/DragAndDropPoints";
 
-import type { Coords, DrawingMode, NumCoords } from "@/Types";
+import type { Coords, DrawingMode } from "@/Types";
 
-import { getCoordsAsNumber } from "@utils/coordinates";
+import { getCoords } from "@utils/coordinates";
 
 type Props = {
   setStack: Dispatch<SetStateAction<Coords[]>>;
@@ -25,32 +25,18 @@ export const ClickAreaCircle = ({
 }: Props) => {
   const [recording, setRecording] = useState(false);
   const clickAreaRef = useRef<HTMLInputElement>(null);
-  const [initialPoint, setInitialPoint] = useState<NumCoords | null>(null);
-  const [finalPoint, setFinalPoint] = useState<NumCoords | null>(null);
+  const [initialPoint, setInitialPoint] = useState<Coords | null>(null);
+  const [finalPoint, setFinalPoint] = useState<Coords | null>(null);
 
   const drawCircle = () => {
     if (initialPoint === null || finalPoint === null) {
       return;
     }
 
-    if (!clickAreaRef.current) {
-      return;
-    }
-
-    const { x: initialX, y: initialY } = initialPoint;
-    const { x: finalX, y: finalY } = finalPoint;
-    const { width, height } = clickAreaRef.current.getBoundingClientRect();
-
-    const initialPercentX = (initialX / width) * 100;
-    const initialPercentY = (initialY / height) * 100;
-
-    const finalPercentX = (finalX / width) * 100;
-    const finalPercentY = (finalY / height) * 100;
-
     const points = [
-      { percentX: initialPercentX, percentY: initialPercentY },
+      { percentX: initialPoint.percentX, percentY: initialPoint.percentY },
 
-      { percentX: finalPercentX, percentY: finalPercentY },
+      { percentX: finalPoint.percentX, percentY: finalPoint.percentY },
     ];
     const updatedState = [...stack, ...points];
 
@@ -65,7 +51,7 @@ export const ClickAreaCircle = ({
 
   const handleMouseDown = (e: MouseEvent<HTMLDivElement>) => {
     setFinalPoint(null);
-    const coords = getCoordsAsNumber(e, clickAreaRef)!;
+    const coords = getCoords(e, clickAreaRef)!;
 
     setInitialPoint(coords);
     setRecording(true);
@@ -74,7 +60,7 @@ export const ClickAreaCircle = ({
   const handleMouseUp = (e: MouseEvent<HTMLDivElement>) => {
     // AHTODO: How to handle mouseup or out of bounds movement of the mouse?
 
-    const upCoords = getCoordsAsNumber(e, clickAreaRef)!;
+    const upCoords = getCoords(e, clickAreaRef)!;
 
     setFinalPoint(upCoords);
 
@@ -86,7 +72,7 @@ export const ClickAreaCircle = ({
     if (initialPoint === null || recording === false) {
       return;
     }
-    const coords = getCoordsAsNumber(e, clickAreaRef)!;
+    const coords = getCoords(e, clickAreaRef)!;
 
     setFinalPoint(coords);
   };
@@ -120,25 +106,25 @@ const CircleMiddlePoint = React.memo(
     initialPoint,
     finalPoint,
   }: {
-    initialPoint: NumCoords;
-    finalPoint: NumCoords;
+    initialPoint: Coords;
+    finalPoint: Coords;
   }) => {
     const midPoint = {
-      x: (initialPoint.x + finalPoint.x) / 2,
-      y: (initialPoint.y + finalPoint.y) / 2,
+      percentX: (initialPoint.percentX + finalPoint.percentX) / 2,
+      percentY: (initialPoint.percentY + finalPoint.percentY) / 2,
     };
 
     const diameter =
-      Math.pow(midPoint.x - initialPoint.x, 2) +
-      Math.pow(midPoint.y - initialPoint.y, 2);
+      Math.pow(midPoint.percentX - initialPoint.percentX, 2) +
+      Math.pow(midPoint.percentY - initialPoint.percentY, 2);
 
     return (
       <div
         className="dot-bg circle-circle"
         style={{
-          top: midPoint.y + "px",
-          left: midPoint.x + "px",
-          height: Math.sqrt(diameter) * 2 + "px",
+          top: midPoint.percentY + "%",
+          left: midPoint.percentX + "%",
+          height: Math.sqrt(diameter) * 2 + "%",
         }}
       />
     );
