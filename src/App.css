@@ -207,6 +207,9 @@ main {
 .sidebar-inner {
   padding-inline: 1rem;
   padding-block-start: 3rem;
+  overflow: auto;
+  height: 100%;
+  padding-bottom: 100px;
 }
 
 .toolbar {

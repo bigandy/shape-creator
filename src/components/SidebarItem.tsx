@@ -32,8 +32,8 @@ export const SidebarItem = ({
     const { percentX: nextX, percentY: nextY } =
       stack[currentIndex + 1] ?? stack[0];
 
-    const percentX = Math.abs(prevY - nextY) / 2 + Math.min(prevY, nextY);
-    const percentY = Math.abs(prevX - nextX) / 2 + Math.min(prevX, nextX);
+    const percentY = Math.abs(prevY - nextY) / 2 + Math.min(prevY, nextY);
+    const percentX = Math.abs(prevX - nextX) / 2 + Math.min(prevX, nextX);
 
     const newStackPoint = { percentX, percentY };
 
