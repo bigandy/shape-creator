@@ -1,5 +1,9 @@
 # Todo List
 
+## Circle
+
+- [x] Refactor coords to use % as elsewhere in app.
+
 ## General
 
 - [ ] Think about styles
