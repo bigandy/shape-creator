@@ -2,7 +2,7 @@
 
 ## Sidebar - Moving / Editing Existing Shapes
 
-- [ ] Fix Insert Point After (line mode)
+- [x] Fix Insert Point After (line mode)
 - [ ] Edit shape functionality
 - [ ] Move all points i.e. drag a selector and move all the points in the selected area by the amount that the selected area moves by.
 - [ ] Circle Editor
