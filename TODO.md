@@ -1,5 +1,10 @@
 # Todo List
 
+## Code Viewer
+
+- [ ] Height changes when adding more shapes. Need to fix the height so not causing the main click area to jump.
+- [x] Button in CodeViewer that creates a codepen with the code
+
 ## Circle
 
 - [x] Refactor coords to use % as elsewhere in app.
@@ -27,10 +32,6 @@
 ## Rectangle
 
 - [x] Fix position of dots/rectangle during creation.
-
-## Code Viewer
-
-- [x] Button in CodeViewer that creates a codepen with the code
 
 ## Images
 

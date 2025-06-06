@@ -222,7 +222,7 @@ main {
 }
 
 .code-viewer--open {
-  max-height: 300px;
+  height: 100px;
   overflow: auto;
 }
 
