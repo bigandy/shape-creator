@@ -28,6 +28,10 @@ function App() {
   const [savedStack, setSavedStack] = useState<Shape[]>([]);
   const [drawingMode, setDrawingMode] = useState<DrawingMode>("line");
 
+  const [editingNumber, setEditingNumber] = useState<undefined | number>(
+    undefined
+  );
+
   const [precision, setPrecision] = useState(2);
 
   const handleRemoveLastPoint = () => {
@@ -44,6 +48,7 @@ function App() {
     countRef.current = countRef.current + 1;
     setStack([]);
   };
+
   const handleDeleteAllStacks = () => {
     setStack([]);
     setSavedStack([]);
@@ -84,6 +89,12 @@ function App() {
       savedStack.filter(
         (_, index, stackArray) => index !== stackArray.length - 1
       )
+    );
+  };
+
+  const handleDeleteShape = (indexToDelete: number) => {
+    setSavedStack((stack) =>
+      stack.filter((_, index) => index !== indexToDelete)
     );
   };
 
@@ -147,6 +158,9 @@ function App() {
         setStack={setStack}
         savedStack={savedStack}
         drawingMode={drawingMode}
+        handleDeleteShape={handleDeleteShape}
+        editingNumber={editingNumber}
+        setEditingNumber={setEditingNumber}
       />
 
       <CodeViewer

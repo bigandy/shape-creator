@@ -11,6 +11,7 @@ type Props = {
   setStack: Dispatch<SetStateAction<Coords[]>>;
   currentIndex: number;
   editable?: boolean;
+  handleDeletePoint?: (index: number) => void;
 };
 
 export const SidebarItem = ({
@@ -20,11 +21,13 @@ export const SidebarItem = ({
   setStack,
   currentIndex,
   editable = true,
+  handleDeletePoint,
 }: Props) => {
   const [dialogOpen, setDialogOpen] = useState(false);
-  const handleDeletePoint = () => {
+  const deletePoint = () => {
     // setDialogOpen(true);
     // AHTODO: the dialog!
+    confirmDeletion();
   };
 
   const handleInsertPoint = () => {
@@ -46,7 +49,8 @@ export const SidebarItem = ({
   };
 
   const confirmDeletion = () => {
-    setStack(stack.filter((_, index) => index !== currentIndex));
+    console.log("delete point");
+    handleDeletePoint?.(currentIndex);
   };
 
   const handleDialogClose = () => setDialogOpen(false);
@@ -57,7 +61,7 @@ export const SidebarItem = ({
       x: {y.toFixed(2)}% <br />
       {editable && (
         <Fragment>
-          <button onClick={handleDeletePoint}>Delete Point</button>
+          <button onClick={deletePoint}>Delete Point</button>
           {/* <button onClick={() => handleEditCurrentPoint(index)}>
                   Edit Point
                 </button> */}

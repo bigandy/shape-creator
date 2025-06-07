@@ -35,6 +35,8 @@
 ## DragAndDropPoints
 
 - [x] Fix bug in moving positions of points (following the change to a centered click area.)
+- [ ] when moving a point, hide the number in .mouse-position.
+- [ ] Different style of .mouse-position
 
 ## ClickArea
 

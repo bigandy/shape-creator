@@ -212,6 +212,14 @@ main {
   padding-bottom: 100px;
 }
 
+.sidebar-shape {
+  border: 2px solid transparent;
+
+  &.editable-shape {
+    border-color: green;
+  }
+}
+
 .toolbar {
   background: rgb(from white r g b / 0.75);
   anchor-name: --toolbar;
