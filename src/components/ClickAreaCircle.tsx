@@ -1,28 +1,20 @@
-import React, {
-  useRef,
-  type SetStateAction,
-  type Dispatch,
-  useState,
-  type MouseEvent,
-} from "react";
+import React, { useContext, useRef, useState, type MouseEvent } from "react";
 
 import { DragAndDropPoints } from "@components/DragAndDropPoints";
 
 import type { Coords, DrawingMode } from "@/Types";
 
+import { StackContext } from "@context/StackContext";
+
 import { getCoords } from "@utils/coordinates";
 
 type Props = {
-  setStack: Dispatch<SetStateAction<Coords[]>>;
-  stack: Coords[];
   handleSaveShapeToStack: (stack: Coords[], type: DrawingMode) => void;
 };
 
-export const ClickAreaCircle = ({
-  setStack,
-  stack,
-  handleSaveShapeToStack,
-}: Props) => {
+export const ClickAreaCircle = ({ handleSaveShapeToStack }: Props) => {
+  const { setStack, stack } = useContext(StackContext);
+
   const [recording, setRecording] = useState(false);
   const clickAreaRef = useRef<HTMLInputElement>(null);
   const [initialPoint, setInitialPoint] = useState<Coords | null>(null);

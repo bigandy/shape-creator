@@ -12,27 +12,26 @@ import { ClickAreaCircle } from "@components/ClickAreaCircle";
 
 import { backgroundImages } from "@/sharedImages";
 
+import { StackProvider } from "@context/StackContext";
+
 import "./App.css";
 
-import { type DrawingMode, type Coords, type Shape } from "./Types";
+import { type DrawingMode, type Coords } from "./Types";
 
 function App() {
   const countRef = useRef(0);
-  const [stack, setStack] = useState<Coords[]>([]);
+
   const [toolbarOpen, setToolbarOpen] = useState(true);
   const [codeViewerOpen, setCodeViewerOpen] = useState(true);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [backgroundImage, setBackgroundImage] = useState(
     backgroundImages[0].url
   );
-  const [savedStack, setSavedStack] = useState<Shape[]>([]);
   const [drawingMode, setDrawingMode] = useState<DrawingMode>("line");
 
   const [editingNumber, setEditingNumber] = useState<undefined | number>(
     undefined
   );
-
-  const [precision, setPrecision] = useState(2);
 
   const handleRemoveLastPoint = () => {
     setStack(
@@ -98,13 +97,9 @@ function App() {
     );
   };
 
-  const handleSetPrecision = (e: ChangeEvent<HTMLInputElement>) => {
-    setPrecision(Number(e.target.value));
-  };
-
   return (
     <Fragment>
-      <Toolbar
+      {/* <Toolbar
         stackActive={stack.length !== 0}
         open={toolbarOpen}
         selectedImage={backgroundImage}
@@ -118,40 +113,33 @@ function App() {
         handleDeleteAllStacks={handleDeleteAllStacks}
         handleImageChange={handleImageChange}
         handleSaveShape={handleSaveShape}
-      />
+      /> */}
       <main>
+        {drawingMode === "line" && <ClickAreaLine key={countRef.current} />}
+
         {drawingMode === "rectangle" && (
-          <ClickAreaRectangle
-            stack={stack}
-            setStack={setStack}
-            handleSaveShapeToStack={handleSaveShapeToStack}
-          />
-        )}
-        {drawingMode === "line" && (
-          <ClickAreaLine
-            stack={stack}
-            setStack={setStack}
-            key={countRef.current}
-          />
+          <ClickAreaRectangle handleSaveShapeToStack={handleSaveShapeToStack} />
         )}
         {drawingMode === "circle" && (
           <ClickAreaCircle
-            stack={stack}
-            setStack={setStack}
             key={countRef.current}
             handleSaveShapeToStack={handleSaveShapeToStack}
           />
         )}
 
-        <OutputBox
-          savedStack={savedStack}
-          currentStack={stack}
-          backgroundImage={backgroundImage}
-          precision={precision}
-        />
+        <OutputBox backgroundImage={backgroundImage} />
       </main>
 
-      <Sidebar
+      <CodeViewer
+        open={codeViewerOpen}
+        handleClose={() => setCodeViewerOpen(false)}
+      />
+
+      <button className="toggle-code-button" onClick={handleShowCodeToggle}>
+        {codeViewerOpen ? "Hide" : "Show"} Code
+      </button>
+
+      {/* <Sidebar
         open={sidebarOpen}
         handleClose={handleCloseSidebar}
         stack={stack}
@@ -163,17 +151,7 @@ function App() {
         setEditingNumber={setEditingNumber}
       />
 
-      <CodeViewer
-        open={codeViewerOpen}
-        savedStack={savedStack}
-        currentStack={stack}
-        handleClose={() => setCodeViewerOpen(false)}
-        precision={precision}
-        handleSetPrecision={handleSetPrecision}
-      />
-      <button className="toggle-code-button" onClick={handleShowCodeToggle}>
-        {codeViewerOpen ? "Hide" : "Show"} Code
-      </button>
+      
 
       <button className="toggle-toolbar-button" onClick={handleToolbarToggle}>
         {toolbarOpen ? "Hide" : "Show"} Toolbar
@@ -181,10 +159,18 @@ function App() {
 
       <button className="toggle-sidebar-button" onClick={handleSidebarToggle}>
         {sidebarOpen ? "Hide" : "Show"} Sidebar
-      </button>
+      </button> */}
       <Toaster position="bottom-center" />
     </Fragment>
   );
 }
 
-export default App;
+const WrappedApp = () => {
+  return (
+    <StackProvider>
+      <App />
+    </StackProvider>
+  );
+};
+
+export default WrappedApp;

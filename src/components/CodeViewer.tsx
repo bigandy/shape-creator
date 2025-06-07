@@ -1,43 +1,41 @@
-import { type ChangeEventHandler } from "react";
+import { useContext } from "react";
 import toast from "react-hot-toast";
 import { useCopyToClipboard } from "usehooks-ts";
 
 import { CodepenCreatorButton } from "@components/CodepenCreatorButton";
 
-import type { Shape, Coords } from "@/Types";
-import { useClipPathStyle } from "@hooks/useClipPathStyle";
+import { StackContext } from "@/context/StackContext";
 
 type Props = {
-  savedStack: Shape[];
-  currentStack: Coords[];
   open: boolean;
   handleClose: () => void;
-  precision: number;
-  handleSetPrecision: ChangeEventHandler<HTMLInputElement>;
 };
 
-export const CodeViewer = ({
-  savedStack,
-  currentStack,
-  open,
-  handleClose,
-  precision,
-  handleSetPrecision,
-}: Props) => {
+export const CodeViewer = ({ open, handleClose }: Props) => {
   const [_, copy] = useCopyToClipboard(); // eslint-disable-line  @typescript-eslint/no-unused-vars
 
-  const clipPathStyle = useClipPathStyle({
-    currentStack,
-    savedStack,
-    precision,
-  });
+  // AHTODO: Handle Precision again.
+  // const [precision, setPrecision] = useState(2);
+  // const handleSetPrecision = (e: ChangeEvent<HTMLInputElement>) => {
+  //   setPrecision(Number(e.target.value));
+  // };
 
-  const buttonsDisabled = clipPathStyle === "";
+  // const clipPathStyle = useClipPathStyle({
+  //   currentStack,
+  //   savedStack,
+  //   precision,
+  // });
+
+  const { clipPath } = useContext(StackContext);
+
+  console.log({ clipPath });
+
+  const buttonsDisabled = clipPath === "";
 
   const handleCopyText = () => {
-    copy("clip-path:" + clipPathStyle + ";")
+    copy("clip-path:" + clipPath + ";")
       .then(() => {
-        console.log("Copied!", { clipPathStyle });
+        console.log("Copied!", { clipPath });
         toast.success("Copied Successfully");
       })
       .catch((error) => {
@@ -50,7 +48,7 @@ export const CodeViewer = ({
   return (
     <div className={`code-viewer ${open ? "code-viewer--open" : ""}`}>
       <div className="inner">
-        <label>
+        {/* <label>
           Precision
           <input
             type="number"
@@ -59,16 +57,16 @@ export const CodeViewer = ({
             min="0"
             max="21"
           />
-        </label>
+        </label> */}
 
-        {clipPathStyle || "there is no code"}
+        {clipPath || "there is no code"}
 
         <button disabled={buttonsDisabled} onClick={handleCopyText}>
           Copy Text
         </button>
 
         <CodepenCreatorButton
-          clipPathStyle={clipPathStyle}
+          clipPathStyle={clipPath}
           disabled={buttonsDisabled}
         />
 

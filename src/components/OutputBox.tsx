@@ -1,26 +1,19 @@
-import type { Shape, Coords } from "@/Types";
-import { useClipPathStyle } from "@hooks/useClipPathStyle";
+import { useContext } from "react";
+
+import { StackContext } from "@context/StackContext";
+
 import { Fragment } from "react/jsx-runtime";
 
 type Props = {
-  savedStack: Shape[];
-  currentStack: Coords[];
   backgroundImage?: string;
-  precision: number;
+  // precision: number;
 };
 
 export const OutputBox = ({
-  savedStack,
-  currentStack,
   backgroundImage,
-  precision,
-}: Props) => {
-  // AHTODO: move this up to parent?
-  const clipPath = useClipPathStyle({
-    currentStack,
-    savedStack,
-    precision,
-  });
+}: // precision,
+Props) => {
+  const { setStack, stack, clipPath } = useContext(StackContext);
 
   return (
     <Fragment>

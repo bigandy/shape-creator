@@ -1,22 +1,14 @@
-import {
-  useRef,
-  useState,
-  type SetStateAction,
-  type Dispatch,
-  type MouseEvent,
-} from "react";
+import { useRef, useState, type MouseEvent, useContext } from "react";
 
 import { DragAndDropPoints } from "@components/DragAndDropPoints";
 
 import type { Coords } from "@/Types";
 import { getCoords } from "@utils/coordinates";
+import { StackContext } from "@context/StackContext";
 
-type Props = {
-  setStack: Dispatch<SetStateAction<Coords[]>>;
-  stack: Coords[];
-};
+export const ClickAreaLine = () => {
+  const { setStack, stack } = useContext(StackContext);
 
-export const ClickAreaLine = ({ setStack, stack }: Props) => {
   const clickAreaRef = useRef<HTMLInputElement>(null);
 
   const [mousePosition, setMousePosition] = useState<Coords | null>(null);

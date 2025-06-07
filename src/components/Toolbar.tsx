@@ -41,14 +41,14 @@ export const Toolbar = ({
   drawingMode,
   stackActive,
   canRemoveShapes,
-  handleRemoveLastShape,
+  // handleRemoveLastShape,
   handleChangeDrawingMode,
-  handleRemoveLastPoint,
-  handleResetCurrentStack,
-  handleDeleteAllStacks,
+  // handleRemoveLastPoint,
+  // handleResetCurrentStack,
+  // handleDeleteAllStacks,
   handleImageChange,
-  handleSaveShape,
-}: Props) => {
+}: // handleSaveShape,
+Props) => {
   return (
     <div className={`toolbar ${open ? "toolbar--open" : ""}`}>
       <div className="inner">
