@@ -1,33 +1,39 @@
-import { type SetStateAction, type Dispatch, Fragment, useState } from "react";
+import {
+  type Dispatch,
+  Fragment,
+  type SetStateAction,
+  useContext,
+} from "react";
 
-import type { Coords, DrawingMode, Shape } from "@/Types";
+import type { DrawingMode } from "@/Types";
 
 import { SidebarItem } from "@components/SidebarItem";
 
+import { useStackContext } from "@context/StackContext";
+
 type SidebarProps = {
   open: boolean;
-  stack: Coords[];
-  savedStack: Shape[];
   drawingMode: DrawingMode;
   editingNumber: number | undefined;
-  setStack: Dispatch<SetStateAction<Coords[]>>;
   setEditingNumber: Dispatch<SetStateAction<number | undefined>>;
   handleClose: () => void;
-  handleDeleteShape: (index: number) => void;
 };
 
 export const Sidebar = ({
   open,
   handleClose,
-  savedStack,
-  handleDeleteShape,
   drawingMode,
-  stack,
-  setStack,
   editingNumber,
   setEditingNumber,
 }: SidebarProps) => {
-  // Insert a new point in between existing points. Put the new point half-way between the two existing points.
+  const { setStack, stack, savedStack, handleSaveShapeToStack } =
+    useStackContext();
+
+  const handleDeleteShape = (indexToDelete: number) => {
+    setSavedStack((stack) =>
+      stack.filter((_, index) => index !== indexToDelete)
+    );
+  };
 
   const onEditShape = (index: number) => {
     if (editingNumber === index) {

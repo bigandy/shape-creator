@@ -31,6 +31,7 @@ export const SidebarItem = ({
   };
 
   const handleInsertPoint = () => {
+    // Insert a new point in between existing points. Put the new point half-way between the two existing points.
     const { percentX: prevX, percentY: prevY } = stack[currentIndex];
     const { percentX: nextX, percentY: nextY } =
       stack[currentIndex + 1] ?? stack[0];

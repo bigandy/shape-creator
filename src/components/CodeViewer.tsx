@@ -4,7 +4,7 @@ import { useCopyToClipboard } from "usehooks-ts";
 
 import { CodepenCreatorButton } from "@components/CodepenCreatorButton";
 
-import { StackContext } from "@/context/StackContext";
+import { useStackContext } from "@/context/StackContext";
 
 type Props = {
   open: boolean;
@@ -19,16 +19,7 @@ export const CodeViewer = ({ open, handleClose }: Props) => {
   // const handleSetPrecision = (e: ChangeEvent<HTMLInputElement>) => {
   //   setPrecision(Number(e.target.value));
   // };
-
-  // const clipPathStyle = useClipPathStyle({
-  //   currentStack,
-  //   savedStack,
-  //   precision,
-  // });
-
-  const { clipPath } = useContext(StackContext);
-
-  console.log({ clipPath });
+  const { clipPath } = useStackContext();
 
   const buttonsDisabled = clipPath === "";
 

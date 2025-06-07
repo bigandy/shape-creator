@@ -4,10 +4,10 @@ import { DragAndDropPoints } from "@components/DragAndDropPoints";
 
 import type { Coords } from "@/Types";
 import { getCoords } from "@utils/coordinates";
-import { StackContext } from "@context/StackContext";
+import { useStackContext } from "@context/StackContext";
 
 export const ClickAreaLine = () => {
-  const { setStack, stack } = useContext(StackContext);
+  const { setStack, stack } = useStackContext();
 
   const clickAreaRef = useRef<HTMLInputElement>(null);
 

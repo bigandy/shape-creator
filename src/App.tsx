@@ -33,41 +33,14 @@ function App() {
     undefined
   );
 
-  const handleRemoveLastPoint = () => {
-    setStack(
-      stack.filter((_, index, stackArray) => index !== stackArray.length - 1)
-    );
-  };
-
   const handleEditToggle = () => {
     setSidebarOpen((open) => !open);
-  };
-
-  const handleResetCurrentStack = () => {
-    countRef.current = countRef.current + 1;
-    setStack([]);
-  };
-
-  const handleDeleteAllStacks = () => {
-    setStack([]);
-    setSavedStack([]);
-    countRef.current = countRef.current + 1;
   };
 
   const handleCloseSidebar = () => setSidebarOpen(false);
 
   const handleImageChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setBackgroundImage(e.target.value);
-  };
-
-  const handleSaveShape = () => {
-    setSavedStack([...savedStack, { shape: drawingMode, coords: stack }]);
-    setStack([]);
-  };
-
-  const handleSaveShapeToStack = (coords: Coords[], shape: DrawingMode) => {
-    setSavedStack((savedStack) => [...savedStack, { shape, coords }]);
-    setStack([]);
   };
 
   const handleChangeDrawingMode = (drawingMode: DrawingMode) => {
@@ -83,49 +56,23 @@ function App() {
   const handleToolbarToggle = () => setToolbarOpen((o) => !o);
   const handleSidebarToggle = () => setSidebarOpen((o) => !o);
 
-  const handleRemoveLastShape = () => {
-    setSavedStack((savedStack) =>
-      savedStack.filter(
-        (_, index, stackArray) => index !== stackArray.length - 1
-      )
-    );
-  };
-
-  const handleDeleteShape = (indexToDelete: number) => {
-    setSavedStack((stack) =>
-      stack.filter((_, index) => index !== indexToDelete)
-    );
-  };
-
   return (
     <Fragment>
-      {/* <Toolbar
-        stackActive={stack.length !== 0}
+      <Toolbar
+        stackActive={true} // AHTODO: fix
         open={toolbarOpen}
         selectedImage={backgroundImage}
         drawingMode={drawingMode}
-        canRemoveShapes={savedStack.length !== 0}
-        handleRemoveLastShape={handleRemoveLastShape}
+        canRemoveShapes={true} // AHTODO: fix
         handleChangeDrawingMode={handleChangeDrawingMode}
         handleEditToggle={handleEditToggle}
-        handleRemoveLastPoint={handleRemoveLastPoint}
-        handleResetCurrentStack={handleResetCurrentStack}
-        handleDeleteAllStacks={handleDeleteAllStacks}
         handleImageChange={handleImageChange}
-        handleSaveShape={handleSaveShape}
-      /> */}
+      />
       <main>
         {drawingMode === "line" && <ClickAreaLine key={countRef.current} />}
 
-        {drawingMode === "rectangle" && (
-          <ClickAreaRectangle handleSaveShapeToStack={handleSaveShapeToStack} />
-        )}
-        {drawingMode === "circle" && (
-          <ClickAreaCircle
-            key={countRef.current}
-            handleSaveShapeToStack={handleSaveShapeToStack}
-          />
-        )}
+        {drawingMode === "rectangle" && <ClickAreaRectangle />}
+        {drawingMode === "circle" && <ClickAreaCircle key={countRef.current} />}
 
         <OutputBox backgroundImage={backgroundImage} />
       </main>
@@ -139,27 +86,21 @@ function App() {
         {codeViewerOpen ? "Hide" : "Show"} Code
       </button>
 
-      {/* <Sidebar
-        open={sidebarOpen}
-        handleClose={handleCloseSidebar}
-        stack={stack}
-        setStack={setStack}
-        savedStack={savedStack}
-        drawingMode={drawingMode}
-        handleDeleteShape={handleDeleteShape}
-        editingNumber={editingNumber}
-        setEditingNumber={setEditingNumber}
-      />
-
-      
-
       <button className="toggle-toolbar-button" onClick={handleToolbarToggle}>
         {toolbarOpen ? "Hide" : "Show"} Toolbar
       </button>
 
+      <Sidebar
+        open={sidebarOpen}
+        handleClose={handleCloseSidebar}
+        drawingMode={drawingMode}
+        editingNumber={editingNumber}
+        setEditingNumber={setEditingNumber}
+      />
+
       <button className="toggle-sidebar-button" onClick={handleSidebarToggle}>
         {sidebarOpen ? "Hide" : "Show"} Sidebar
-      </button> */}
+      </button>
       <Toaster position="bottom-center" />
     </Fragment>
   );

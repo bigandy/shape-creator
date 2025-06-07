@@ -2,23 +2,19 @@ import React, { useContext, useRef, useState, type MouseEvent } from "react";
 
 import { DragAndDropPoints } from "@components/DragAndDropPoints";
 
-import { StackContext } from "@context/StackContext";
+import { useStackContext } from "@context/StackContext";
 
-import type { Coords, DrawingMode } from "@/Types";
+import type { Coords } from "@/Types";
 
 import { getCoords } from "@utils/coordinates";
 
-type Props = {
-  handleSaveShapeToStack: (stack: Coords[], type: DrawingMode) => void;
-};
-
-export const ClickAreaRectangle = ({ handleSaveShapeToStack }: Props) => {
+export const ClickAreaRectangle = () => {
   const [recording, setRecording] = useState(false);
   const clickAreaRef = useRef<HTMLInputElement>(null);
   const [initialPoint, setInitialPoint] = useState<Coords | null>(null);
   const [finalPoint, setFinalPoint] = useState<Coords | null>(null);
 
-  const { setStack, stack } = useContext(StackContext);
+  const { setStack, stack, handleSaveShapeToStack } = useStackContext();
 
   const drawRectangle = () => {
     if (initialPoint === null || finalPoint === null) {

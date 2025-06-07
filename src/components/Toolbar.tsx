@@ -1,6 +1,8 @@
-import { Fragment, type ChangeEvent } from "react";
+import { Fragment, type ChangeEvent, useContext } from "react";
 import { backgroundImages } from "@/sharedImages";
 import type { DrawingMode } from "@/Types";
+
+import { useStackContext } from "@context/StackContext";
 
 type ShapeOption = { label: string; id: DrawingMode };
 
@@ -25,14 +27,9 @@ type Props = {
   drawingMode: DrawingMode;
   stackActive: boolean;
   canRemoveShapes: boolean;
-  handleRemoveLastShape: () => void;
   handleChangeDrawingMode: (drawingMode: DrawingMode) => void;
-  handleRemoveLastPoint: () => void;
   handleEditToggle: () => void;
-  handleResetCurrentStack: () => void;
-  handleDeleteAllStacks: () => void;
   handleImageChange: (e: ChangeEvent<HTMLSelectElement>) => void;
-  handleSaveShape: () => void;
 };
 
 export const Toolbar = ({
@@ -41,14 +38,41 @@ export const Toolbar = ({
   drawingMode,
   stackActive,
   canRemoveShapes,
-  // handleRemoveLastShape,
   handleChangeDrawingMode,
-  // handleRemoveLastPoint,
-  // handleResetCurrentStack,
-  // handleDeleteAllStacks,
   handleImageChange,
-}: // handleSaveShape,
-Props) => {
+}: Props) => {
+  const { setSavedStack, savedStack, setStack } = useStackContext();
+
+  const handleRemoveLastShape = () => {
+    setSavedStack((savedStack) =>
+      savedStack.filter(
+        (_, index, stackArray) => index !== stackArray.length - 1
+      )
+    );
+  };
+
+  const handleSaveShape = () => {
+    setSavedStack([...savedStack, { shape: drawingMode, coords: stack }]);
+    setStack([]);
+  };
+
+  const handleRemoveLastPoint = () => {
+    setStack(
+      stack.filter((_, index, stackArray) => index !== stackArray.length - 1)
+    );
+  };
+
+  const handleResetCurrentStack = () => {
+    // countRef.current = countRef.current + 1;
+    setStack([]);
+  };
+
+  const handleDeleteAllStacks = () => {
+    setStack([]);
+    setSavedStack([]);
+    // countRef.current = countRef.current + 1;
+  };
+
   return (
     <div className={`toolbar ${open ? "toolbar--open" : ""}`}>
       <div className="inner">
