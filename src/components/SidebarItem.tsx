@@ -2,6 +2,7 @@ import { Fragment, useState } from "react";
 
 import { useStackContext } from "@/hooks/useStackContext";
 import { Dialog } from "@components/Dialog";
+import { useStackDispatch } from "@/hooks/useStackDispatch";
 
 type Props = {
   x: number;
@@ -11,7 +12,8 @@ type Props = {
 };
 
 export const SidebarItem = ({ x, y, currentIndex, editable = true }: Props) => {
-  const { stack, setStack } = useStackContext();
+  const { stack } = useStackContext();
+  const dispatch = useStackDispatch();
 
   const [dialogOpen, setDialogOpen] = useState(false);
   const deletePoint = () => {
@@ -21,7 +23,8 @@ export const SidebarItem = ({ x, y, currentIndex, editable = true }: Props) => {
   };
 
   const handleDeletePoint = () =>
-    setStack(stack.filter((_, index) => index !== currentIndex));
+    dispatch({ type: "remove-index", payload: { index: currentIndex } });
+  // setStack(stack.filter((_, index) => index !== currentIndex));
 
   const handleInsertPoint = () => {
     // Insert a new point in between existing points. Put the new point half-way between the two existing points.
@@ -39,7 +42,13 @@ export const SidebarItem = ({ x, y, currentIndex, editable = true }: Props) => {
       newStackPoint,
       ...stack.slice(currentIndex + 1),
     ];
-    setStack(nextStack);
+    // setStack(nextStack);
+    dispatch({
+      type: "update",
+      payload: {
+        coords: nextStack,
+      },
+    });
   };
 
   const confirmDeletion = () => {

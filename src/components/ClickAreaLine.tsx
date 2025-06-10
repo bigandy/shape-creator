@@ -1,13 +1,15 @@
-import { useRef, useState, type MouseEvent, useContext } from "react";
+import { useRef, useState, type MouseEvent } from "react";
 
 import { DragAndDropPoints } from "@components/DragAndDropPoints";
 
 import type { Coords } from "@/Types";
 import { getCoords } from "@utils/coordinates";
 import { useStackContext } from "@hooks/useStackContext";
+import { useStackDispatch } from "@/hooks/useStackDispatch";
 
 export const ClickAreaLine = () => {
-  const { setStack, stack } = useStackContext();
+  const { stack } = useStackContext();
+  const dispatch = useStackDispatch();
 
   const clickAreaRef = useRef<HTMLInputElement>(null);
 
@@ -20,7 +22,10 @@ export const ClickAreaLine = () => {
   const handleClick = (event: MouseEvent<HTMLElement>) => {
     const coords = getCoords(event, clickAreaRef)!;
 
-    setStack([...stack, coords]);
+    dispatch({
+      type: "add",
+      payload: { coords: [coords] },
+    });
   };
 
   /**

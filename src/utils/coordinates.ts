@@ -2,10 +2,12 @@ import { type MouseEvent, type RefObject } from "react";
 
 import { type DragMoveEvent } from "@dnd-kit/core";
 
+import type { Coords } from "@/Types";
+
 export const getCoords = (
   event: MouseEvent<HTMLElement>,
   ref: RefObject<HTMLElement | null>
-) => {
+): Coords | undefined => {
   if (!ref.current) {
     return;
   }

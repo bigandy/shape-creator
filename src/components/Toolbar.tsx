@@ -8,6 +8,7 @@ import { backgroundImages } from "@/sharedImages";
 import type { DrawingMode } from "@/Types";
 
 import { useStackContext } from "@hooks/useStackContext";
+import { useStackDispatch } from "@/hooks/useStackDispatch";
 
 type ShapeOption = { label: string; id: DrawingMode };
 
@@ -46,12 +47,13 @@ export const Toolbar = ({
   setDrawingMode,
   handleImageChange,
 }: Props) => {
-  const { setSavedStack, savedStack, setStack, stack } = useStackContext();
+  const dispatch = useStackDispatch();
+  const { setSavedStack, savedStack, stack } = useStackContext();
 
   const handleChangeDrawingMode = (drawingMode: DrawingMode) => {
     if (stack.length > 0) {
       setSavedStack([...savedStack, { shape: drawingMode, coords: stack }]);
-      setStack([]);
+      dispatch({ type: "clear-stack" });
     }
     setDrawingMode(drawingMode);
   };
@@ -66,22 +68,20 @@ export const Toolbar = ({
 
   const handleSaveShape = () => {
     setSavedStack([...savedStack, { shape: drawingMode, coords: stack }]);
-    setStack([]);
+    dispatch({ type: "clear-stack" });
   };
 
   const handleRemoveLastPoint = () => {
-    setStack(
-      stack.filter((_, index, stackArray) => index !== stackArray.length - 1)
-    );
+    dispatch({ type: "remove-final" });
   };
 
   const handleResetCurrentStack = () => {
     // countRef.current = countRef.current + 1;
-    setStack([]);
+    dispatch({ type: "clear-stack" });
   };
 
   const handleDeleteAllStacks = () => {
-    setStack([]);
+    dispatch({ type: "clear-stack" });
     setSavedStack([]);
     // countRef.current = countRef.current + 1;
   };

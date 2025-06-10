@@ -1,5 +1,3 @@
-import { useContext } from "react";
-
 import { useStackContext } from "@hooks/useStackContext";
 
 import { Fragment } from "react/jsx-runtime";
@@ -13,7 +11,7 @@ export const OutputBox = ({
   backgroundImage,
 }: // precision,
 Props) => {
-  const { setStack, stack, clipPath } = useStackContext();
+  const { clipPath } = useStackContext();
 
   return (
     <Fragment>

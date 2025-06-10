@@ -9,7 +9,7 @@ import { useStackContext } from "@hooks/useStackContext";
 import { getCoords } from "@utils/coordinates";
 
 export const ClickAreaCircle = () => {
-  const { setStack, stack, handleSaveShapeToStack } = useStackContext();
+  const { stack, handleSaveShapeToStack } = useStackContext();
 
   const [recording, setRecording] = useState(false);
   const clickAreaRef = useRef<HTMLInputElement>(null);

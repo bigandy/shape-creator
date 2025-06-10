@@ -4,13 +4,16 @@ import { Draggable } from "@components/Draggable";
 
 import { getDragDropCoords } from "@utils/coordinates";
 import { useStackContext } from "@/hooks/useStackContext";
+import { useStackDispatch } from "@/hooks/useStackDispatch";
 
 type Props = {
   clickAreaRef: React.RefObject<HTMLInputElement | null>;
 };
 
 export const DragAndDropPoints = ({ clickAreaRef }: Props) => {
-  const { stack, setStack } = useStackContext();
+  const { stack } = useStackContext();
+
+  const dispatch = useStackDispatch();
 
   const handleDragMove = (event: DragMoveEvent) => {
     const coords = getDragDropCoords(event, clickAreaRef)!;
@@ -26,7 +29,10 @@ export const DragAndDropPoints = ({ clickAreaRef }: Props) => {
       }
     });
 
-    setStack(nextStack);
+    dispatch({
+      type: "update",
+      payload: { coords: nextStack },
+    });
   };
 
   return (

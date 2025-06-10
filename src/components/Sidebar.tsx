@@ -5,6 +5,7 @@ import type { DrawingMode } from "@/Types";
 import { SidebarItem } from "@components/SidebarItem";
 
 import { useStackContext } from "@hooks/useStackContext";
+import { useStackDispatch } from "@/hooks/useStackDispatch";
 
 type SidebarProps = {
   open: boolean;
@@ -21,7 +22,8 @@ export const Sidebar = ({
   editingNumber,
   setEditingNumber,
 }: SidebarProps) => {
-  const { setStack, stack, savedStack, setSavedStack } = useStackContext();
+  const { stack, savedStack, setSavedStack } = useStackContext();
+  const dispatch = useStackDispatch();
 
   const handleDeleteShape = (indexToDelete: number) => {
     setSavedStack((stack) =>
@@ -32,9 +34,12 @@ export const Sidebar = ({
   const onEditShape = (index: number) => {
     if (editingNumber === index) {
       setEditingNumber(undefined);
-      setStack([]);
+      dispatch({ type: "clear-stack" });
     } else {
-      setStack(savedStack[index].coords);
+      dispatch({
+        type: "update",
+        payload: { coords: savedStack[index].coords },
+      });
       setEditingNumber(index);
     }
   };
