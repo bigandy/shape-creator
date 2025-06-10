@@ -21,7 +21,7 @@ export const DragAndDropPoints = ({ clickAreaRef }: Props) => {
     //@ts-expect-error AHTODO: Fix this
     const indexToUpdate = event.activatorEvent.target.textContent - 1;
 
-    const nextStack = stack.map((c, i) => {
+    const updatedCoords = stack.map((c, i) => {
       if (i === indexToUpdate) {
         return coords;
       } else {
@@ -30,8 +30,8 @@ export const DragAndDropPoints = ({ clickAreaRef }: Props) => {
     });
 
     dispatch({
-      type: "update",
-      payload: { coords: nextStack },
+      type: "update-current-shape",
+      payload: { coords: updatedCoords },
     });
   };
 

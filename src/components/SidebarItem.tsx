@@ -24,7 +24,6 @@ export const SidebarItem = ({ x, y, currentIndex, editable = true }: Props) => {
 
   const handleDeletePoint = () =>
     dispatch({ type: "remove-index", payload: { index: currentIndex } });
-  // setStack(stack.filter((_, index) => index !== currentIndex));
 
   const handleInsertPoint = () => {
     // Insert a new point in between existing points. Put the new point half-way between the two existing points.
@@ -42,9 +41,8 @@ export const SidebarItem = ({ x, y, currentIndex, editable = true }: Props) => {
       newStackPoint,
       ...stack.slice(currentIndex + 1),
     ];
-    // setStack(nextStack);
     dispatch({
-      type: "update",
+      type: "update-current-shape",
       payload: {
         coords: nextStack,
       },
