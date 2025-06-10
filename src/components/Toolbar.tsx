@@ -2,7 +2,7 @@ import { Fragment, type ChangeEvent, useContext } from "react";
 import { backgroundImages } from "@/sharedImages";
 import type { DrawingMode } from "@/Types";
 
-import { useStackContext } from "@context/StackContext";
+import { useStackContext } from "@hooks/useStackContext";
 
 type ShapeOption = { label: string; id: DrawingMode };
 

@@ -9,7 +9,7 @@ import type { DrawingMode } from "@/Types";
 
 import { SidebarItem } from "@components/SidebarItem";
 
-import { useStackContext } from "@context/StackContext";
+import { useStackContext } from "@hooks/useStackContext";
 
 type SidebarProps = {
   open: boolean;

@@ -1,6 +1,6 @@
 import { useContext } from "react";
 
-import { useStackContext } from "@context/StackContext";
+import { useStackContext } from "@hooks/useStackContext";
 
 import { Fragment } from "react/jsx-runtime";
 

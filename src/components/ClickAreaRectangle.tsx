@@ -2,7 +2,7 @@ import React, { useContext, useRef, useState, type MouseEvent } from "react";
 
 import { DragAndDropPoints } from "@components/DragAndDropPoints";
 
-import { useStackContext } from "@context/StackContext";
+import { useStackContext } from "@hooks/useStackContext";
 
 import type { Coords } from "@/Types";
 

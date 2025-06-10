@@ -1,21 +1,13 @@
 import {
   createContext,
-  useContext,
   // useReducer,
-  useState,
   type Dispatch,
   type SetStateAction,
-  type PropsWithChildren,
 } from "react";
-
-import { useClipPathStyle } from "@hooks/useClipPathStyle";
 
 import { type DrawingMode, type Coords, type Shape } from "@/Types";
 
-export const StackContext = createContext<StackContextValue | null>(null);
-export const StackDispatchContext = createContext(null);
-
-type StackContextValue = {
+export type StackContextValue = {
   clipPath: string;
   stack: Coords[];
   savedStack: Shape[];
@@ -24,53 +16,10 @@ type StackContextValue = {
   handleSaveShapeToStack: (updatedState: Coords[], shape: DrawingMode) => void;
 };
 
-export function StackProvider({ children }: PropsWithChildren) {
-  //   const [tasks, dispatch] = useReducer(tasksReducer, initialTasks);
-
-  const [stack, setStack] = useState<Coords[]>([]);
-  const [savedStack, setSavedStack] = useState<Shape[]>([]);
-
-  // AHTODO: move this up to parent?
-  const clipPath = useClipPathStyle({
-    currentStack: stack,
-    savedStack,
-    precision: 2,
-  });
-
-  const handleSaveShapeToStack = (coords: Coords[], shape: DrawingMode) => {
-    setSavedStack((savedStack) => [...savedStack, { shape, coords }]);
-    setStack([]);
-  };
-
-  return (
-    <StackContext
-      value={
-        {
-          stack,
-          savedStack,
-          setStack,
-          setSavedStack,
-          clipPath,
-          handleSaveShapeToStack,
-        } as StackContextValue
-      }
-    >
-      {/* <StackDispatchContext value={dispatch}> */}
-      {children}
-      {/* </StackDispatchContext> */}
-    </StackContext>
-  );
-}
-
-export const useStackContext = () => {
-  const context = useContext(StackContext);
-
-  if (!context) {
-    throw new Error("useStackContext has to be used within <StackProvider>");
-  }
-
-  return context;
-};
+// From https://react.dev/learn/scaling-up-with-reducer-and-context
+// https://react-typescript-cheatsheet.netlify.app/docs/basic/getting-started/context/
+export const StackContext = createContext<StackContextValue | null>(null);
+// export const StackDispatchContext = createContext(null);
 
 // function stackReducer(tasks, action) {
 //   switch (action.type) {
