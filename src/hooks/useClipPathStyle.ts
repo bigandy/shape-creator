@@ -1,20 +1,19 @@
 import { useMemo } from "react";
 
-import type { Coords, Shape } from "@/Types";
+import type { Shape } from "@/Types";
 
 type Args = {
-  currentStack: Coords[];
   savedStack?: Shape[];
   precision?: number;
 };
 
 export const useClipPathStyle = ({
-  currentStack,
   savedStack = [],
   precision = 2,
 }: Args): string => {
   const clipPathStyle = useMemo(() => {
-    if (savedStack.length === 0 && currentStack.length === 0) {
+    console.log({ savedStack });
+    if (savedStack.length === 0) {
       return "";
     }
     let clipPathString = "shape(";
@@ -41,7 +40,7 @@ export const useClipPathStyle = ({
         }
       } else {
         if (stack.coords.length > 0) {
-          stack.coords.forEach((stackItem, stackIndex) => {
+          stack.coords.filter(Boolean).forEach((stackItem, stackIndex) => {
             const percentX = stackItem.percentX.toFixed(precision);
             const percentY = stackItem.percentY.toFixed(precision);
 
@@ -57,23 +56,27 @@ export const useClipPathStyle = ({
       }
     });
 
-    // This is the current in progress cutout area.
-    currentStack.forEach((item, index) => {
-      const percentX = item.percentX.toFixed(precision);
-      const percentY = item.percentY.toFixed(precision);
-      if (index === 0) {
-        clipPathString += `${
-          savedStack.length === 0 ? "from" : "move to"
-        } ${percentX}% ${percentY}%, `;
-      } else {
-        clipPathString += `line to ${percentX}% ${percentY}%, `;
-      }
-    });
+    // // This is the current in progress cutout area.
+    // currentStack.forEach((item, index) => {
+    //   const percentX = item.percentX.toFixed(precision);
+    //   const percentY = item.percentY.toFixed(precision);
+    //   if (index === 0) {
+    //     clipPathString += `${
+    //       savedStack.length === 0 ? "from" : "move to"
+    //     } ${percentX}% ${percentY}%, `;
+    //   } else {
+    //     clipPathString += `line to ${percentX}% ${percentY}%, `;
+    //   }
+    // });
 
     clipPathString += " close)";
 
     return clipPathString;
-  }, [savedStack, currentStack, precision]);
+  }, [
+    savedStack,
+    // currentStack,
+    precision,
+  ]);
 
   return clipPathStyle;
 };

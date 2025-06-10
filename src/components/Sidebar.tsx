@@ -1,28 +1,15 @@
-import { type Dispatch, Fragment, type SetStateAction } from "react";
-
-import type { DrawingMode } from "@/Types";
-
 import { SidebarItem } from "@components/SidebarItem";
 
-import { useStackContext } from "@hooks/useStackContext";
 import { useStackDispatch } from "@/hooks/useStackDispatch";
+import { useStackContext } from "@hooks/useStackContext";
 
 type SidebarProps = {
   open: boolean;
-  drawingMode: DrawingMode;
-  editingNumber: number | undefined;
-  setEditingNumber: Dispatch<SetStateAction<number | undefined>>;
   handleClose: () => void;
 };
 
-export const Sidebar = ({
-  open,
-  handleClose,
-  drawingMode,
-  editingNumber,
-  setEditingNumber,
-}: SidebarProps) => {
-  const { stack, savedStack } = useStackContext();
+export const Sidebar = ({ open, handleClose }: SidebarProps) => {
+  const { savedStack, editingNumber } = useStackContext();
   const dispatch = useStackDispatch();
 
   const handleDeleteShape = (indexToDelete: number) => {
@@ -36,14 +23,12 @@ export const Sidebar = ({
 
   const onEditShape = (index: number) => {
     if (editingNumber === index) {
-      setEditingNumber(undefined);
-      dispatch({ type: "clear-current-stack" });
+      dispatch({ type: "update-edit-index", payload: { index } });
     } else {
       dispatch({
-        type: "update-current-shape",
-        payload: { coords: savedStack[index].coords },
+        type: "update-edit-index",
+        payload: { index },
       });
-      setEditingNumber(index);
     }
   };
 
@@ -57,6 +42,7 @@ export const Sidebar = ({
         <button onClick={handleClose} className="close-button">
           Close
         </button>
+
         {savedStack.length > 0 ? (
           <ol>
             {/* <li>Have Stack</li> */}
@@ -71,9 +57,9 @@ export const Sidebar = ({
                 >
                   <p>
                     {stack.shape}{" "}
-                    {/* <button onClick={() => onEditShape(stackIndex)}>
+                    <button onClick={() => onEditShape(stackIndex)}>
                       Edit Shape?
-                    </button> */}
+                    </button>
                     <button onClick={() => onDeleteShape(stackIndex)}>
                       Delete Shape?
                     </button>
@@ -87,7 +73,7 @@ export const Sidebar = ({
                             x={percentX}
                             y={percentY}
                             currentIndex={index}
-                            editable={false}
+                            editable={canEdit}
                           />
                         );
                       })}
@@ -102,7 +88,7 @@ export const Sidebar = ({
         ) : (
           <p>No Shapes Added, Save One?</p>
         )}
-        {drawingMode === "line" && stack.length > 0 ? (
+        {/* {drawingMode === "line" && stack.length > 0 ? (
           <Fragment>
             <p>Current Shape</p>
             <ol>
@@ -120,7 +106,7 @@ export const Sidebar = ({
           </Fragment>
         ) : (
           <p>No points set. Add one?</p>
-        )}
+        )} */}
       </div>
     </div>
   );

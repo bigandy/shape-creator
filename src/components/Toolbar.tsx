@@ -31,7 +31,7 @@ type Props = {
   open: boolean;
   selectedImage?: string;
   drawingMode: DrawingMode;
-  setDrawingMode: Dispatch<SetStateAction<DrawingMode>>;
+  // setDrawingMode: Dispatch<SetStateAction<DrawingMode>>;
   handleEditToggle: () => void;
   handleImageChange: (e: ChangeEvent<HTMLSelectElement>) => void;
 };
@@ -40,17 +40,22 @@ export const Toolbar = ({
   open,
   selectedImage,
   drawingMode,
-  setDrawingMode,
+  // setDrawingMode,
   handleImageChange,
 }: Props) => {
   const dispatch = useStackDispatch();
-  const { stack } = useStackContext();
+  const { editingNumber, stackLength, savedStack } = useStackContext();
 
   const handleChangeDrawingMode = (drawingMode: DrawingMode) => {
-    if (stack.length > 0) {
-      handleSaveShape();
+    if (stackLength > 0) {
+      dispatch({
+        type: "change-shape",
+        payload: {
+          shape: drawingMode,
+        },
+      });
     }
-    setDrawingMode(drawingMode);
+    // setDrawingMode(drawingMode);
   };
 
   const handleRemoveLastShape = () => {
@@ -59,15 +64,15 @@ export const Toolbar = ({
     });
   };
 
-  const handleSaveShape = () => {
-    dispatch({
-      type: "save-shape",
-      payload: {
-        coords: stack,
-        shape: drawingMode,
-      },
-    });
-  };
+  // const handleUpdateShape = () => {
+  //   dispatch({
+  //     type: "update-shape",
+  //     payload: {
+  //       // coords: stack,
+  //       shape: drawingMode,
+  //     },
+  //   });
+  // };
 
   const handleRemoveLastPoint = () => {
     dispatch({ type: "remove-final-point" });
@@ -75,7 +80,7 @@ export const Toolbar = ({
 
   const handleResetCurrentStack = () => {
     // countRef.current = countRef.current + 1;
-    dispatch({ type: "clear-current-stack" });
+    dispatch({ type: "clear-current-shape" });
   };
 
   const handleDeleteAllStacks = () => {
@@ -91,6 +96,7 @@ export const Toolbar = ({
             Close
           </button>
         </div> */}
+        <div>Shape Number: {editingNumber}</div>
 
         <div className="buttons">
           {shapeOptions.map((option) => {
@@ -132,7 +138,7 @@ export const Toolbar = ({
               <button onClick={handleResetCurrentStack}>
                 Reset Current Shape
               </button>
-              <button onClick={handleSaveShape}>Save Shape</button>
+              {/* <button onClick={handleSaveShape}>Save Shape</button> */}
             </Fragment>
           )}
 

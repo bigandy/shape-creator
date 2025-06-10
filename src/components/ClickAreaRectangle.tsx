@@ -2,7 +2,6 @@ import React, { useRef, useState, type MouseEvent } from "react";
 
 import { DragAndDropPoints } from "@components/DragAndDropPoints";
 
-import { useStackContext } from "@hooks/useStackContext";
 import { useStackDispatch } from "@hooks/useStackDispatch";
 
 import type { Coords } from "@/Types";
@@ -15,8 +14,6 @@ export const ClickAreaRectangle = () => {
   const clickAreaRef = useRef<HTMLInputElement>(null);
   const [initialPoint, setInitialPoint] = useState<Coords | null>(null);
   const [finalPoint, setFinalPoint] = useState<Coords | null>(null);
-
-  const { stack } = useStackContext();
 
   const drawRectangle = () => {
     if (initialPoint === null || finalPoint === null) {
@@ -42,7 +39,7 @@ export const ClickAreaRectangle = () => {
         percentY: initialPoint.percentY,
       },
     ];
-    const updatedState = [...stack, ...points];
+    const updatedState = [...points];
 
     setInitialPoint(null);
     setFinalPoint(null);

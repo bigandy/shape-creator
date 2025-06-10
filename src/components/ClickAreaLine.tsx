@@ -8,7 +8,7 @@ import { useStackContext } from "@hooks/useStackContext";
 import { useStackDispatch } from "@/hooks/useStackDispatch";
 
 export const ClickAreaLine = () => {
-  const { stack } = useStackContext();
+  const { stackLength } = useStackContext();
   const dispatch = useStackDispatch();
 
   const clickAreaRef = useRef<HTMLInputElement>(null);
@@ -23,8 +23,8 @@ export const ClickAreaLine = () => {
     const coords = getCoords(event, clickAreaRef)!;
 
     dispatch({
-      type: "add",
-      payload: { coords: [coords] },
+      type: "add-point",
+      payload: { coords },
     });
   };
 
@@ -58,7 +58,7 @@ export const ClickAreaLine = () => {
             top: mousePosition?.percentY + "%",
           }}
         >
-          {stack.length + 1}
+          {stackLength + 1}
         </div>
       )}
     </div>

@@ -7,11 +7,10 @@ type Props = {
   // precision: number;
 };
 
-export const OutputBox = ({
-  backgroundImage,
-}: // precision,
-Props) => {
+export const OutputBox = ({ backgroundImage }: Props) => {
   const { clipPath } = useStackContext();
+
+  console.log({ clipPath });
 
   return (
     <Fragment>

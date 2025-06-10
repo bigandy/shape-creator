@@ -12,7 +12,7 @@ type Props = {
 };
 
 export const SidebarItem = ({ x, y, currentIndex, editable = true }: Props) => {
-  const { stack } = useStackContext();
+  const { savedStack, editingNumber } = useStackContext();
   const dispatch = useStackDispatch();
 
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -26,10 +26,11 @@ export const SidebarItem = ({ x, y, currentIndex, editable = true }: Props) => {
     dispatch({ type: "remove-index", payload: { index: currentIndex } });
 
   const handleInsertPoint = () => {
+    const currentStack = savedStack[editingNumber].coords;
     // Insert a new point in between existing points. Put the new point half-way between the two existing points.
-    const { percentX: prevX, percentY: prevY } = stack[currentIndex];
+    const { percentX: prevX, percentY: prevY } = currentStack[currentIndex];
     const { percentX: nextX, percentY: nextY } =
-      stack[currentIndex + 1] ?? stack[0];
+      currentStack[currentIndex + 1] ?? currentStack[0];
 
     const percentY = Math.abs(prevY - nextY) / 2 + Math.min(prevY, nextY);
     const percentX = Math.abs(prevX - nextX) / 2 + Math.min(prevX, nextX);
@@ -37,9 +38,9 @@ export const SidebarItem = ({ x, y, currentIndex, editable = true }: Props) => {
     const newStackPoint = { percentX, percentY };
 
     const nextStack = [
-      ...stack.slice(0, currentIndex + 1),
+      ...currentStack.slice(0, currentIndex + 1),
       newStackPoint,
-      ...stack.slice(currentIndex + 1),
+      ...currentStack.slice(currentIndex + 1),
     ];
     dispatch({
       type: "update-current-shape",
@@ -50,7 +51,6 @@ export const SidebarItem = ({ x, y, currentIndex, editable = true }: Props) => {
   };
 
   const confirmDeletion = () => {
-    console.log("delete point");
     handleDeletePoint();
   };
 

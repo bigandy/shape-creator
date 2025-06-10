@@ -17,6 +17,7 @@ import { StackProvider } from "@context/StackProvider";
 import "./App.css";
 
 import { type DrawingMode } from "./Types";
+import { useStackContext } from "./hooks/useStackContext";
 
 function App() {
   const countRef = useRef(0);
@@ -27,11 +28,13 @@ function App() {
   const [backgroundImage, setBackgroundImage] = useState(
     backgroundImages[0].url
   );
-  const [drawingMode, setDrawingMode] = useState<DrawingMode>("line");
+  // const [drawingMode, setDrawingMode] = useState<DrawingMode>("line");
 
-  const [editingNumber, setEditingNumber] = useState<undefined | number>(
-    undefined
-  );
+  const { editingNumber, savedStack } = useStackContext();
+
+  console.log({ editingNumber });
+
+  const drawingMode = savedStack[editingNumber]?.shape || "line";
 
   const handleEditToggle = () => {
     setSidebarOpen((open) => !open);
@@ -46,6 +49,7 @@ function App() {
   const handleShowCodeToggle = () => setCodeViewerOpen((o) => !o);
   const handleToolbarToggle = () => setToolbarOpen((o) => !o);
   const handleSidebarToggle = () => setSidebarOpen((o) => !o);
+  const handleCodeViewerClose = () => setCodeViewerOpen(false);
 
   return (
     <Fragment>
@@ -53,7 +57,7 @@ function App() {
         open={toolbarOpen}
         selectedImage={backgroundImage}
         drawingMode={drawingMode}
-        setDrawingMode={setDrawingMode}
+        // setDrawingMode={setDrawingMode}
         handleEditToggle={handleEditToggle}
         handleImageChange={handleImageChange}
       />
@@ -65,10 +69,7 @@ function App() {
         <OutputBox backgroundImage={backgroundImage} />
       </main>
 
-      <CodeViewer
-        open={codeViewerOpen}
-        handleClose={() => setCodeViewerOpen(false)}
-      />
+      <CodeViewer open={codeViewerOpen} handleClose={handleCodeViewerClose} />
 
       <button className="toggle-code-button" onClick={handleShowCodeToggle}>
         {codeViewerOpen ? "Hide" : "Show"} Code
@@ -78,13 +79,7 @@ function App() {
         {toolbarOpen ? "Hide" : "Show"} Toolbar
       </button>
 
-      <Sidebar
-        open={sidebarOpen}
-        handleClose={handleCloseSidebar}
-        drawingMode={drawingMode}
-        editingNumber={editingNumber}
-        setEditingNumber={setEditingNumber}
-      />
+      <Sidebar open={sidebarOpen} handleClose={handleCloseSidebar} />
 
       <button className="toggle-sidebar-button" onClick={handleSidebarToggle}>
         {sidebarOpen ? "Hide" : "Show"} Sidebar

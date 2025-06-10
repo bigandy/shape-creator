@@ -11,17 +11,23 @@ type Props = {
 };
 
 export const DragAndDropPoints = ({ clickAreaRef }: Props) => {
-  const { stack } = useStackContext();
+  const { savedStack, editingNumber } = useStackContext();
+
+  const activeStack = savedStack[editingNumber];
 
   const dispatch = useStackDispatch();
 
   const handleDragMove = (event: DragMoveEvent) => {
     const coords = getDragDropCoords(event, clickAreaRef)!;
 
+    if (!activeStack?.coords.length) {
+      return;
+    }
+
     //@ts-expect-error AHTODO: Fix this
     const indexToUpdate = event.activatorEvent.target.textContent - 1;
 
-    const updatedCoords = stack.map((c, i) => {
+    const updatedCoords = activeStack.coords.map((c, i) => {
       if (i === indexToUpdate) {
         return coords;
       } else {
@@ -37,8 +43,8 @@ export const DragAndDropPoints = ({ clickAreaRef }: Props) => {
 
   return (
     <DndContext onDragMove={handleDragMove}>
-      {stack.length > 0
-        ? stack.map((item, index) => {
+      {activeStack?.coords.length > 0
+        ? activeStack.coords.map((item, index) => {
             return (
               <Draggable
                 index={index}

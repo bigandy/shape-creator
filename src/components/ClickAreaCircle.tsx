@@ -4,13 +4,10 @@ import { DragAndDropPoints } from "@components/DragAndDropPoints";
 
 import type { Coords } from "@/Types";
 
-import { useStackContext } from "@hooks/useStackContext";
-
 import { getCoords } from "@utils/coordinates";
 import { useStackDispatch } from "@hooks/useStackDispatch";
 
 export const ClickAreaCircle = () => {
-  const { stack } = useStackContext();
   const dispatch = useStackDispatch();
 
   const [recording, setRecording] = useState(false);
@@ -25,10 +22,9 @@ export const ClickAreaCircle = () => {
 
     const points = [
       { percentX: initialPoint.percentX, percentY: initialPoint.percentY },
-
       { percentX: finalPoint.percentX, percentY: finalPoint.percentY },
     ];
-    const updatedState = [...stack, ...points];
+    const updatedState = [...points];
 
     setInitialPoint(null);
     setFinalPoint(null);
