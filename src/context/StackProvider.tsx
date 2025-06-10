@@ -1,10 +1,4 @@
-import {
-  useReducer,
-  useState,
-  type PropsWithChildren,
-  type Dispatch,
-  type SetStateAction,
-} from "react";
+import { useReducer, type PropsWithChildren } from "react";
 
 import { useClipPathStyle } from "@hooks/useClipPathStyle";
 
@@ -16,14 +10,18 @@ export type StackContextValue = {
   clipPath: string;
   stack: Coords[];
   savedStack: Shape[];
-  setSavedStack: Dispatch<SetStateAction<Shape[]>>;
-  handleSaveShapeToStack: (updatedState: Coords[], shape: DrawingMode) => void;
 };
 
 export type StackReducerAction =
-  | { type: string; payload: { coords: Coords[]; index: number } } // Is this needed?
   | {
-      type: "clear-stack";
+      type: string;
+      payload: { coords: Coords[]; index: number; shape: DrawingMode };
+    } // Is this needed?
+  | {
+      type: "clear-current-stack";
+    }
+  | {
+      type: "clear-all-stacks";
     }
   | {
       type: "add";
@@ -32,39 +30,105 @@ export type StackReducerAction =
       };
     }
   | {
-      type: "update";
+      type: "update-current-shape";
       payload: {
         coords: Coords[];
       };
     }
   | {
-      type: "remove-final";
+      type: "remove-final-point";
+    }
+  | {
+      type: "remove-final-shape";
     }
   | {
       type: "remove-index";
       payload: {
         index: number;
       };
+    }
+  | {
+      type: "save-shape";
+      payload: {
+        shape: DrawingMode;
+        coords: Coords[];
+      };
+    }
+  | {
+      type: "delete-shape";
+      payload: {
+        index: number;
+      };
     };
 
-function stackReducer(stack: Coords[], action: StackReducerAction): Coords[] {
+type ReducerState = {
+  currentStack: Coords[];
+  savedStack: Shape[];
+};
+
+function stackReducer(
+  state: ReducerState,
+  action: StackReducerAction
+): ReducerState {
   switch (action.type) {
-    case "clear-stack": {
-      return [];
+    case "clear-current-stack": {
+      return { ...state, currentStack: [] };
+    }
+    case "clear-all-stacks": {
+      return { currentStack: [], savedStack: [] };
     }
     case "add": {
-      return [...stack, ...action.payload.coords];
+      return {
+        ...state,
+        currentStack: [...state.currentStack, ...action.payload.coords],
+      };
     }
-    case "update": {
-      return action.payload.coords;
+    case "update-current-shape": {
+      return {
+        ...state,
+        currentStack: action.payload.coords,
+      };
     }
-    case "remove-final": {
-      return stack.filter(
-        (_, index, stackArray) => index !== stackArray.length - 1
-      );
+    case "remove-final-point": {
+      return {
+        ...state,
+        currentStack: state.currentStack.filter(
+          (_, index, stackArray) => index !== stackArray.length - 1
+        ),
+      };
     }
     case "remove-index": {
-      return stack.filter((_, index) => index !== action.payload.index);
+      return {
+        ...state,
+        currentStack: state.currentStack.filter(
+          (_, index) => index !== action.payload.index
+        ),
+      };
+    }
+    case "save-shape": {
+      return {
+        savedStack: [
+          ...state.savedStack,
+          { shape: action.payload.shape, coords: action.payload.coords },
+        ],
+        currentStack: [],
+      };
+    }
+    case "remove-final-shape": {
+      return {
+        ...state,
+        savedStack: state.savedStack.filter(
+          (_, index, stackArray) => index !== stackArray.length - 1
+        ),
+      };
+    }
+    case "delete-shape": {
+      return {
+        ...state,
+        savedStack: state.savedStack.filter(
+          (_, index) => index !== action.payload.index
+        ),
+      };
     }
     default: {
       throw Error("Unknown action: " + action.type);
@@ -72,34 +136,25 @@ function stackReducer(stack: Coords[], action: StackReducerAction): Coords[] {
   }
 }
 
-const initialState: Coords[] = [];
-
 export function StackProvider({ children }: PropsWithChildren) {
-  const [stack, dispatch] = useReducer(stackReducer, initialState);
-
-  // const [stack, setStack] = useState<Coords[]>([]);
-  const [savedStack, setSavedStack] = useState<Shape[]>([]);
+  const [{ savedStack, currentStack }, dispatch] = useReducer(stackReducer, {
+    currentStack: [],
+    savedStack: [],
+  });
 
   const clipPath = useClipPathStyle({
-    currentStack: stack,
+    currentStack,
     savedStack,
     precision: 2,
   });
-
-  const handleSaveShapeToStack = (coords: Coords[], shape: DrawingMode) => {
-    setSavedStack((savedStack) => [...savedStack, { shape, coords }]);
-    dispatch({ type: "clear-stack" });
-  };
 
   return (
     <StackContext
       value={
         {
-          stack,
+          stack: currentStack,
           savedStack,
-          setSavedStack,
           clipPath,
-          handleSaveShapeToStack,
         } as StackContextValue
       }
     >

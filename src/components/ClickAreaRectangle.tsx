@@ -3,18 +3,20 @@ import React, { useRef, useState, type MouseEvent } from "react";
 import { DragAndDropPoints } from "@components/DragAndDropPoints";
 
 import { useStackContext } from "@hooks/useStackContext";
+import { useStackDispatch } from "@hooks/useStackDispatch";
 
 import type { Coords } from "@/Types";
 
 import { getCoords } from "@utils/coordinates";
 
 export const ClickAreaRectangle = () => {
+  const dispatch = useStackDispatch();
   const [recording, setRecording] = useState(false);
   const clickAreaRef = useRef<HTMLInputElement>(null);
   const [initialPoint, setInitialPoint] = useState<Coords | null>(null);
   const [finalPoint, setFinalPoint] = useState<Coords | null>(null);
 
-  const { stack, handleSaveShapeToStack } = useStackContext();
+  const { stack } = useStackContext();
 
   const drawRectangle = () => {
     if (initialPoint === null || finalPoint === null) {
@@ -41,12 +43,17 @@ export const ClickAreaRectangle = () => {
       },
     ];
     const updatedState = [...stack, ...points];
-    // setStack(updatedState);
 
     setInitialPoint(null);
     setFinalPoint(null);
 
-    handleSaveShapeToStack(updatedState, "rectangle");
+    dispatch({
+      type: "save-shape",
+      payload: {
+        coords: updatedState,
+        shape: "rectangle",
+      },
+    });
   };
 
   const handleMouseDown = (e: MouseEvent<HTMLDivElement>) => {

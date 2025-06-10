@@ -7,9 +7,11 @@ import type { Coords } from "@/Types";
 import { useStackContext } from "@hooks/useStackContext";
 
 import { getCoords } from "@utils/coordinates";
+import { useStackDispatch } from "@hooks/useStackDispatch";
 
 export const ClickAreaCircle = () => {
-  const { stack, handleSaveShapeToStack } = useStackContext();
+  const { stack } = useStackContext();
+  const dispatch = useStackDispatch();
 
   const [recording, setRecording] = useState(false);
   const clickAreaRef = useRef<HTMLInputElement>(null);
@@ -34,7 +36,13 @@ export const ClickAreaCircle = () => {
     // AHTODO: THis currently only works exactly correctly when the background is a square i.e. height === width. Need to investigate why!
     // Possibly a difference between pixel value at recording time and percent in this function??
 
-    handleSaveShapeToStack(updatedState, "circle");
+    dispatch({
+      type: "save-shape",
+      payload: {
+        coords: updatedState,
+        shape: "circle",
+      },
+    });
   };
 
   const handleMouseDown = (e: MouseEvent<HTMLDivElement>) => {

@@ -22,22 +22,25 @@ export const Sidebar = ({
   editingNumber,
   setEditingNumber,
 }: SidebarProps) => {
-  const { stack, savedStack, setSavedStack } = useStackContext();
+  const { stack, savedStack } = useStackContext();
   const dispatch = useStackDispatch();
 
   const handleDeleteShape = (indexToDelete: number) => {
-    setSavedStack((stack) =>
-      stack.filter((_, index) => index !== indexToDelete)
-    );
+    dispatch({
+      type: "delete-shape",
+      payload: {
+        index: indexToDelete,
+      },
+    });
   };
 
   const onEditShape = (index: number) => {
     if (editingNumber === index) {
       setEditingNumber(undefined);
-      dispatch({ type: "clear-stack" });
+      dispatch({ type: "clear-current-stack" });
     } else {
       dispatch({
-        type: "update",
+        type: "update-current-shape",
         payload: { coords: savedStack[index].coords },
       });
       setEditingNumber(index);
@@ -64,6 +67,7 @@ export const Sidebar = ({
                   className={
                     canEdit ? `sidebar-shape editable-shape` : "sidebar-shape"
                   }
+                  key={`savedStackItem-${stackIndex}`}
                 >
                   <p>
                     {stack.shape}{" "}

@@ -50,11 +50,9 @@ function App() {
   return (
     <Fragment>
       <Toolbar
-        stackActive={true} // AHTODO: fix
         open={toolbarOpen}
         selectedImage={backgroundImage}
         drawingMode={drawingMode}
-        canRemoveShapes={true} // AHTODO: fix
         setDrawingMode={setDrawingMode}
         handleEditToggle={handleEditToggle}
         handleImageChange={handleImageChange}

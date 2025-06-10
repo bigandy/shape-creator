@@ -31,8 +31,6 @@ type Props = {
   open: boolean;
   selectedImage?: string;
   drawingMode: DrawingMode;
-  stackActive: boolean;
-  canRemoveShapes: boolean;
   setDrawingMode: Dispatch<SetStateAction<DrawingMode>>;
   handleEditToggle: () => void;
   handleImageChange: (e: ChangeEvent<HTMLSelectElement>) => void;
@@ -42,47 +40,46 @@ export const Toolbar = ({
   open,
   selectedImage,
   drawingMode,
-  stackActive,
-  canRemoveShapes,
   setDrawingMode,
   handleImageChange,
 }: Props) => {
   const dispatch = useStackDispatch();
-  const { setSavedStack, savedStack, stack } = useStackContext();
+  const { stack } = useStackContext();
 
   const handleChangeDrawingMode = (drawingMode: DrawingMode) => {
     if (stack.length > 0) {
-      setSavedStack([...savedStack, { shape: drawingMode, coords: stack }]);
-      dispatch({ type: "clear-stack" });
+      handleSaveShape();
     }
     setDrawingMode(drawingMode);
   };
 
   const handleRemoveLastShape = () => {
-    setSavedStack((savedStack) =>
-      savedStack.filter(
-        (_, index, stackArray) => index !== stackArray.length - 1
-      )
-    );
+    dispatch({
+      type: "remove-final-shape",
+    });
   };
 
   const handleSaveShape = () => {
-    setSavedStack([...savedStack, { shape: drawingMode, coords: stack }]);
-    dispatch({ type: "clear-stack" });
+    dispatch({
+      type: "save-shape",
+      payload: {
+        coords: stack,
+        shape: drawingMode,
+      },
+    });
   };
 
   const handleRemoveLastPoint = () => {
-    dispatch({ type: "remove-final" });
+    dispatch({ type: "remove-final-point" });
   };
 
   const handleResetCurrentStack = () => {
     // countRef.current = countRef.current + 1;
-    dispatch({ type: "clear-stack" });
+    dispatch({ type: "clear-current-stack" });
   };
 
   const handleDeleteAllStacks = () => {
-    dispatch({ type: "clear-stack" });
-    setSavedStack([]);
+    dispatch({ type: "clear-all-stacks" });
     // countRef.current = countRef.current + 1;
   };
 
@@ -127,25 +124,19 @@ export const Toolbar = ({
         </div>
 
         <div className="buttons">
-          <button onClick={handleRemoveLastShape} disabled={!canRemoveShapes}>
-            Remove Last Shape
-          </button>
+          <button onClick={handleRemoveLastShape}>Remove Last Shape</button>
 
           {drawingMode === "line" && (
             <Fragment>
-              <button onClick={handleRemoveLastPoint} disabled={!stackActive}>
-                Remove Last Point
-              </button>
-              <button onClick={handleResetCurrentStack} disabled={!stackActive}>
+              <button onClick={handleRemoveLastPoint}>Remove Last Point</button>
+              <button onClick={handleResetCurrentStack}>
                 Reset Current Shape
               </button>
               <button onClick={handleSaveShape}>Save Shape</button>
             </Fragment>
           )}
 
-          <button onClick={handleDeleteAllStacks} disabled={!stackActive}>
-            Delete All Shapes
-          </button>
+          <button onClick={handleDeleteAllStacks}>Delete All Shapes</button>
         </div>
       </div>
     </div>
