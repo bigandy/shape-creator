@@ -1,4 +1,9 @@
-import { Fragment, type ChangeEvent, useContext } from "react";
+import {
+  Fragment,
+  type ChangeEvent,
+  type Dispatch,
+  type SetStateAction,
+} from "react";
 import { backgroundImages } from "@/sharedImages";
 import type { DrawingMode } from "@/Types";
 
@@ -27,7 +32,7 @@ type Props = {
   drawingMode: DrawingMode;
   stackActive: boolean;
   canRemoveShapes: boolean;
-  handleChangeDrawingMode: (drawingMode: DrawingMode) => void;
+  setDrawingMode: Dispatch<SetStateAction<DrawingMode>>;
   handleEditToggle: () => void;
   handleImageChange: (e: ChangeEvent<HTMLSelectElement>) => void;
 };
@@ -38,10 +43,18 @@ export const Toolbar = ({
   drawingMode,
   stackActive,
   canRemoveShapes,
-  handleChangeDrawingMode,
+  setDrawingMode,
   handleImageChange,
 }: Props) => {
-  const { setSavedStack, savedStack, setStack } = useStackContext();
+  const { setSavedStack, savedStack, setStack, stack } = useStackContext();
+
+  const handleChangeDrawingMode = (drawingMode: DrawingMode) => {
+    if (stack.length > 0) {
+      setSavedStack([...savedStack, { shape: drawingMode, coords: stack }]);
+      setStack([]);
+    }
+    setDrawingMode(drawingMode);
+  };
 
   const handleRemoveLastShape = () => {
     setSavedStack((savedStack) =>

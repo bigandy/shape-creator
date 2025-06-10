@@ -1,22 +1,22 @@
-import { Fragment, useState, useRef, type ChangeEvent } from "react";
+import { Fragment, useRef, useState, type ChangeEvent } from "react";
 
 import { Toaster } from "react-hot-toast";
 
-import { OutputBox } from "@components/OutputBox";
-import { ClickAreaLine } from "@components/ClickAreaLine";
-import { Toolbar } from "@components/Toolbar";
-import { Sidebar } from "@components/Sidebar";
-import { CodeViewer } from "@components/CodeViewer";
-import { ClickAreaRectangle } from "@components/ClickAreaRectangle";
 import { ClickAreaCircle } from "@components/ClickAreaCircle";
+import { ClickAreaLine } from "@components/ClickAreaLine";
+import { ClickAreaRectangle } from "@components/ClickAreaRectangle";
+import { CodeViewer } from "@components/CodeViewer";
+import { OutputBox } from "@components/OutputBox";
+import { Sidebar } from "@components/Sidebar";
+import { Toolbar } from "@components/Toolbar";
 
 import { backgroundImages } from "@/sharedImages";
 
-import { StackProvider } from "@context/StackContext";
+import { StackProvider } from "@context/StackProvider";
 
 import "./App.css";
 
-import { type DrawingMode, type Coords } from "./Types";
+import { type DrawingMode } from "./Types";
 
 function App() {
   const countRef = useRef(0);
@@ -43,15 +43,6 @@ function App() {
     setBackgroundImage(e.target.value);
   };
 
-  const handleChangeDrawingMode = (drawingMode: DrawingMode) => {
-    if (stack.length > 0) {
-      setSavedStack([...savedStack, { shape: drawingMode, coords: stack }]);
-      setStack([]);
-    }
-
-    setDrawingMode(drawingMode);
-  };
-
   const handleShowCodeToggle = () => setCodeViewerOpen((o) => !o);
   const handleToolbarToggle = () => setToolbarOpen((o) => !o);
   const handleSidebarToggle = () => setSidebarOpen((o) => !o);
@@ -64,13 +55,12 @@ function App() {
         selectedImage={backgroundImage}
         drawingMode={drawingMode}
         canRemoveShapes={true} // AHTODO: fix
-        handleChangeDrawingMode={handleChangeDrawingMode}
+        setDrawingMode={setDrawingMode}
         handleEditToggle={handleEditToggle}
         handleImageChange={handleImageChange}
       />
       <main>
         {drawingMode === "line" && <ClickAreaLine key={countRef.current} />}
-
         {drawingMode === "rectangle" && <ClickAreaRectangle />}
         {drawingMode === "circle" && <ClickAreaCircle key={countRef.current} />}
 

@@ -1,9 +1,4 @@
-import {
-  type Dispatch,
-  Fragment,
-  type SetStateAction,
-  useContext,
-} from "react";
+import { type Dispatch, Fragment, type SetStateAction } from "react";
 
 import type { DrawingMode } from "@/Types";
 
@@ -26,8 +21,7 @@ export const Sidebar = ({
   editingNumber,
   setEditingNumber,
 }: SidebarProps) => {
-  const { setStack, stack, savedStack, handleSaveShapeToStack } =
-    useStackContext();
+  const { setStack, stack, savedStack, setSavedStack } = useStackContext();
 
   const handleDeleteShape = (indexToDelete: number) => {
     setSavedStack((stack) =>
