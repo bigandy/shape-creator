@@ -3,7 +3,7 @@
 ## State
 
 - [ ] Move all shape setting into one state - should make editing easier?!
-- [ ] State into a Context?
+- [x] State into a Context?
 
 ## Sidebar - Moving / Editing Existing Shapes
 

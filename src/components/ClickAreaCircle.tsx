@@ -80,11 +80,7 @@ export const ClickAreaCircle = () => {
         />
       )}
 
-      <DragAndDropPoints
-        stack={stack}
-        setStack={setStack}
-        clickAreaRef={clickAreaRef}
-      />
+      <DragAndDropPoints clickAreaRef={clickAreaRef} />
     </div>
   );
 };

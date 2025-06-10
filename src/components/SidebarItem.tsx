@@ -1,34 +1,27 @@
-import { Fragment, type SetStateAction, type Dispatch, useState } from "react";
+import { Fragment, useState } from "react";
 
-import type { Coords } from "@/Types";
-
+import { useStackContext } from "@/hooks/useStackContext";
 import { Dialog } from "@components/Dialog";
 
 type Props = {
   x: number;
   y: number;
-  stack: Coords[];
-  setStack: Dispatch<SetStateAction<Coords[]>>;
   currentIndex: number;
   editable?: boolean;
-  handleDeletePoint?: (index: number) => void;
 };
 
-export const SidebarItem = ({
-  x,
-  y,
-  stack,
-  setStack,
-  currentIndex,
-  editable = true,
-  handleDeletePoint,
-}: Props) => {
+export const SidebarItem = ({ x, y, currentIndex, editable = true }: Props) => {
+  const { stack, setStack } = useStackContext();
+
   const [dialogOpen, setDialogOpen] = useState(false);
   const deletePoint = () => {
     // setDialogOpen(true);
     // AHTODO: the dialog!
     confirmDeletion();
   };
+
+  const handleDeletePoint = () =>
+    setStack(stack.filter((_, index) => index !== currentIndex));
 
   const handleInsertPoint = () => {
     // Insert a new point in between existing points. Put the new point half-way between the two existing points.
@@ -51,7 +44,7 @@ export const SidebarItem = ({
 
   const confirmDeletion = () => {
     console.log("delete point");
-    handleDeletePoint?.(currentIndex);
+    handleDeletePoint();
   };
 
   const handleDialogClose = () => setDialogOpen(false);

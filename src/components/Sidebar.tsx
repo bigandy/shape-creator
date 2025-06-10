@@ -43,9 +43,6 @@ export const Sidebar = ({
     handleDeleteShape(index);
   };
 
-  const handleDeletePoint = (indexToDelete: number) =>
-    setStack(stack.filter((_, index) => index !== indexToDelete));
-
   return (
     <div className={`sidebar ${open ? "sidebar--open" : ""}`}>
       <div className="sidebar-inner">
@@ -80,8 +77,6 @@ export const Sidebar = ({
                             key={`item-${index}`}
                             x={percentX}
                             y={percentY}
-                            stack={stack.coords}
-                            setStack={setStack}
                             currentIndex={index}
                             editable={false}
                           />
@@ -108,10 +103,7 @@ export const Sidebar = ({
                     key={`item-${index}`}
                     x={percentX}
                     y={percentY}
-                    stack={stack}
-                    setStack={setStack}
                     currentIndex={index}
-                    handleDeletePoint={handleDeletePoint}
                   />
                 );
               })}

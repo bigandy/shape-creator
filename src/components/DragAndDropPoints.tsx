@@ -1,19 +1,17 @@
-import { type Dispatch, type SetStateAction } from "react";
 import { DndContext, type DragMoveEvent } from "@dnd-kit/core";
-
-import type { Coords } from "@/Types";
 
 import { Draggable } from "@components/Draggable";
 
 import { getDragDropCoords } from "@utils/coordinates";
+import { useStackContext } from "@/hooks/useStackContext";
 
 type Props = {
-  setStack: Dispatch<SetStateAction<Coords[]>>;
-  stack: Coords[];
   clickAreaRef: React.RefObject<HTMLInputElement | null>;
 };
 
-export const DragAndDropPoints = ({ stack, setStack, clickAreaRef }: Props) => {
+export const DragAndDropPoints = ({ clickAreaRef }: Props) => {
+  const { stack, setStack } = useStackContext();
+
   const handleDragMove = (event: DragMoveEvent) => {
     const coords = getDragDropCoords(event, clickAreaRef)!;
 

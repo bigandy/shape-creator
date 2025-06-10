@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState, type MouseEvent } from "react";
+import React, { useRef, useState, type MouseEvent } from "react";
 
 import { DragAndDropPoints } from "@components/DragAndDropPoints";
 
@@ -14,7 +14,7 @@ export const ClickAreaRectangle = () => {
   const [initialPoint, setInitialPoint] = useState<Coords | null>(null);
   const [finalPoint, setFinalPoint] = useState<Coords | null>(null);
 
-  const { setStack, stack, handleSaveShapeToStack } = useStackContext();
+  const { stack, handleSaveShapeToStack } = useStackContext();
 
   const drawRectangle = () => {
     if (initialPoint === null || finalPoint === null) {
@@ -89,11 +89,7 @@ export const ClickAreaRectangle = () => {
         <MiddlePoint initialPoint={initialPoint} finalPoint={finalPoint} />
       )}
 
-      <DragAndDropPoints
-        stack={stack}
-        setStack={setStack}
-        clickAreaRef={clickAreaRef}
-      />
+      <DragAndDropPoints clickAreaRef={clickAreaRef} />
     </div>
   );
 };
