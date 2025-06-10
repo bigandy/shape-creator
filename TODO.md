@@ -3,6 +3,7 @@
 ## State
 
 - [ ] Move all shape setting into one state - should make editing easier?!
+- [x] Use useReducer for Context
 - [x] State into a Context?
 
 ## Sidebar - Moving / Editing Existing Shapes
