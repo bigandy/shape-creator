@@ -13,9 +13,7 @@ type Props = {
 };
 
 export const DragAndDropPoints = ({ clickAreaRef, drawingMode }: Props) => {
-  const { savedStack, editingNumber } = useStackContext();
-
-  const activeStack = savedStack[editingNumber];
+  const { activeStack } = useStackContext();
 
   const dispatch = useStackDispatch();
 

@@ -12,7 +12,7 @@ import { useStackDispatch } from "@hooks/useStackDispatch";
 export const ClickAreaCircle = () => {
   const dispatch = useStackDispatch();
 
-  const { editingNumber, savedStack } = useStackContext();
+  const { activeStack } = useStackContext();
 
   const [recording, setRecording] = useState(false);
   const clickAreaRef = useRef<HTMLInputElement>(null);
@@ -74,9 +74,9 @@ export const ClickAreaCircle = () => {
   };
 
   // const isEditing = savedStack[editingNumber]?.coords.length > 0;
-  const isEditing = false;
+  // const isEditing = false;
 
-  if (isEditing) {
+  if (activeStack) {
     return (
       <div
         className="click-area"

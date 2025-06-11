@@ -16,7 +16,7 @@ export const ClickAreaRectangle = () => {
   const [initialPoint, setInitialPoint] = useState<Coords | null>(null);
   const [finalPoint, setFinalPoint] = useState<Coords | null>(null);
 
-  const { editingNumber, savedStack } = useStackContext();
+  const { activeStack } = useStackContext();
 
   const drawRectangle = () => {
     if (initialPoint === null || finalPoint === null) {
@@ -85,9 +85,9 @@ export const ClickAreaRectangle = () => {
   };
 
   // const isEditing = savedStack[editingNumber]?.coords.length > 0;
-  const isEditing = false;
+  // const isEditing = false;
 
-  if (isEditing) {
+  if (activeStack) {
     return (
       <div
         className="click-area"

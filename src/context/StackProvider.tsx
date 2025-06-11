@@ -10,7 +10,7 @@ export type StackContextValue = {
   clipPath: string;
   stackLength: number;
   savedStack: Shape[];
-  editingNumber: number;
+  editingNumber: number | undefined;
   drawingMode: DrawingMode;
 };
 
@@ -82,7 +82,7 @@ type ReducerState = {
 const initialState = {
   savedStack: [],
   editingNumber: 0,
-  drawingMode: "line" as DrawingMode,
+  drawingMode: "rectangle" as DrawingMode,
 };
 
 function stackReducer(
@@ -110,8 +110,11 @@ function stackReducer(
     case "update-edit-index": {
       return {
         ...state,
-        editingNumber: action.payload.index,
-        drawingMode: state.savedStack[action.payload.index].shape,
+        editingNumber:
+          state.editingNumber === action.payload.index
+            ? undefined
+            : action.payload.index,
+        // drawingMode: state.savedStack[action.payload.index].shape,
       };
     }
     case "add-point": {
@@ -157,7 +160,8 @@ function stackReducer(
     }
     case "change-shape": {
       let updatedSavedStack = [];
-      const editingNumber = state.savedStack.length;
+      const editingNumber =
+        action.payload.shape === "line" ? state.savedStack.length : undefined;
       // Check to see if current last shape has coords
       if (state.savedStack[state.savedStack.length - 1]?.coords.length === 0) {
         updatedSavedStack = [...state.savedStack];
@@ -221,24 +225,24 @@ function stackReducer(
     case "save-shape": {
       const updatedStack = [...state.savedStack];
       let editingNumber = state.editingNumber;
-      if (state.savedStack[updatedStack.length - 1].coords.length === 0) {
+      if (state.savedStack[updatedStack.length - 1]?.coords.length === 0) {
         updatedStack[updatedStack.length - 1] = {
           shape: action.payload.shape,
           coords: action.payload.coords,
         };
-        editingNumber = updatedStack.length - 1;
+        // editingNumber = undefined;
       } else {
         updatedStack.push({
           shape: action.payload.shape,
           coords: action.payload.shape === "line" ? [] : action.payload.coords,
         });
-        editingNumber += 1;
+        // editingNumber += 1;
       }
 
       return {
         ...state,
         savedStack: [...updatedStack],
-        editingNumber,
+        editingNumber: undefined,
       };
     }
     case "delete-current-shape": {
@@ -284,6 +288,7 @@ export function StackProvider({ children }: PropsWithChildren) {
     <StackContext
       value={
         {
+          activeStack: savedStack[editingNumber],
           drawingMode,
           savedStack,
           stackLength,
