@@ -12,11 +12,11 @@
 ## Sidebar - Moving / Editing Existing Shapes
 
 - [x] Fix Insert Point After (line mode)
-- [ ] Edit shape functionality
+- [x] Edit shape functionality
 - [ ] Move all points i.e. drag a selector and move all the points in the selected area by the amount that the selected area moves by.
-- [ ] Circle Editor
-- [ ] Line Editor
-- [ ] Rectangle Editor
+- [x] Circle Editor
+- [x] Line Editor
+- [x] Rectangle Editor
 - [ ] Hover over point / shape in sidebar - could show something in the main click-area to show that shape is being edited??
 
 ## Styles

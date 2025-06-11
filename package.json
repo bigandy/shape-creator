@@ -7,12 +7,13 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "lint-and-build": "npx oxlint@latest && npm run build"
   },
   "dependencies": {
     "@dnd-kit/core": "6.3.1",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
     "react-draggable": "4.4.6",
     "react-hot-toast": "2.5.2",
     "usehooks-ts": "3.1.1"
