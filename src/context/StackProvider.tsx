@@ -154,19 +154,19 @@ function stackReducer(
     }
     case "change-shape": {
       let updatedSavedStack = [];
-      let editingNumber = state.editingNumber;
+      const editingNumber = state.savedStack.length;
       // Check to see if current last shape has coords
       if (state.savedStack[state.savedStack.length - 1].coords.length === 0) {
         updatedSavedStack = [...state.savedStack];
         updatedSavedStack[updatedSavedStack.length - 1].shape =
           action.payload.shape;
-        editingNumber += 1;
+        // editingNumber += 1;
       } else {
         updatedSavedStack = [
           ...state.savedStack,
           { shape: action.payload.shape, coords: [] },
         ];
-        editingNumber += 1;
+        // editingNumber += 1;
       }
 
       return {

@@ -79,7 +79,9 @@ export const Sidebar = ({ open, handleClose }: SidebarProps) => {
                   ) : (
                     <Fragment>
                       <p>{stack.shape}</p>
-                      <pre>{JSON.stringify(stack.coords, null, 2)}</pre>
+                      {canEdit && (
+                        <pre>{JSON.stringify(stack.coords, null, 2)}</pre>
+                      )}
                     </Fragment>
                   )}
                 </li>
