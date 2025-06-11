@@ -73,7 +73,8 @@ export const ClickAreaCircle = () => {
     setFinalPoint(coords);
   };
 
-  const isEditing = savedStack[editingNumber]?.coords.length > 0;
+  // const isEditing = savedStack[editingNumber]?.coords.length > 0;
+  const isEditing = false;
 
   if (isEditing) {
     return (

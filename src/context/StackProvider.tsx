@@ -119,7 +119,10 @@ function stackReducer(
         return {
           ...state,
           savedStack: [
-            { coords: [action.payload.coords as Coords], shape: "line" },
+            {
+              coords: [action.payload.coords as Coords],
+              shape: "line",
+            },
           ],
         };
       } else {
