@@ -84,7 +84,8 @@ export const ClickAreaCircle = () => {
         />
       )}
 
-      <DragAndDropPoints clickAreaRef={clickAreaRef} />
+      {/* AHTODO: show the DragAndDropPoints when in Edit mode. */}
+      {/* <DragAndDropPoints clickAreaRef={clickAreaRef} /> */}
     </div>
   );
 };

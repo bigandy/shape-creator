@@ -12,11 +12,12 @@ export const useClipPathStyle = ({
   precision = 2,
 }: Args): string => {
   const clipPathStyle = useMemo(() => {
-    console.log({ savedStack });
     if (savedStack.length === 0) {
       return "";
     }
-    let clipPathString = "shape(";
+    const initialClipPathString = "shape(";
+
+    let clipPathString = initialClipPathString;
     savedStack.forEach((stack, savedStackIndex) => {
       if (stack.shape === "circle") {
         // Circle so need the first and the last points.
@@ -56,27 +57,14 @@ export const useClipPathStyle = ({
       }
     });
 
-    // // This is the current in progress cutout area.
-    // currentStack.forEach((item, index) => {
-    //   const percentX = item.percentX.toFixed(precision);
-    //   const percentY = item.percentY.toFixed(precision);
-    //   if (index === 0) {
-    //     clipPathString += `${
-    //       savedStack.length === 0 ? "from" : "move to"
-    //     } ${percentX}% ${percentY}%, `;
-    //   } else {
-    //     clipPathString += `line to ${percentX}% ${percentY}%, `;
-    //   }
-    // });
-
+    // If there is no filling, return
+    if (clipPathString === initialClipPathString) {
+      return "";
+    }
     clipPathString += " close)";
 
     return clipPathString;
-  }, [
-    savedStack,
-    // currentStack,
-    precision,
-  ]);
+  }, [savedStack, precision]);
 
   return clipPathStyle;
 };

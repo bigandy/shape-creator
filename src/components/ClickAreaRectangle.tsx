@@ -93,7 +93,8 @@ export const ClickAreaRectangle = () => {
         <MiddlePoint initialPoint={initialPoint} finalPoint={finalPoint} />
       )}
 
-      <DragAndDropPoints clickAreaRef={clickAreaRef} />
+      {/* AHTODO: show the DragAndDropPoints when in Edit mode. */}
+      {/* <DragAndDropPoints clickAreaRef={clickAreaRef} /> */}
     </div>
   );
 };

@@ -16,7 +16,6 @@ import { StackProvider } from "@context/StackProvider";
 
 import "./App.css";
 
-import { type DrawingMode } from "./Types";
 import { useStackContext } from "./hooks/useStackContext";
 
 function App() {
@@ -28,11 +27,7 @@ function App() {
   const [backgroundImage, setBackgroundImage] = useState(
     backgroundImages[0].url
   );
-  // const [drawingMode, setDrawingMode] = useState<DrawingMode>("line");
-
   const { editingNumber, savedStack } = useStackContext();
-
-  console.log({ editingNumber });
 
   const drawingMode = savedStack[editingNumber]?.shape || "line";
 
@@ -57,7 +52,6 @@ function App() {
         open={toolbarOpen}
         selectedImage={backgroundImage}
         drawingMode={drawingMode}
-        // setDrawingMode={setDrawingMode}
         handleEditToggle={handleEditToggle}
         handleImageChange={handleImageChange}
       />

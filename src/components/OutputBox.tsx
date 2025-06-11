@@ -4,13 +4,10 @@ import { Fragment } from "react/jsx-runtime";
 
 type Props = {
   backgroundImage?: string;
-  // precision: number;
 };
 
 export const OutputBox = ({ backgroundImage }: Props) => {
   const { clipPath } = useStackContext();
-
-  console.log({ clipPath });
 
   return (
     <Fragment>
@@ -19,7 +16,7 @@ export const OutputBox = ({ backgroundImage }: Props) => {
         style={{
           backgroundImage:
             backgroundImage !== "" ? `url(${backgroundImage})` : "",
-          clipPath,
+          clipPath: clipPath,
         }}
       ></div>
 

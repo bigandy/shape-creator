@@ -79,13 +79,11 @@ export const Toolbar = ({
   };
 
   const handleResetCurrentStack = () => {
-    // countRef.current = countRef.current + 1;
     dispatch({ type: "clear-current-shape" });
   };
 
   const handleDeleteAllStacks = () => {
     dispatch({ type: "clear-all-stacks" });
-    // countRef.current = countRef.current + 1;
   };
 
   return (
