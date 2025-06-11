@@ -87,7 +87,7 @@ export const ClickAreaRectangle = () => {
   // const isEditing = savedStack[editingNumber]?.coords.length > 0;
   // const isEditing = false;
 
-  if (activeStack) {
+  if (activeStack.coords) {
     return (
       <div
         className="click-area"

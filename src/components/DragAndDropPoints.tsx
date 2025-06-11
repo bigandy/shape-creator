@@ -40,14 +40,18 @@ export const DragAndDropPoints = ({ clickAreaRef, drawingMode }: Props) => {
         type: "update-current-shape",
         payload: { coords: updatedCoords },
       });
+    } else if (drawingMode === "circle") {
+      console.log("handle Editing in Circle");
+    } else if (drawingMode === "rectangle") {
+      console.log("handle Editing in Rectangle");
     } else {
-      console.log("handle Editing in Rectangle and Circle");
+      console.error("unknown shape", drawingMode);
     }
   };
 
   return (
     <DndContext onDragMove={handleDragMove}>
-      {activeStack?.coords.length > 0
+      {activeStack.coords && activeStack.coords.length > 0
         ? activeStack.coords.map((item, index) => {
             return (
               <Draggable

@@ -51,16 +51,16 @@ export const Sidebar = ({ open, handleClose }: SidebarProps) => {
                   }
                   key={`savedStackItem-${stackIndex}`}
                 >
-                  <p>
-                    {stack.shape} {/* {stack.shape === "line" && ( */}
-                    <button onClick={() => onEditShape(stackIndex)}>
-                      Edit Shape?
-                    </button>
-                    {/* )} */}
-                    <button onClick={() => onDeleteShape(stackIndex)}>
-                      Delete Shape?
-                    </button>
-                  </p>
+                  {stack.shape} {/* {stack.shape === "line" && ( */}
+                  <br />
+                  <button onClick={() => onEditShape(stackIndex)}>
+                    {!canEdit ? "Edit" : "Unedit"} Shape?
+                  </button>
+                  <br />
+                  {/* )} */}
+                  <button onClick={() => onDeleteShape(stackIndex)}>
+                    Delete Shape?
+                  </button>
                   {stack.shape === "line" ? (
                     <ol>
                       {stack.coords.map(({ percentX, percentY }, index) => {
@@ -90,25 +90,6 @@ export const Sidebar = ({ open, handleClose }: SidebarProps) => {
         ) : (
           <p>No Shapes Added, Save One?</p>
         )}
-        {/* {drawingMode === "line" && stack.length > 0 ? (
-          <Fragment>
-            <p>Current Shape</p>
-            <ol>
-              {stack.map(({ percentX, percentY }, index) => {
-                return (
-                  <SidebarItem
-                    key={`item-${index}`}
-                    x={percentX}
-                    y={percentY}
-                    currentIndex={index}
-                  />
-                );
-              })}
-            </ol>
-          </Fragment>
-        ) : (
-          <p>No points set. Add one?</p>
-        )} */}
       </div>
     </div>
   );

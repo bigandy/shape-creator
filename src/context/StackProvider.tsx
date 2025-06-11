@@ -12,6 +12,7 @@ export type StackContextValue = {
   savedStack: Shape[];
   editingNumber: number | undefined;
   drawingMode: DrawingMode;
+  activeStack: Shape;
 };
 
 export type StackReducerAction =
@@ -75,14 +76,14 @@ export type StackReducerAction =
 
 type ReducerState = {
   savedStack: Shape[];
-  editingNumber: number;
+  editingNumber: number | undefined;
   drawingMode: DrawingMode;
 };
 
 const initialState = {
   savedStack: [],
   editingNumber: 0,
-  drawingMode: "rectangle" as DrawingMode,
+  drawingMode: "line" as DrawingMode,
 };
 
 function stackReducer(
@@ -114,11 +115,14 @@ function stackReducer(
           state.editingNumber === action.payload.index
             ? undefined
             : action.payload.index,
-        // drawingMode: state.savedStack[action.payload.index].shape,
+        drawingMode: state.savedStack[action.payload.index].shape,
       };
     }
     case "add-point": {
-      if (state.savedStack.length === 0 && state.editingNumber === 0) {
+      if (
+        state.savedStack.length === 0 &&
+        (state.editingNumber === undefined || state.editingNumber === 0)
+      ) {
         return {
           ...state,
           savedStack: [
@@ -127,6 +131,7 @@ function stackReducer(
               shape: "line",
             },
           ],
+          editingNumber: 0,
         };
       } else {
         const updatedSavedState = state.savedStack.map((stack, stackIndex) => {
@@ -141,6 +146,7 @@ function stackReducer(
         return {
           ...state,
           savedStack: updatedSavedState,
+          editingNumber: updatedSavedState.length - 1,
         };
       }
     }
@@ -167,13 +173,11 @@ function stackReducer(
         updatedSavedStack = [...state.savedStack];
         updatedSavedStack[updatedSavedStack.length - 1].shape =
           action.payload.shape;
-        // editingNumber += 1;
       } else {
         updatedSavedStack = [
           ...state.savedStack,
           { shape: action.payload.shape, coords: [] },
         ];
-        // editingNumber += 1;
       }
 
       return {
@@ -224,19 +228,16 @@ function stackReducer(
     }
     case "save-shape": {
       const updatedStack = [...state.savedStack];
-      let editingNumber = state.editingNumber;
       if (state.savedStack[updatedStack.length - 1]?.coords.length === 0) {
         updatedStack[updatedStack.length - 1] = {
           shape: action.payload.shape,
           coords: action.payload.coords,
         };
-        // editingNumber = undefined;
       } else {
         updatedStack.push({
           shape: action.payload.shape,
           coords: action.payload.shape === "line" ? [] : action.payload.coords,
         });
-        // editingNumber += 1;
       }
 
       return {
@@ -253,7 +254,7 @@ function stackReducer(
       return {
         ...state,
         savedStack: [...updatedSavedStack],
-        editingNumber: state.editingNumber > 1 ? state.editingNumber - 1 : 0,
+        editingNumber: undefined,
       };
     }
     case "delete-shape": {
@@ -262,7 +263,7 @@ function stackReducer(
         savedStack: state.savedStack.filter(
           (_, index) => index !== action.payload.index
         ),
-        editingNumber: state.editingNumber > 1 ? state.editingNumber - 1 : 0,
+        editingNumber: undefined,
       };
     }
     default: {
@@ -277,18 +278,22 @@ export function StackProvider({ children }: PropsWithChildren) {
     initialState
   );
 
-  const stackLength = savedStack[editingNumber]?.coords.length || 0;
+  const stackLength =
+    (editingNumber && savedStack[editingNumber]?.coords.length) || 0;
 
   const clipPath = useClipPathStyle({
     savedStack,
     precision: 2,
   });
 
+  // @ts-expect-error sort it out
+  const activeStack = savedStack[editingNumber] ?? [];
+
   return (
     <StackContext
       value={
         {
-          activeStack: savedStack[editingNumber],
+          activeStack,
           drawingMode,
           savedStack,
           stackLength,
