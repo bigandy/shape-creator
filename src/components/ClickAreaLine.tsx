@@ -48,7 +48,7 @@ export const ClickAreaLine = () => {
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
     >
-      <DragAndDropPoints clickAreaRef={clickAreaRef} />
+      <DragAndDropPoints clickAreaRef={clickAreaRef} drawingMode="line" />
 
       {mousePosition && (
         <div

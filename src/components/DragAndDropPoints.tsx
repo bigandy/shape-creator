@@ -5,12 +5,14 @@ import { Draggable } from "@components/Draggable";
 import { getDragDropCoords } from "@utils/coordinates";
 import { useStackContext } from "@/hooks/useStackContext";
 import { useStackDispatch } from "@/hooks/useStackDispatch";
+import type { DrawingMode } from "@/Types";
 
 type Props = {
   clickAreaRef: React.RefObject<HTMLInputElement | null>;
+  drawingMode: DrawingMode;
 };
 
-export const DragAndDropPoints = ({ clickAreaRef }: Props) => {
+export const DragAndDropPoints = ({ clickAreaRef, drawingMode }: Props) => {
   const { savedStack, editingNumber } = useStackContext();
 
   const activeStack = savedStack[editingNumber];
@@ -27,18 +29,22 @@ export const DragAndDropPoints = ({ clickAreaRef }: Props) => {
     //@ts-expect-error AHTODO: Fix this
     const indexToUpdate = event.activatorEvent.target.textContent - 1;
 
-    const updatedCoords = activeStack.coords.map((c, i) => {
-      if (i === indexToUpdate) {
-        return coords;
-      } else {
-        return c;
-      }
-    });
+    if (drawingMode === "line") {
+      const updatedCoords = activeStack.coords.map((c, i) => {
+        if (i === indexToUpdate) {
+          return coords;
+        } else {
+          return c;
+        }
+      });
 
-    dispatch({
-      type: "update-current-shape",
-      payload: { coords: updatedCoords },
-    });
+      dispatch({
+        type: "update-current-shape",
+        payload: { coords: updatedCoords },
+      });
+    } else {
+      console.log("handle Editing in Rectangle and Circle");
+    }
   };
 
   return (

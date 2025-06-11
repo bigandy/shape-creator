@@ -52,12 +52,11 @@ export const Sidebar = ({ open, handleClose }: SidebarProps) => {
                   key={`savedStackItem-${stackIndex}`}
                 >
                   <p>
-                    {stack.shape}{" "}
-                    {stack.shape === "line" && (
-                      <button onClick={() => onEditShape(stackIndex)}>
-                        Edit Shape?
-                      </button>
-                    )}
+                    {stack.shape} {/* {stack.shape === "line" && ( */}
+                    <button onClick={() => onEditShape(stackIndex)}>
+                      Edit Shape?
+                    </button>
+                    {/* )} */}
                     <button onClick={() => onDeleteShape(stackIndex)}>
                       Delete Shape?
                     </button>

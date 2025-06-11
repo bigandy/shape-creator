@@ -156,7 +156,7 @@ function stackReducer(
       let updatedSavedStack = [];
       const editingNumber = state.savedStack.length;
       // Check to see if current last shape has coords
-      if (state.savedStack[state.savedStack.length - 1].coords.length === 0) {
+      if (state.savedStack[state.savedStack.length - 1]?.coords.length === 0) {
         updatedSavedStack = [...state.savedStack];
         updatedSavedStack[updatedSavedStack.length - 1].shape =
           action.payload.shape;

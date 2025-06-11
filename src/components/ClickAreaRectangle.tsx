@@ -1,12 +1,13 @@
 import React, { useRef, useState, type MouseEvent } from "react";
 
-// import { DragAndDropPoints } from "@components/DragAndDropPoints";
+import { DragAndDropPoints } from "@components/DragAndDropPoints";
 
 import { useStackDispatch } from "@hooks/useStackDispatch";
 
 import type { Coords } from "@/Types";
 
 import { getCoords } from "@utils/coordinates";
+import { useStackContext } from "@/hooks/useStackContext";
 
 export const ClickAreaRectangle = () => {
   const dispatch = useStackDispatch();
@@ -14,6 +15,8 @@ export const ClickAreaRectangle = () => {
   const clickAreaRef = useRef<HTMLInputElement>(null);
   const [initialPoint, setInitialPoint] = useState<Coords | null>(null);
   const [finalPoint, setFinalPoint] = useState<Coords | null>(null);
+
+  const { editingNumber, savedStack } = useStackContext();
 
   const drawRectangle = () => {
     if (initialPoint === null || finalPoint === null) {
@@ -81,22 +84,43 @@ export const ClickAreaRectangle = () => {
     setFinalPoint(coords);
   };
 
-  return (
-    <div
-      className="click-area"
-      onMouseDown={handleMouseDown}
-      onMouseUp={handleMouseUp}
-      onMouseMove={handleMouseOver}
-      ref={clickAreaRef}
-    >
-      {finalPoint !== null && initialPoint !== null && (
-        <MiddlePoint initialPoint={initialPoint} finalPoint={finalPoint} />
-      )}
+  const isEditing = savedStack[editingNumber]?.coords.length > 0;
 
-      {/* AHTODO: show the DragAndDropPoints when in Edit mode. */}
-      {/* <DragAndDropPoints clickAreaRef={clickAreaRef} /> */}
-    </div>
-  );
+  if (isEditing) {
+    return (
+      <div
+        className="click-area"
+        // onMouseDown={handleMouseDown}
+        // onMouseUp={handleMouseUp}
+        // onMouseMove={handleMouseOver}
+        ref={clickAreaRef}
+      >
+        {/* {finalPoint !== null && initialPoint !== null && (
+        <MiddlePoint initialPoint={initialPoint} finalPoint={finalPoint} />
+      )} */}
+
+        {/* AHTODO: show the DragAndDropPoints when in Edit mode. */}
+        <DragAndDropPoints
+          clickAreaRef={clickAreaRef}
+          drawingMode="rectangle"
+        />
+      </div>
+    );
+  } else {
+    return (
+      <div
+        className="click-area"
+        onMouseDown={handleMouseDown}
+        onMouseUp={handleMouseUp}
+        onMouseMove={handleMouseOver}
+        ref={clickAreaRef}
+      >
+        {finalPoint !== null && initialPoint !== null && (
+          <MiddlePoint initialPoint={initialPoint} finalPoint={finalPoint} />
+        )}
+      </div>
+    );
+  }
 };
 
 const MiddlePoint = React.memo(

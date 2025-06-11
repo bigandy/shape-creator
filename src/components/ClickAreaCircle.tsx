@@ -1,14 +1,18 @@
 import React, { useRef, useState, type MouseEvent } from "react";
 
-// import { DragAndDropPoints } from "@components/DragAndDropPoints";
+import { DragAndDropPoints } from "@components/DragAndDropPoints";
 
 import type { Coords } from "@/Types";
+
+import { useStackContext } from "@/hooks/useStackContext";
 
 import { getCoords } from "@utils/coordinates";
 import { useStackDispatch } from "@hooks/useStackDispatch";
 
 export const ClickAreaCircle = () => {
   const dispatch = useStackDispatch();
+
+  const { editingNumber, savedStack } = useStackContext();
 
   const [recording, setRecording] = useState(false);
   const clickAreaRef = useRef<HTMLInputElement>(null);
@@ -69,6 +73,30 @@ export const ClickAreaCircle = () => {
     setFinalPoint(coords);
   };
 
+  const isEditing = savedStack[editingNumber]?.coords.length > 0;
+
+  if (isEditing) {
+    return (
+      <div
+        className="click-area"
+        // onMouseDown={handleMouseDown}
+        // onMouseUp={handleMouseUp}
+        // onMouseMove={handleMouseMove}
+        ref={clickAreaRef}
+      >
+        {/* {finalPoint !== null && initialPoint !== null && (
+          <CircleMiddlePoint
+            initialPoint={initialPoint}
+            finalPoint={finalPoint}
+          />
+        )} */}
+
+        {/* AHTODO: show the DragAndDropPoints when in Edit mode. */}
+        <DragAndDropPoints clickAreaRef={clickAreaRef} drawingMode="circle" />
+      </div>
+    );
+  }
+
   return (
     <div
       className="click-area"
@@ -83,9 +111,6 @@ export const ClickAreaCircle = () => {
           finalPoint={finalPoint}
         />
       )}
-
-      {/* AHTODO: show the DragAndDropPoints when in Edit mode. */}
-      {/* <DragAndDropPoints clickAreaRef={clickAreaRef} /> */}
     </div>
   );
 };
