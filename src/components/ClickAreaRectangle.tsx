@@ -1,6 +1,6 @@
 import React, { useRef, useState, type MouseEvent } from "react";
 
-import { DragAndDropPoints } from "@components/DragAndDropPoints";
+// import { DragAndDropPoints } from "@components/DragAndDropPoints";
 
 import { useStackDispatch } from "@hooks/useStackDispatch";
 

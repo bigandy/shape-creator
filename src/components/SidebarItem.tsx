@@ -23,7 +23,7 @@ export const SidebarItem = ({ x, y, currentIndex, editable = true }: Props) => {
   };
 
   const handleDeletePoint = () =>
-    dispatch({ type: "remove-index", payload: { index: currentIndex } });
+    dispatch({ type: "delete-index", payload: { index: currentIndex } });
 
   const handleInsertPoint = () => {
     const currentStack = savedStack[editingNumber].coords;

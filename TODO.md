@@ -2,7 +2,10 @@
 
 ## State
 
-- [ ] Move all shape setting into one state - should make editing easier?!
+- [x] Bug: Create shape with Line, then create a Rectangle and "Edit Shape" on Rectangle in sidebar. Creates one too many shapes.
+- [x] Bug: Create shape with Line, then create a Rectangle and "Delete Current Shape"
+- [x] Bug: "Reset Current Shape" Line drawing, then try to change to another shape via toolbar
+- [x] Move all shape setting into one state - should make editing easier?!
 - [x] Use useReducer for Context
 - [x] State into a Context?
 

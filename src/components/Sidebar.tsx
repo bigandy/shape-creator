@@ -1,3 +1,5 @@
+import { Fragment } from "react";
+
 import { SidebarItem } from "@components/SidebarItem";
 
 import { useStackDispatch } from "@/hooks/useStackDispatch";
@@ -22,14 +24,7 @@ export const Sidebar = ({ open, handleClose }: SidebarProps) => {
   };
 
   const onEditShape = (index: number) => {
-    if (editingNumber === index) {
-      dispatch({ type: "update-edit-index", payload: { index } });
-    } else {
-      dispatch({
-        type: "update-edit-index",
-        payload: { index },
-      });
-    }
+    dispatch({ type: "update-edit-index", payload: { index } });
   };
 
   const onDeleteShape = (index: number) => {
@@ -48,6 +43,7 @@ export const Sidebar = ({ open, handleClose }: SidebarProps) => {
             {/* <li>Have Stack</li> */}
             {savedStack.map((stack, stackIndex) => {
               const canEdit = editingNumber === stackIndex;
+              // const canEdit = false;
               return (
                 <li
                   className={
@@ -57,9 +53,11 @@ export const Sidebar = ({ open, handleClose }: SidebarProps) => {
                 >
                   <p>
                     {stack.shape}{" "}
-                    <button onClick={() => onEditShape(stackIndex)}>
-                      Edit Shape?
-                    </button>
+                    {stack.shape === "line" && (
+                      <button onClick={() => onEditShape(stackIndex)}>
+                        Edit Shape?
+                      </button>
+                    )}
                     <button onClick={() => onDeleteShape(stackIndex)}>
                       Delete Shape?
                     </button>
@@ -79,7 +77,10 @@ export const Sidebar = ({ open, handleClose }: SidebarProps) => {
                       })}
                     </ol>
                   ) : (
-                    <p>{stack.shape}</p>
+                    <Fragment>
+                      <p>{stack.shape}</p>
+                      <pre>{JSON.stringify(stack.coords, null, 2)}</pre>
+                    </Fragment>
                   )}
                 </li>
               );

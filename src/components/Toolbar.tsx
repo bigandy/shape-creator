@@ -1,14 +1,9 @@
-import {
-  Fragment,
-  type ChangeEvent,
-  type Dispatch,
-  type SetStateAction,
-} from "react";
 import { backgroundImages } from "@/sharedImages";
 import type { DrawingMode } from "@/Types";
+import { Fragment, type ChangeEvent } from "react";
 
-import { useStackContext } from "@hooks/useStackContext";
 import { useStackDispatch } from "@/hooks/useStackDispatch";
+import { useStackContext } from "@hooks/useStackContext";
 
 type ShapeOption = { label: string; id: DrawingMode };
 
@@ -30,52 +25,37 @@ const shapeOptions: Array<ShapeOption> = [
 type Props = {
   open: boolean;
   selectedImage?: string;
-  drawingMode: DrawingMode;
-  // setDrawingMode: Dispatch<SetStateAction<DrawingMode>>;
   handleEditToggle: () => void;
   handleImageChange: (e: ChangeEvent<HTMLSelectElement>) => void;
 };
 
-export const Toolbar = ({
-  open,
-  selectedImage,
-  drawingMode,
-  // setDrawingMode,
-  handleImageChange,
-}: Props) => {
+export const Toolbar = ({ open, selectedImage, handleImageChange }: Props) => {
   const dispatch = useStackDispatch();
-  const { editingNumber, stackLength, savedStack } = useStackContext();
+  const {
+    drawingMode,
+    // stackLength
+  } = useStackContext();
 
   const handleChangeDrawingMode = (drawingMode: DrawingMode) => {
-    if (stackLength > 0) {
-      dispatch({
-        type: "change-shape",
-        payload: {
-          shape: drawingMode,
-        },
-      });
-    }
+    // if (stackLength > 0) {
+    dispatch({
+      type: "change-shape",
+      payload: {
+        shape: drawingMode,
+      },
+    });
+    // }
     // setDrawingMode(drawingMode);
   };
 
-  const handleRemoveLastShape = () => {
+  const handleDeleteLastShape = () => {
     dispatch({
-      type: "remove-final-shape",
+      type: "delete-current-shape",
     });
   };
 
-  // const handleUpdateShape = () => {
-  //   dispatch({
-  //     type: "update-shape",
-  //     payload: {
-  //       // coords: stack,
-  //       shape: drawingMode,
-  //     },
-  //   });
-  // };
-
-  const handleRemoveLastPoint = () => {
-    dispatch({ type: "remove-final-point" });
+  const handleDeleteLastPoint = () => {
+    dispatch({ type: "delete-final-point" });
   };
 
   const handleResetCurrentStack = () => {
@@ -94,7 +74,6 @@ export const Toolbar = ({
             Close
           </button>
         </div> */}
-        <div>Shape Number: {editingNumber}</div>
 
         <div className="buttons">
           {shapeOptions.map((option) => {
@@ -128,11 +107,11 @@ export const Toolbar = ({
         </div>
 
         <div className="buttons">
-          <button onClick={handleRemoveLastShape}>Remove Last Shape</button>
+          <button onClick={handleDeleteLastShape}>Delete Current Shape</button>
 
           {drawingMode === "line" && (
             <Fragment>
-              <button onClick={handleRemoveLastPoint}>Remove Last Point</button>
+              <button onClick={handleDeleteLastPoint}>Delete Last Point</button>
               <button onClick={handleResetCurrentStack}>
                 Reset Current Shape
               </button>

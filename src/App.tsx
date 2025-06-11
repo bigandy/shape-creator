@@ -1,4 +1,4 @@
-import { Fragment, useRef, useState, type ChangeEvent } from "react";
+import { Fragment, useState, type ChangeEvent } from "react";
 
 import { Toaster } from "react-hot-toast";
 
@@ -19,17 +19,13 @@ import "./App.css";
 import { useStackContext } from "./hooks/useStackContext";
 
 function App() {
-  const countRef = useRef(0);
-
   const [toolbarOpen, setToolbarOpen] = useState(true);
   const [codeViewerOpen, setCodeViewerOpen] = useState(true);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [backgroundImage, setBackgroundImage] = useState(
     backgroundImages[0].url
   );
-  const { editingNumber, savedStack } = useStackContext();
-
-  const drawingMode = savedStack[editingNumber]?.shape || "line";
+  const { drawingMode } = useStackContext();
 
   const handleEditToggle = () => {
     setSidebarOpen((open) => !open);
@@ -51,14 +47,13 @@ function App() {
       <Toolbar
         open={toolbarOpen}
         selectedImage={backgroundImage}
-        drawingMode={drawingMode}
         handleEditToggle={handleEditToggle}
         handleImageChange={handleImageChange}
       />
       <main>
-        {drawingMode === "line" && <ClickAreaLine key={countRef.current} />}
+        {drawingMode === "line" && <ClickAreaLine />}
         {drawingMode === "rectangle" && <ClickAreaRectangle />}
-        {drawingMode === "circle" && <ClickAreaCircle key={countRef.current} />}
+        {drawingMode === "circle" && <ClickAreaCircle />}
 
         <OutputBox backgroundImage={backgroundImage} />
       </main>
