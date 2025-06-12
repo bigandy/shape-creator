@@ -16,6 +16,7 @@ export type StackContextValue = {
   drawingMode: DrawingMode;
   movingNumber: number | undefined;
   activeStack: Shape;
+  moveAllShapes: boolean;
 };
 
 export type StackReducerAction =
@@ -58,6 +59,9 @@ export type StackReducerAction =
       type: "delete-final-point";
     }
   | {
+      type: "move-all-shapes";
+    }
+  | {
       type: "delete-current-shape";
     }
   | {
@@ -90,6 +94,12 @@ export type StackReducerAction =
       payload: {
         savedStack: Shape[];
       };
+    }
+  | {
+      type: "update-all-shapes";
+      payload: {
+        savedStack: Shape[];
+      };
     };
 
 type ReducerState = {
@@ -97,6 +107,7 @@ type ReducerState = {
   editingNumber: number | undefined;
   movingNumber: number | undefined;
   drawingMode: DrawingMode;
+  moveAllShapes: boolean;
 };
 
 const initialState = {
@@ -104,6 +115,7 @@ const initialState = {
   editingNumber: 0,
   movingNumber: undefined,
   drawingMode: "rectangle" as DrawingMode,
+  moveAllShapes: false,
 };
 
 function stackReducer(
@@ -246,6 +258,7 @@ function stackReducer(
         savedStack: [...updatedSavedStack],
       };
     }
+
     case "delete-index": {
       const updatedSavedStack = state.savedStack.map((stack, index) => {
         if (index === state.editingNumber) {
@@ -314,6 +327,19 @@ function stackReducer(
         editingNumber: undefined,
       };
     }
+    case "move-all-shapes": {
+      return {
+        ...state,
+        moveAllShapes: !state.moveAllShapes,
+      };
+    }
+    case "update-all-shapes": {
+      console.log(action.payload.savedStack);
+      return {
+        ...state,
+        savedStack: action.payload.savedStack,
+      };
+    }
     default: {
       throw Error("Unknown action: " + action.type);
     }
@@ -321,8 +347,10 @@ function stackReducer(
 }
 
 export function StackProvider({ children }: PropsWithChildren) {
-  const [{ savedStack, editingNumber, drawingMode, movingNumber }, dispatch] =
-    useReducer(stackReducer, initialState);
+  const [
+    { savedStack, editingNumber, drawingMode, movingNumber, moveAllShapes },
+    dispatch,
+  ] = useReducer(stackReducer, initialState);
 
   const stackLength =
     (editingNumber && savedStack[editingNumber]?.coords.length) || 0;
@@ -352,6 +380,7 @@ export function StackProvider({ children }: PropsWithChildren) {
           isActiveStackBeingMoved,
           movingNumber,
           savedStackLength,
+          moveAllShapes,
         } as StackContextValue
       }
     >

@@ -16,7 +16,7 @@ export const ClickAreaRectangle = () => {
   const [initialPoint, setInitialPoint] = useState<Coords | null>(null);
   const [finalPoint, setFinalPoint] = useState<Coords | null>(null);
 
-  const { activeStack } = useStackContext();
+  const { activeStack, moveAllShapes } = useStackContext();
 
   const drawRectangle = () => {
     if (initialPoint === null || finalPoint === null) {
@@ -84,7 +84,7 @@ export const ClickAreaRectangle = () => {
     setFinalPoint(coords);
   };
 
-  if (activeStack.coords) {
+  if (activeStack.coords || moveAllShapes) {
     return (
       <div className="click-area" ref={clickAreaRef}>
         <DragAndDropPoints

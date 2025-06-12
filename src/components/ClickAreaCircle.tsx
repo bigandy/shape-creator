@@ -12,7 +12,7 @@ import { useStackDispatch } from "@hooks/useStackDispatch";
 export const ClickAreaCircle = () => {
   const dispatch = useStackDispatch();
 
-  const { activeStack } = useStackContext();
+  const { activeStack, moveAllShapes } = useStackContext();
 
   const [recording, setRecording] = useState(false);
   const clickAreaRef = useRef<HTMLInputElement>(null);
@@ -73,7 +73,7 @@ export const ClickAreaCircle = () => {
     setFinalPoint(coords);
   };
 
-  if (activeStack.coords) {
+  if (activeStack.coords || moveAllShapes) {
     return (
       <div className="click-area" ref={clickAreaRef}>
         <DragAndDropPoints clickAreaRef={clickAreaRef} drawingMode="circle" />

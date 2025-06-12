@@ -1,7 +1,7 @@
 import { useState } from "react";
 
-import { SortableShapeList } from "@components/SortableShapeList";
 import { ShapeList } from "@components/ShapeList";
+import { SortableShapeList } from "@components/SortableShapeList";
 
 import { useStackContext } from "@hooks/useStackContext";
 

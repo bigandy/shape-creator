@@ -31,10 +31,7 @@ type Props = {
 
 export const Toolbar = ({ open, selectedImage, handleImageChange }: Props) => {
   const dispatch = useStackDispatch();
-  const {
-    drawingMode,
-    // stackLength
-  } = useStackContext();
+  const { drawingMode, savedStackLength, moveAllShapes } = useStackContext();
 
   const handleChangeDrawingMode = (drawingMode: DrawingMode) => {
     // if (stackLength > 0) {
@@ -64,6 +61,10 @@ export const Toolbar = ({ open, selectedImage, handleImageChange }: Props) => {
 
   const handleDeleteAllStacks = () => {
     dispatch({ type: "clear-all-stacks" });
+  };
+
+  const handleMoveAllShapes = () => {
+    dispatch({ type: "move-all-shapes" });
   };
 
   return (
@@ -120,6 +121,12 @@ export const Toolbar = ({ open, selectedImage, handleImageChange }: Props) => {
           )}
 
           <button onClick={handleDeleteAllStacks}>Delete All Shapes</button>
+
+          {savedStackLength > 0 && (
+            <button onClick={handleMoveAllShapes}>
+              {!moveAllShapes ? "Move All" : "Stop Moving All"} Shapes?
+            </button>
+          )}
         </div>
       </div>
     </div>

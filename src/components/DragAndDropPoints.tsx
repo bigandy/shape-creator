@@ -5,7 +5,7 @@ import { Draggable } from "@components/Draggable";
 import { getDragDropCoords } from "@utils/coordinates";
 import { useStackContext } from "@/hooks/useStackContext";
 import { useStackDispatch } from "@/hooks/useStackDispatch";
-import type { DrawingMode, Coords } from "@/Types";
+import type { DrawingMode, Coords, Shape } from "@/Types";
 
 type Props = {
   clickAreaRef: React.RefObject<HTMLInputElement | null>;
@@ -46,7 +46,7 @@ const getUpdateRectangleCoords = (
   return newCoords;
 };
 
-export const DragAndDropPoints = ({ clickAreaRef, drawingMode }: Props) => {
+const DragAndDropPointsSingleShape = ({ clickAreaRef, drawingMode }: Props) => {
   const { activeStack, isActiveStackBeingMoved } = useStackContext();
 
   const dispatch = useStackDispatch();
@@ -130,6 +130,54 @@ export const DragAndDropPoints = ({ clickAreaRef, drawingMode }: Props) => {
   );
 };
 
+const DragAndDropPointsAllShapes = ({
+  clickAreaRef,
+}: {
+  clickAreaRef: React.RefObject<HTMLInputElement | null>;
+}) => {
+  const { savedStack } = useStackContext();
+
+  const dispatch = useStackDispatch();
+
+  const middlePoint = getCenterPointAllShapes(savedStack);
+
+  const handleAllMove = (event: DragMoveEvent) => {
+    const oldCoords = getCenterPointAllShapes(savedStack);
+    const newCoords = getDragDropCoords(event, clickAreaRef)!;
+
+    const updatedShapes = savedStack.map((stack) => {
+      const updatedCoords = stack.coords.map((coord) => {
+        return {
+          percentX: coord.percentX + newCoords.percentX - oldCoords.percentX,
+          percentY: coord.percentY + newCoords.percentY - oldCoords.percentY,
+        };
+      });
+
+      return {
+        ...stack,
+        coords: updatedCoords,
+      };
+    });
+
+    dispatch({
+      type: "update-all-shapes",
+      payload: { savedStack: updatedShapes },
+    });
+  };
+
+  return (
+    <DndContext onDragMove={handleAllMove}>
+      <Draggable
+        index={1}
+        top={middlePoint.percentY}
+        left={middlePoint.percentX}
+      >
+        <div>C</div>
+      </Draggable>
+    </DndContext>
+  );
+};
+
 const CenterPoint = ({
   coords,
   drawingMode,
@@ -174,5 +222,40 @@ const getCenterPoint = (coords: Coords[], drawingMode: DrawingMode) => {
       percentX: (minX + maxX) / 2,
       percentY: (minY + maxY) / 2,
     };
+  }
+};
+
+const getCenterPointAllShapes = (savedStack: Shape[]) => {
+  // 1. get all coords
+  const coords = [
+    savedStack
+      .filter((stack) => stack.coords.length)
+      .map((stack) => stack.coords)
+      .flat(),
+  ];
+
+  const coordsX = coords[0].map((coord) => coord.percentX);
+  const coordsY = coords[0].map((coord) => coord.percentY);
+
+  const minX = Math.min(...coordsX);
+  const minY = Math.min(...coordsY);
+  const maxX = Math.max(...coordsX);
+  const maxY = Math.max(...coordsY);
+
+  return {
+    percentX: (minX + maxX) / 2,
+    percentY: (minY + maxY) / 2,
+  };
+};
+
+export const DragAndDropPoints = ({ clickAreaRef, drawingMode }: Props) => {
+  const { moveAllShapes } = useStackContext();
+  if (moveAllShapes) {
+    return <DragAndDropPointsAllShapes clickAreaRef={clickAreaRef} />;
+  } else {
+    <DragAndDropPointsSingleShape
+      clickAreaRef={clickAreaRef}
+      drawingMode={drawingMode}
+    />;
   }
 };
