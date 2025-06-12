@@ -11,7 +11,7 @@ type SidebarProps = {
 };
 
 export const Sidebar = ({ open, handleClose }: SidebarProps) => {
-  const { savedStack } = useStackContext();
+  const { savedStackLength } = useStackContext();
   const [dragDropShapeList, setDragDropShapeList] = useState(false);
 
   const handleToggleReorderList = () => setDragDropShapeList((d) => !d);
@@ -23,7 +23,7 @@ export const Sidebar = ({ open, handleClose }: SidebarProps) => {
           Close
         </button>
 
-        {savedStack.length > 1 && (
+        {savedStackLength > 1 && (
           <button onClick={handleToggleReorderList}>
             {!dragDropShapeList ? "Re-order" : "Save Order"} List
           </button>

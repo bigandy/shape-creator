@@ -10,6 +10,7 @@ export type StackContextValue = {
   clipPath: string;
   stackLength: number;
   savedStack: Shape[];
+  savedStackLength: number;
   editingNumber: number | undefined;
   isActiveStackBeingMoved: boolean;
   drawingMode: DrawingMode;
@@ -336,6 +337,8 @@ export function StackProvider({ children }: PropsWithChildren) {
   // @ts-expect-error sort it out
   const isActiveStackBeingMoved = savedStack[movingNumber]?.coords.length > 0;
 
+  const savedStackLength = savedStack.length;
+
   return (
     <StackContext
       value={
@@ -348,6 +351,7 @@ export function StackProvider({ children }: PropsWithChildren) {
           editingNumber,
           isActiveStackBeingMoved,
           movingNumber,
+          savedStackLength,
         } as StackContextValue
       }
     >
