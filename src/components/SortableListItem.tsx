@@ -18,7 +18,6 @@ export function SortableListItem({ id, children }: Props) {
 
   return (
     <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
-      {id}
       <div>{children}</div>
     </div>
   );

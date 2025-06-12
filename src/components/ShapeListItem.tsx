@@ -10,11 +10,11 @@ import { type Shape } from "@/Types";
 export const ShapeListItem = ({
   stackIndex,
   stack,
-  noEditMode,
+  preventEditMode,
 }: {
   stackIndex: number;
   stack: Shape;
-  noEditMode?: boolean;
+  preventEditMode?: boolean;
 }) => {
   const { editingNumber } = useStackContext();
 
@@ -37,7 +37,7 @@ export const ShapeListItem = ({
     handleDeleteShape(stackIndex);
   };
 
-  const canEdit = !noEditMode && editingNumber === stackIndex;
+  const canEdit = !preventEditMode && editingNumber === stackIndex;
 
   return (
     <li
@@ -46,7 +46,7 @@ export const ShapeListItem = ({
     >
       {stack.shape}
       <br />
-      {!noEditMode && (
+      {!preventEditMode && (
         <Fragment>
           <button onClick={onEditShape}>
             {!canEdit ? "Edit" : "Unedit"} Shape?
@@ -72,7 +72,6 @@ export const ShapeListItem = ({
         </ol>
       ) : (
         <Fragment>
-          <p>{stack.shape}</p>
           {canEdit && <pre>{JSON.stringify(stack.coords, null, 2)}</pre>}
         </Fragment>
       )}

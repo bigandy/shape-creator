@@ -19,6 +19,7 @@ import { useStackContext } from "@hooks/useStackContext";
 
 import { useStackDispatch } from "@/hooks/useStackDispatch";
 import { SortableListItem } from "@components/SortableListItem";
+import { ShapeListItem } from "./ShapeListItem";
 
 export const SortableShapeList = () => {
   const { savedStack } = useStackContext();
@@ -66,18 +67,17 @@ export const SortableShapeList = () => {
         items={savedStack}
         strategy={verticalListSortingStrategy}
       >
-        {savedStack.map((stack) => (
-          <SortableListItem key={stack.id} id={stack.id}>
-            {stack.shape}
-          </SortableListItem>
-        ))}
-        {/* {savedStack.map((stack, stackIndex) => {
-          return (
-            <SortableListItem id={stackIndex} key={stackIndex}>
-              <ShapeListItem stackIndex={stackIndex} stack={stack} noEditMode />
+        <ol>
+          {savedStack.map((stack, stackIndex) => (
+            <SortableListItem key={stack.id} id={stack.id}>
+              <ShapeListItem
+                stack={stack}
+                stackIndex={stackIndex}
+                preventEditMode
+              />
             </SortableListItem>
-          );
-        })} */}
+          ))}
+        </ol>
       </SortableContext>
     </DndContext>
   );

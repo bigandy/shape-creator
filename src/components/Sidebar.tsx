@@ -20,7 +20,9 @@ export const Sidebar = ({ open, handleClose }: SidebarProps) => {
           Close
         </button>
 
-        <button onClick={handleToggleReorderList}>Toggle Re-order List</button>
+        <button onClick={handleToggleReorderList}>
+          {!dragDropShapeList ? "Re-order" : "Save Order"} List
+        </button>
 
         {dragDropShapeList ? <SortableShapeList /> : <ShapeList />}
       </div>
