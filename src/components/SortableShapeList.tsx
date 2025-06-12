@@ -40,14 +40,12 @@ export const SortableShapeList = () => {
       const oldIndex = savedStack.findIndex((stack) => stack.id === active.id);
       const newIndex = savedStack.findIndex((stack) => stack.id === over?.id);
 
-      const out = arrayMove(savedStack, oldIndex, newIndex);
-
-      console.log({ out });
+      const updatedSavedStack = arrayMove(savedStack, oldIndex, newIndex);
 
       dispatch({
         type: "update-stack-order",
         payload: {
-          savedStack: out,
+          savedStack: updatedSavedStack,
         },
       });
     }

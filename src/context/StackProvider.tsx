@@ -11,7 +11,9 @@ export type StackContextValue = {
   stackLength: number;
   savedStack: Shape[];
   editingNumber: number | undefined;
+  isActiveStackBeingMoved: boolean;
   drawingMode: DrawingMode;
+  movingNumber: number | undefined;
   activeStack: Shape;
 };
 
@@ -39,6 +41,10 @@ export type StackReducerAction =
     }
   | {
       type: "update-edit-index";
+      payload: { index: number };
+    }
+  | {
+      type: "update-move-index";
       payload: { index: number };
     }
   | {
@@ -88,13 +94,15 @@ export type StackReducerAction =
 type ReducerState = {
   savedStack: Shape[];
   editingNumber: number | undefined;
+  movingNumber: number | undefined;
   drawingMode: DrawingMode;
 };
 
 const initialState = {
   savedStack: [],
   editingNumber: 0,
-  drawingMode: "line" as DrawingMode,
+  movingNumber: undefined,
+  drawingMode: "rectangle" as DrawingMode,
 };
 
 function stackReducer(
@@ -126,6 +134,21 @@ function stackReducer(
         ...state,
         editingNumber:
           state.editingNumber === action.payload.index
+            ? undefined
+            : action.payload.index,
+        drawingMode: state.savedStack[action.payload.index].shape,
+        movingNumber: undefined,
+      };
+    }
+    case "update-move-index": {
+      return {
+        ...state,
+        movingNumber:
+          state.movingNumber === action.payload.index
+            ? undefined
+            : action.payload.index,
+        editingNumber:
+          state.movingNumber === action.payload.index
             ? undefined
             : action.payload.index,
         drawingMode: state.savedStack[action.payload.index].shape,
@@ -199,6 +222,7 @@ function stackReducer(
         savedStack: [...updatedSavedStack],
         editingNumber,
         drawingMode: action.payload.shape,
+        movingNumber: undefined,
       };
     }
     case "delete-final-point": {
@@ -296,10 +320,8 @@ function stackReducer(
 }
 
 export function StackProvider({ children }: PropsWithChildren) {
-  const [{ savedStack, editingNumber, drawingMode }, dispatch] = useReducer(
-    stackReducer,
-    initialState
-  );
+  const [{ savedStack, editingNumber, drawingMode, movingNumber }, dispatch] =
+    useReducer(stackReducer, initialState);
 
   const stackLength =
     (editingNumber && savedStack[editingNumber]?.coords.length) || 0;
@@ -311,6 +333,8 @@ export function StackProvider({ children }: PropsWithChildren) {
 
   // @ts-expect-error sort it out
   const activeStack = savedStack[editingNumber] ?? [];
+  // @ts-expect-error sort it out
+  const isActiveStackBeingMoved = savedStack[movingNumber]?.coords.length > 0;
 
   return (
     <StackContext
@@ -322,6 +346,8 @@ export function StackProvider({ children }: PropsWithChildren) {
           stackLength,
           clipPath,
           editingNumber,
+          isActiveStackBeingMoved,
+          movingNumber,
         } as StackContextValue
       }
     >

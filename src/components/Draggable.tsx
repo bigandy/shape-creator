@@ -14,7 +14,10 @@ export function Draggable({ index, top, left, children }: Props) {
   return (
     <button
       ref={setNodeRef}
-      style={{ top: top + "%", left: left + "%" }}
+      style={{
+        top: top + "%",
+        left: left + "%",
+      }}
       {...listeners}
       {...attributes}
       className="draggable-button"

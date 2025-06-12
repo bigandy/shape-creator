@@ -6,10 +6,10 @@
 
 ## ClickArea - Moving Existing Shapes
 
-- [ ] Move one shape
-  - [ ] Line
-  - [ ] Rectangle
-  - [ ] Circle
+- [x] Move one shape
+  - [x] Line
+  - [x] Rectangle
+  - [x] Circle
 - [ ] Move all Shapes i.e. drag a selector and move all the points in the selected area by the amount that the selected area moves by.
 
 ## Styles

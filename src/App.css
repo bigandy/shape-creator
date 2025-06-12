@@ -218,6 +218,10 @@ main {
   &.editable-shape {
     border-color: green;
   }
+
+  &.movable-shape {
+    border-color: hotpink;
+  }
 }
 
 .toolbar {

@@ -47,10 +47,26 @@ const getUpdateRectangleCoords = (
 };
 
 export const DragAndDropPoints = ({ clickAreaRef, drawingMode }: Props) => {
-  const { activeStack } = useStackContext();
+  const { activeStack, isActiveStackBeingMoved } = useStackContext();
 
   const dispatch = useStackDispatch();
 
+  const handleAllMove = (event: DragMoveEvent) => {
+    const oldCoords = getCenterPoint(activeStack.coords, drawingMode);
+    const newCoords = getDragDropCoords(event, clickAreaRef)!;
+
+    const updatedCoords = activeStack.coords.map((coord) => {
+      return {
+        percentX: coord.percentX + newCoords.percentX - oldCoords.percentX,
+        percentY: coord.percentY + newCoords.percentY - oldCoords.percentY,
+      };
+    });
+
+    dispatch({
+      type: "update-current-shape",
+      payload: { coords: updatedCoords },
+    });
+  };
   const handleDragMove = (event: DragMoveEvent) => {
     const coords = getDragDropCoords(event, clickAreaRef)!;
 
@@ -87,8 +103,12 @@ export const DragAndDropPoints = ({ clickAreaRef, drawingMode }: Props) => {
   };
 
   return (
-    <DndContext onDragMove={handleDragMove}>
-      {activeStack.coords && activeStack.coords.length > 0
+    <DndContext
+      onDragMove={isActiveStackBeingMoved ? handleAllMove : handleDragMove}
+    >
+      {!isActiveStackBeingMoved &&
+      activeStack.coords &&
+      activeStack.coords.length > 0
         ? activeStack.coords.map((item, index) => {
             return (
               <Draggable
@@ -102,6 +122,57 @@ export const DragAndDropPoints = ({ clickAreaRef, drawingMode }: Props) => {
             );
           })
         : null}
+
+      {isActiveStackBeingMoved && (
+        <CenterPoint coords={activeStack.coords} drawingMode={drawingMode} />
+      )}
     </DndContext>
   );
+};
+
+const CenterPoint = ({
+  coords,
+  drawingMode,
+}: {
+  coords: Coords[];
+  drawingMode: DrawingMode;
+}) => {
+  const middlePoint = getCenterPoint(coords, drawingMode);
+
+  return (
+    <Draggable
+      index={coords.length + 1}
+      top={middlePoint.percentY}
+      left={middlePoint.percentX}
+    >
+      <div>C</div>
+    </Draggable>
+  );
+};
+
+const getCenterPoint = (coords: Coords[], drawingMode: DrawingMode) => {
+  if (drawingMode === "rectangle") {
+    return {
+      percentX: (coords[0].percentX + coords[2].percentX) / 2,
+      percentY: (coords[0].percentY + coords[2].percentY) / 2,
+    };
+  } else if (drawingMode === "circle") {
+    return {
+      percentX: (coords[0].percentX + coords[1].percentX) / 2,
+      percentY: (coords[0].percentY + coords[1].percentY) / 2,
+    };
+  } else {
+    const coordsX = coords.map((coord) => coord.percentX);
+    const coordsY = coords.map((coord) => coord.percentY);
+
+    const minX = Math.min(...coordsX);
+    const minY = Math.min(...coordsY);
+    const maxX = Math.max(...coordsX);
+    const maxY = Math.max(...coordsY);
+
+    return {
+      percentX: (minX + maxX) / 2,
+      percentY: (minY + maxY) / 2,
+    };
+  }
 };
