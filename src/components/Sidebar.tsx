@@ -1,9 +1,7 @@
-import { Fragment } from "react";
+import { useState } from "react";
 
-import { SidebarItem } from "@components/SidebarItem";
-
-import { useStackDispatch } from "@/hooks/useStackDispatch";
-import { useStackContext } from "@hooks/useStackContext";
+import { SortableShapeList } from "@components/SortableShapeList";
+import { ShapeList } from "@components/ShapeList";
 
 type SidebarProps = {
   open: boolean;
@@ -11,25 +9,9 @@ type SidebarProps = {
 };
 
 export const Sidebar = ({ open, handleClose }: SidebarProps) => {
-  const { savedStack, editingNumber } = useStackContext();
-  const dispatch = useStackDispatch();
+  const [dragDropShapeList, setDragDropShapeList] = useState(false);
 
-  const handleDeleteShape = (indexToDelete: number) => {
-    dispatch({
-      type: "delete-shape",
-      payload: {
-        index: indexToDelete,
-      },
-    });
-  };
-
-  const onEditShape = (index: number) => {
-    dispatch({ type: "update-edit-index", payload: { index } });
-  };
-
-  const onDeleteShape = (index: number) => {
-    handleDeleteShape(index);
-  };
+  const handleToggleReorderList = () => setDragDropShapeList((d) => !d);
 
   return (
     <div className={`sidebar ${open ? "sidebar--open" : ""}`}>
@@ -38,58 +20,9 @@ export const Sidebar = ({ open, handleClose }: SidebarProps) => {
           Close
         </button>
 
-        {savedStack.length > 0 ? (
-          <ol>
-            {/* <li>Have Stack</li> */}
-            {savedStack.map((stack, stackIndex) => {
-              const canEdit = editingNumber === stackIndex;
-              // const canEdit = false;
-              return (
-                <li
-                  className={
-                    canEdit ? `sidebar-shape editable-shape` : "sidebar-shape"
-                  }
-                  key={`savedStackItem-${stackIndex}`}
-                >
-                  {stack.shape} {/* {stack.shape === "line" && ( */}
-                  <br />
-                  <button onClick={() => onEditShape(stackIndex)}>
-                    {!canEdit ? "Edit" : "Unedit"} Shape?
-                  </button>
-                  <br />
-                  {/* )} */}
-                  <button onClick={() => onDeleteShape(stackIndex)}>
-                    Delete Shape?
-                  </button>
-                  {stack.shape === "line" ? (
-                    <ol>
-                      {stack.coords.map(({ percentX, percentY }, index) => {
-                        return (
-                          <SidebarItem
-                            key={`item-${index}`}
-                            x={percentX}
-                            y={percentY}
-                            currentIndex={index}
-                            editable={canEdit}
-                          />
-                        );
-                      })}
-                    </ol>
-                  ) : (
-                    <Fragment>
-                      <p>{stack.shape}</p>
-                      {canEdit && (
-                        <pre>{JSON.stringify(stack.coords, null, 2)}</pre>
-                      )}
-                    </Fragment>
-                  )}
-                </li>
-              );
-            })}
-          </ol>
-        ) : (
-          <p>No Shapes Added, Save One?</p>
-        )}
+        <button onClick={handleToggleReorderList}>Toggle Re-order List</button>
+
+        {dragDropShapeList ? <SortableShapeList /> : <ShapeList />}
       </div>
     </div>
   );

@@ -6,6 +6,7 @@ export type Coords = {
 export type NumCoords = { x: number; y: number };
 
 export type Shape = {
+  id: string;
   shape: DrawingMode;
   coords: Coords[];
 };

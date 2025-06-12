@@ -18,7 +18,12 @@ export type StackContextValue = {
 export type StackReducerAction =
   | {
       type: string;
-      payload: { coords: Coords[]; index: number; shape: DrawingMode };
+      payload: {
+        coords: Coords[];
+        index: number;
+        shape: DrawingMode;
+        savedStack: Shape[];
+      };
     } // Is this needed?
   | {
       type: "clear-current-shape";
@@ -72,6 +77,12 @@ export type StackReducerAction =
       payload: {
         index: number;
       };
+    }
+  | {
+      type: "update-stack-order";
+      payload: {
+        savedStack: Shape[];
+      };
     };
 
 type ReducerState = {
@@ -90,6 +101,8 @@ function stackReducer(
   state: ReducerState,
   action: StackReducerAction
 ): ReducerState {
+  const uuid = self.crypto.randomUUID();
+
   switch (action.type) {
     case "clear-current-shape": {
       const updatedSavedStack = state.savedStack.map((stack, index) => {
@@ -129,6 +142,7 @@ function stackReducer(
             {
               coords: [action.payload.coords as Coords],
               shape: "line",
+              id: uuid,
             },
           ],
           editingNumber: 0,
@@ -176,7 +190,7 @@ function stackReducer(
       } else {
         updatedSavedStack = [
           ...state.savedStack,
-          { shape: action.payload.shape, coords: [] },
+          { shape: action.payload.shape, coords: [], id: uuid },
         ];
       }
 
@@ -232,11 +246,13 @@ function stackReducer(
         updatedStack[updatedStack.length - 1] = {
           shape: action.payload.shape,
           coords: action.payload.coords,
+          id: uuid,
         };
       } else {
         updatedStack.push({
           shape: action.payload.shape,
           coords: action.payload.shape === "line" ? [] : action.payload.coords,
+          id: uuid,
         });
       }
 
@@ -263,6 +279,13 @@ function stackReducer(
         savedStack: state.savedStack.filter(
           (_, index) => index !== action.payload.index
         ),
+        editingNumber: undefined,
+      };
+    }
+    case "update-stack-order": {
+      return {
+        ...state,
+        savedStack: action.payload.savedStack,
         editingNumber: undefined,
       };
     }

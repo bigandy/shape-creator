@@ -96,7 +96,6 @@ export const DragAndDropPoints = ({ clickAreaRef, drawingMode }: Props) => {
                 key={`item-${index}`}
                 top={item.percentY}
                 left={item.percentX}
-                data-plot-number={index + 1}
               >
                 <div>{index + 1}</div>
               </Draggable>

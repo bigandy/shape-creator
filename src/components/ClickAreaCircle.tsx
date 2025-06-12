@@ -73,26 +73,9 @@ export const ClickAreaCircle = () => {
     setFinalPoint(coords);
   };
 
-  // const isEditing = savedStack[editingNumber]?.coords.length > 0;
-  // const isEditing = false;
-
   if (activeStack.coords) {
     return (
-      <div
-        className="click-area"
-        // onMouseDown={handleMouseDown}
-        // onMouseUp={handleMouseUp}
-        // onMouseMove={handleMouseMove}
-        ref={clickAreaRef}
-      >
-        {/* {finalPoint !== null && initialPoint !== null && (
-          <CircleMiddlePoint
-            initialPoint={initialPoint}
-            finalPoint={finalPoint}
-          />
-        )} */}
-
-        {/* AHTODO: show the DragAndDropPoints when in Edit mode. */}
+      <div className="click-area" ref={clickAreaRef}>
         <DragAndDropPoints clickAreaRef={clickAreaRef} drawingMode="circle" />
       </div>
     );
