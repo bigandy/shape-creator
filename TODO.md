@@ -1,12 +1,22 @@
 # Todo List
 
+## Sidebar - Duplicate shape
+
+- [ ] Think about having the Ability to duplicate a shape
+- [ ] A button in the sidebar, then where does the new shape go?
+- [ ] Click the button and then the new shape is in move mode so the user can move to where they want it
+
+## Sidebar - combine move and edit
+
+- [ ] Combine move and edit so that the user can do either and it is less confusing
+
 ## Testing
 
 - [ ] Investigate options for testing
 
 ## Sidebar - Drag and Drop Shapes
 
-- [ ] Remove re-ordering as not useful at all!
+- [x] Remove re-ordering as not useful at all!
 - [x] Re-order shapes in sidebar by dragging and dropping
 
 ## ClickArea - Moving Existing Shapes
