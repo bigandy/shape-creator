@@ -1,4 +1,4 @@
-import { useStackContext } from "@/hooks/useStackContext";
+import { useStackContext } from "@hooks/useStackContext";
 import type { DrawingMode } from "@/Types";
 
 import { DragAndDropPointsAllShapes } from "./DragAndDropPointsAllShapes";

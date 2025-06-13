@@ -3,8 +3,8 @@ import { DndContext, type DragMoveEvent } from "@dnd-kit/core";
 import { Draggable } from "@components/Draggable";
 
 import { getDragDropCoords } from "@utils/coordinates";
-import { useStackContext } from "@/hooks/useStackContext";
-import { useStackDispatch } from "@/hooks/useStackDispatch";
+import { useStackContext } from "@hooks/useStackContext";
+import { useStackDispatch } from "@hooks/useStackDispatch";
 import type { Shape } from "@/Types";
 
 type Props = {

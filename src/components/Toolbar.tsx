@@ -2,7 +2,7 @@ import { backgroundImages } from "@utils/sharedImages";
 import type { DrawingMode } from "@/Types";
 import { Fragment, type ChangeEvent } from "react";
 
-import { useStackDispatch } from "@/hooks/useStackDispatch";
+import { useStackDispatch } from "@hooks/useStackDispatch";
 import { useStackContext } from "@hooks/useStackContext";
 
 type ShapeOption = { label: string; id: DrawingMode };

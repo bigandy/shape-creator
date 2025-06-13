@@ -2,7 +2,7 @@ import { Fragment } from "react";
 
 import { SidebarItem } from "@components/SidebarItem";
 
-import { useStackDispatch } from "@/hooks/useStackDispatch";
+import { useStackDispatch } from "@hooks/useStackDispatch";
 import { useStackContext } from "@hooks/useStackContext";
 
 import { type Shape } from "@/Types";

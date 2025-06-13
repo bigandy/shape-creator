@@ -7,7 +7,7 @@ import { useStackDispatch } from "@hooks/useStackDispatch";
 import type { Coords } from "@/Types";
 
 import { getCoords } from "@utils/coordinates";
-import { useStackContext } from "@/hooks/useStackContext";
+import { useStackContext } from "@hooks/useStackContext";
 
 export const ClickAreaRectangle = () => {
   const dispatch = useStackDispatch();

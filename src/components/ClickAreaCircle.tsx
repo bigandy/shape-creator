@@ -4,7 +4,7 @@ import { DragAndDropPoints } from "@components/DragAndDropPoints/index";
 
 import type { Coords } from "@/Types";
 
-import { useStackContext } from "@/hooks/useStackContext";
+import { useStackContext } from "@hooks/useStackContext";
 
 import { getCoords } from "@utils/coordinates";
 import { useStackDispatch } from "@hooks/useStackDispatch";
