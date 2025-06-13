@@ -3,9 +3,10 @@ import { DndContext, type DragMoveEvent } from "@dnd-kit/core";
 import { Draggable } from "@components/Draggable";
 
 import { getDragDropCoords } from "@utils/coordinates";
-import { useStackContext } from "@/hooks/useStackContext";
-import { useStackDispatch } from "@/hooks/useStackDispatch";
+import { useStackContext } from "@hooks/useStackContext";
+import { useStackDispatch } from "@hooks/useStackDispatch";
 import type { DrawingMode, Coords } from "@/Types";
+import { clamp } from "@utils/clamp";
 
 const getUpdateRectangleCoords = (
   updatedPositionCoord: Coords,
@@ -78,7 +79,11 @@ const CenterPoint = ({
   const middlePoint = getCenterPoint(coords, drawingMode);
 
   return (
-    <Draggable index={1} top={middlePoint.percentY} left={middlePoint.percentX}>
+    <Draggable
+      index={1}
+      top={clamp(middlePoint.percentY, 0, 100)}
+      left={clamp(middlePoint.percentX, 0, 100)}
+    >
       <div className="cursor-move">C</div>
     </Draggable>
   );

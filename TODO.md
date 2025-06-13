@@ -10,6 +10,7 @@
 
 ## ClickArea - Moving Existing Shapes
 
+- [x] Bug - center point can be outside of viewport if all shapes moved - set a max/min position
 - [x] bug - single shape moving broken.
 - [x] Move one shape
   - [x] Line
