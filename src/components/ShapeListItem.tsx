@@ -33,6 +33,15 @@ export const ShapeListItem = ({
     });
   };
 
+  const onDuplicateShape = () => {
+    dispatch({
+      type: "duplicate-shape",
+      payload: {
+        index: stackIndex,
+      },
+    });
+  };
+
   const canEdit = !preventEditMode && editingNumber === stackIndex;
 
   return (
@@ -47,6 +56,8 @@ export const ShapeListItem = ({
           <button onClick={onEditShape}>
             {!canEdit ? "Edit" : "Unedit"} Shape?
           </button>
+
+          <button onClick={onDuplicateShape}>Duplicate Shape?</button>
           <br />
           <button onClick={onDeleteShape}>Delete Shape?</button>
         </Fragment>

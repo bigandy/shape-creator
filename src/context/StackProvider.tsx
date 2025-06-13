@@ -85,6 +85,12 @@ export type StackReducerAction =
       };
     }
   | {
+      type: "duplicate-shape";
+      payload: {
+        index: number;
+      };
+    }
+  | {
       type: "update-all-shapes";
       payload: {
         savedStack: Shape[];
@@ -293,6 +299,22 @@ function stackReducer(
           (_, index) => index !== action.payload.index,
         ),
         editingNumber: undefined,
+        moveAllShapes: false,
+      };
+    }
+    case "duplicate-shape": {
+      const positionToInsertAt = action.payload.index + 1;
+
+      const updatedStack = [
+        ...state.savedStack.slice(0, positionToInsertAt),
+        state.savedStack[action.payload.index],
+        ...state.savedStack.slice(positionToInsertAt),
+      ];
+
+      return {
+        ...state,
+        savedStack: updatedStack,
+        editingNumber: positionToInsertAt,
         moveAllShapes: false,
       };
     }

@@ -2,9 +2,9 @@
 
 ## Sidebar - Duplicate shape
 
-- [ ] Think about having the Ability to duplicate a shape
-- [ ] A button in the sidebar, then where does the new shape go?
-- [ ] Click the button and then the new shape is in move mode so the user can move to where they want it
+- [x] Think about having the Ability to duplicate a shape
+- [x] A button in the sidebar, then where does the new shape go?
+- [x] Click the button and then the new shape is in move mode so the user can move to where they want it
 
 ## Sidebar - combine move and edit
 
