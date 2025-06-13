@@ -1,6 +1,6 @@
 import React, { useRef, useState, type MouseEvent } from "react";
 
-import { DragAndDropPoints } from "@components/DragAndDropPoints";
+import { DragAndDropPoints } from "@components/DragAndDropPoints/index";
 
 import { useStackDispatch } from "@hooks/useStackDispatch";
 
@@ -129,5 +129,5 @@ const MiddlePoint = React.memo(
         }}
       />
     );
-  }
+  },
 );

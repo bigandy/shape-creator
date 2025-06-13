@@ -62,7 +62,7 @@ export type StackReducerAction =
       type: "move-all-shapes";
     }
   | {
-      type: "delete-current-shape";
+      type: "delete-last-shape";
     }
   | {
       type: "delete-index";
@@ -120,7 +120,7 @@ const initialState = {
 
 function stackReducer(
   state: ReducerState,
-  action: StackReducerAction
+  action: StackReducerAction,
 ): ReducerState {
   const uuid = self.crypto.randomUUID();
 
@@ -151,6 +151,7 @@ function stackReducer(
             : action.payload.index,
         drawingMode: state.savedStack[action.payload.index].shape,
         movingNumber: undefined,
+        moveAllShapes: false,
       };
     }
     case "update-move-index": {
@@ -165,6 +166,7 @@ function stackReducer(
             ? undefined
             : action.payload.index,
         drawingMode: state.savedStack[action.payload.index].shape,
+        moveAllShapes: false,
       };
     }
     case "add-point": {
@@ -236,6 +238,7 @@ function stackReducer(
         editingNumber,
         drawingMode: action.payload.shape,
         movingNumber: undefined,
+        moveAllShapes: false,
       };
     }
     case "delete-final-point": {
@@ -245,7 +248,7 @@ function stackReducer(
             ...stack,
             coords: stack.coords.filter(
               (_, coordsIndex, stackArray) =>
-                coordsIndex !== stackArray.length - 1
+                coordsIndex !== stackArray.length - 1,
             ),
           };
         } else {
@@ -265,7 +268,7 @@ function stackReducer(
           return {
             ...stack,
             coords: stack.coords.filter(
-              (_, coordsIndex) => coordsIndex !== action.payload.index
+              (_, coordsIndex) => coordsIndex !== action.payload.index,
             ),
           };
         } else {
@@ -298,26 +301,30 @@ function stackReducer(
         ...state,
         savedStack: [...updatedStack],
         editingNumber: undefined,
+        moveAllShapes: false,
       };
     }
-    case "delete-current-shape": {
+    case "delete-last-shape": {
       const updatedSavedStack = state.savedStack.filter(
-        (_, index) => index !== state.editingNumber
+        (_, index, stackArray) => index !== stackArray.length - 1,
       );
 
       return {
         ...state,
         savedStack: [...updatedSavedStack],
         editingNumber: undefined,
+        moveAllShapes: false,
       };
     }
     case "delete-shape": {
       return {
         ...state,
         savedStack: state.savedStack.filter(
-          (_, index) => index !== action.payload.index
+          (_, index) => index !== action.payload.index,
         ),
         editingNumber: undefined,
+        moveAllShapes: false,
+        movingNumber: undefined,
       };
     }
     case "update-stack-order": {
@@ -331,10 +338,11 @@ function stackReducer(
       return {
         ...state,
         moveAllShapes: !state.moveAllShapes,
+        editingNumber: undefined,
+        movingNumber: undefined,
       };
     }
     case "update-all-shapes": {
-      console.log(action.payload.savedStack);
       return {
         ...state,
         savedStack: action.payload.savedStack,

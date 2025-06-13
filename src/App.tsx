@@ -10,7 +10,7 @@ import { OutputBox } from "@components/OutputBox";
 import { Sidebar } from "@components/Sidebar";
 import { Toolbar } from "@components/Toolbar";
 
-import { backgroundImages } from "@/sharedImages";
+import { backgroundImages } from "@utils/sharedImages";
 
 import { StackProvider } from "@context/StackProvider";
 
@@ -23,7 +23,7 @@ function App() {
   const [codeViewerOpen, setCodeViewerOpen] = useState(true);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [backgroundImage, setBackgroundImage] = useState(
-    backgroundImages[0].url
+    backgroundImages[0].url,
   );
   const { drawingMode } = useStackContext();
 

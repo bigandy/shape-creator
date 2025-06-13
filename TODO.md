@@ -1,11 +1,16 @@
 # Todo List
 
+## Testing
+
+- [ ] Investigate options for testing
+
 ## Sidebar - Drag and Drop Shapes
 
 - [x] Re-order shapes in sidebar by dragging and dropping
 
 ## ClickArea - Moving Existing Shapes
 
+- [x] bug - single shape moving broken.
 - [x] Move one shape
   - [x] Line
   - [x] Rectangle

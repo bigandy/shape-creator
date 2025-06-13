@@ -5,17 +5,12 @@ import { Draggable } from "@components/Draggable";
 import { getDragDropCoords } from "@utils/coordinates";
 import { useStackContext } from "@/hooks/useStackContext";
 import { useStackDispatch } from "@/hooks/useStackDispatch";
-import type { DrawingMode, Coords, Shape } from "@/Types";
-
-type Props = {
-  clickAreaRef: React.RefObject<HTMLInputElement | null>;
-  drawingMode: DrawingMode;
-};
+import type { DrawingMode, Coords } from "@/Types";
 
 const getUpdateRectangleCoords = (
   updatedPositionCoord: Coords,
   previousCoords: Coords[],
-  indexToUpdate: number
+  indexToUpdate: number,
 ) => {
   const newCoords = [...previousCoords];
   newCoords[indexToUpdate] = updatedPositionCoord;
@@ -46,7 +41,58 @@ const getUpdateRectangleCoords = (
   return newCoords;
 };
 
-const DragAndDropPointsSingleShape = ({ clickAreaRef, drawingMode }: Props) => {
+const getCenterPoint = (coords: Coords[], drawingMode: DrawingMode) => {
+  if (drawingMode === "rectangle") {
+    return {
+      percentX: (coords[0].percentX + coords[2].percentX) / 2,
+      percentY: (coords[0].percentY + coords[2].percentY) / 2,
+    };
+  } else if (drawingMode === "circle") {
+    return {
+      percentX: (coords[0].percentX + coords[1].percentX) / 2,
+      percentY: (coords[0].percentY + coords[1].percentY) / 2,
+    };
+  } else {
+    const coordsX = coords.map((coord) => coord.percentX);
+    const coordsY = coords.map((coord) => coord.percentY);
+
+    const minX = Math.min(...coordsX);
+    const minY = Math.min(...coordsY);
+    const maxX = Math.max(...coordsX);
+    const maxY = Math.max(...coordsY);
+
+    return {
+      percentX: (minX + maxX) / 2,
+      percentY: (minY + maxY) / 2,
+    };
+  }
+};
+
+const CenterPoint = ({
+  coords,
+  drawingMode,
+}: {
+  coords: Coords[];
+  drawingMode: DrawingMode;
+}) => {
+  const middlePoint = getCenterPoint(coords, drawingMode);
+
+  return (
+    <Draggable index={1} top={middlePoint.percentY} left={middlePoint.percentX}>
+      <div className="cursor-move">C</div>
+    </Draggable>
+  );
+};
+
+type Props = {
+  clickAreaRef: React.RefObject<HTMLInputElement | null>;
+  drawingMode: DrawingMode;
+};
+
+export const DragAndDropPointsSingleShape = ({
+  clickAreaRef,
+  drawingMode,
+}: Props) => {
   const { activeStack, isActiveStackBeingMoved } = useStackContext();
 
   const dispatch = useStackDispatch();
@@ -90,7 +136,7 @@ const DragAndDropPointsSingleShape = ({ clickAreaRef, drawingMode }: Props) => {
       const updatedCoords = getUpdateRectangleCoords(
         coords,
         activeStack.coords,
-        indexToUpdate
+        indexToUpdate,
       );
 
       dispatch({
@@ -128,134 +174,4 @@ const DragAndDropPointsSingleShape = ({ clickAreaRef, drawingMode }: Props) => {
       )}
     </DndContext>
   );
-};
-
-const DragAndDropPointsAllShapes = ({
-  clickAreaRef,
-}: {
-  clickAreaRef: React.RefObject<HTMLInputElement | null>;
-}) => {
-  const { savedStack } = useStackContext();
-
-  const dispatch = useStackDispatch();
-
-  const middlePoint = getCenterPointAllShapes(savedStack);
-
-  const handleAllMove = (event: DragMoveEvent) => {
-    const oldCoords = getCenterPointAllShapes(savedStack);
-    const newCoords = getDragDropCoords(event, clickAreaRef)!;
-
-    const updatedShapes = savedStack.map((stack) => {
-      const updatedCoords = stack.coords.map((coord) => {
-        return {
-          percentX: coord.percentX + newCoords.percentX - oldCoords.percentX,
-          percentY: coord.percentY + newCoords.percentY - oldCoords.percentY,
-        };
-      });
-
-      return {
-        ...stack,
-        coords: updatedCoords,
-      };
-    });
-
-    dispatch({
-      type: "update-all-shapes",
-      payload: { savedStack: updatedShapes },
-    });
-  };
-
-  return (
-    <DndContext onDragMove={handleAllMove}>
-      <Draggable
-        index={1}
-        top={middlePoint.percentY}
-        left={middlePoint.percentX}
-      >
-        <div>C</div>
-      </Draggable>
-    </DndContext>
-  );
-};
-
-const CenterPoint = ({
-  coords,
-  drawingMode,
-}: {
-  coords: Coords[];
-  drawingMode: DrawingMode;
-}) => {
-  const middlePoint = getCenterPoint(coords, drawingMode);
-
-  return (
-    <Draggable
-      index={coords.length + 1}
-      top={middlePoint.percentY}
-      left={middlePoint.percentX}
-    >
-      <div>C</div>
-    </Draggable>
-  );
-};
-
-const getCenterPoint = (coords: Coords[], drawingMode: DrawingMode) => {
-  if (drawingMode === "rectangle") {
-    return {
-      percentX: (coords[0].percentX + coords[2].percentX) / 2,
-      percentY: (coords[0].percentY + coords[2].percentY) / 2,
-    };
-  } else if (drawingMode === "circle") {
-    return {
-      percentX: (coords[0].percentX + coords[1].percentX) / 2,
-      percentY: (coords[0].percentY + coords[1].percentY) / 2,
-    };
-  } else {
-    const coordsX = coords.map((coord) => coord.percentX);
-    const coordsY = coords.map((coord) => coord.percentY);
-
-    const minX = Math.min(...coordsX);
-    const minY = Math.min(...coordsY);
-    const maxX = Math.max(...coordsX);
-    const maxY = Math.max(...coordsY);
-
-    return {
-      percentX: (minX + maxX) / 2,
-      percentY: (minY + maxY) / 2,
-    };
-  }
-};
-
-const getCenterPointAllShapes = (savedStack: Shape[]) => {
-  // 1. get all coords
-  const coords = [
-    savedStack
-      .filter((stack) => stack.coords.length)
-      .map((stack) => stack.coords)
-      .flat(),
-  ];
-
-  const coordsX = coords[0].map((coord) => coord.percentX);
-  const coordsY = coords[0].map((coord) => coord.percentY);
-
-  const minX = Math.min(...coordsX);
-  const minY = Math.min(...coordsY);
-  const maxX = Math.max(...coordsX);
-  const maxY = Math.max(...coordsY);
-
-  return {
-    percentX: (minX + maxX) / 2,
-    percentY: (minY + maxY) / 2,
-  };
-};
-
-export const DragAndDropPoints = ({ clickAreaRef, drawingMode }: Props) => {
-  const { moveAllShapes } = useStackContext();
-  if (moveAllShapes) {
-    return <DragAndDropPointsAllShapes clickAreaRef={clickAreaRef} />;
-  } else {
-    <DragAndDropPointsSingleShape
-      clickAreaRef={clickAreaRef}
-      drawingMode={drawingMode}
-    />;
-  }
 };

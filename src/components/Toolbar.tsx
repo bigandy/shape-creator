@@ -1,4 +1,4 @@
-import { backgroundImages } from "@/sharedImages";
+import { backgroundImages } from "@utils/sharedImages";
 import type { DrawingMode } from "@/Types";
 import { Fragment, type ChangeEvent } from "react";
 
@@ -47,7 +47,7 @@ export const Toolbar = ({ open, selectedImage, handleImageChange }: Props) => {
 
   const handleDeleteLastShape = () => {
     dispatch({
-      type: "delete-current-shape",
+      type: "delete-last-shape",
     });
   };
 
@@ -59,7 +59,7 @@ export const Toolbar = ({ open, selectedImage, handleImageChange }: Props) => {
     dispatch({ type: "clear-current-shape" });
   };
 
-  const handleDeleteAllStacks = () => {
+  const handleDeleteAllShapes = () => {
     dispatch({ type: "clear-all-stacks" });
   };
 
@@ -108,19 +108,37 @@ export const Toolbar = ({ open, selectedImage, handleImageChange }: Props) => {
         </div>
 
         <div className="buttons">
-          <button onClick={handleDeleteLastShape}>Delete Current Shape</button>
+          <button
+            onClick={handleDeleteLastShape}
+            disabled={savedStackLength === 0}
+          >
+            Delete Last Shape
+          </button>
 
           {drawingMode === "line" && (
             <Fragment>
-              <button onClick={handleDeleteLastPoint}>Delete Last Point</button>
-              <button onClick={handleResetCurrentStack}>
+              <button
+                onClick={handleDeleteLastPoint}
+                disabled={savedStackLength === 0}
+              >
+                Delete Last Point
+              </button>
+              <button
+                onClick={handleResetCurrentStack}
+                disabled={savedStackLength === 0}
+              >
                 Reset Current Shape
               </button>
               {/* <button onClick={handleSaveShape}>Save Shape</button> */}
             </Fragment>
           )}
 
-          <button onClick={handleDeleteAllStacks}>Delete All Shapes</button>
+          <button
+            onClick={handleDeleteAllShapes}
+            disabled={savedStackLength === 0}
+          >
+            Delete All Shapes
+          </button>
 
           {savedStackLength > 0 && (
             <button onClick={handleMoveAllShapes}>

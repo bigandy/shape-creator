@@ -1,6 +1,6 @@
 import React, { useRef, useState, type MouseEvent } from "react";
 
-import { DragAndDropPoints } from "@components/DragAndDropPoints";
+import { DragAndDropPoints } from "@components/DragAndDropPoints/index";
 
 import type { Coords } from "@/Types";
 
@@ -126,5 +126,5 @@ const CircleMiddlePoint = React.memo(
         }}
       />
     );
-  }
+  },
 );
