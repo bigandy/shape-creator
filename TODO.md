@@ -8,7 +8,7 @@
 
 ## Sidebar - combine move and edit
 
-- [ ] Combine move and edit so that the user can do either and it is less confusing
+- [x] Combine move and edit so that the user can do either and it is less confusing
 
 ## Testing
 

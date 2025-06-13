@@ -16,7 +16,7 @@ export const ShapeListItem = ({
   stack: Shape;
   preventEditMode?: boolean;
 }) => {
-  const { editingNumber, movingNumber } = useStackContext();
+  const { editingNumber } = useStackContext();
 
   const dispatch = useStackDispatch();
 
@@ -33,18 +33,11 @@ export const ShapeListItem = ({
     });
   };
 
-  const onMoveShape = () => {
-    dispatch({ type: "update-move-index", payload: { index: stackIndex } });
-  };
-
   const canEdit = !preventEditMode && editingNumber === stackIndex;
-  const canMove = !preventEditMode && movingNumber === stackIndex;
 
   return (
     <li
-      className={`sidebar-shape ${canEdit ? ` editable-shape ` : ""} ${
-        canMove ? ` movable-shape ` : ""
-      }`}
+      className={`sidebar-shape ${canEdit ? ` editable-shape ` : ""}`}
       key={`savedStackItem-${stackIndex}`}
     >
       {stack.shape}
@@ -56,9 +49,6 @@ export const ShapeListItem = ({
           </button>
           <br />
           <button onClick={onDeleteShape}>Delete Shape?</button>
-          <button onClick={onMoveShape}>
-            {!canMove ? "Move" : "UnMove"} Shape?
-          </button>
         </Fragment>
       )}
 

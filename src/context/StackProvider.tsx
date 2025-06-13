@@ -12,9 +12,8 @@ export type StackContextValue = {
   savedStack: Shape[];
   savedStackLength: number;
   editingNumber: number | undefined;
-  isActiveStackBeingMoved: boolean;
+  isActiveStackBeingEdited: boolean;
   drawingMode: DrawingMode;
-  movingNumber: number | undefined;
   activeStack: Shape;
   moveAllShapes: boolean;
 };
@@ -43,10 +42,6 @@ export type StackReducerAction =
     }
   | {
       type: "update-edit-index";
-      payload: { index: number };
-    }
-  | {
-      type: "update-move-index";
       payload: { index: number };
     }
   | {
@@ -99,7 +94,6 @@ export type StackReducerAction =
 type ReducerState = {
   savedStack: Shape[];
   editingNumber: number | undefined;
-  movingNumber: number | undefined;
   drawingMode: DrawingMode;
   moveAllShapes: boolean;
 };
@@ -107,7 +101,6 @@ type ReducerState = {
 const initialState = {
   savedStack: [],
   editingNumber: 0,
-  movingNumber: undefined,
   drawingMode: "rectangle" as DrawingMode,
   moveAllShapes: false,
 };
@@ -141,22 +134,6 @@ function stackReducer(
         ...state,
         editingNumber:
           state.editingNumber === action.payload.index
-            ? undefined
-            : action.payload.index,
-        drawingMode: state.savedStack[action.payload.index].shape,
-        movingNumber: undefined,
-        moveAllShapes: false,
-      };
-    }
-    case "update-move-index": {
-      return {
-        ...state,
-        movingNumber:
-          state.movingNumber === action.payload.index
-            ? undefined
-            : action.payload.index,
-        editingNumber:
-          state.movingNumber === action.payload.index
             ? undefined
             : action.payload.index,
         drawingMode: state.savedStack[action.payload.index].shape,
@@ -231,7 +208,6 @@ function stackReducer(
         savedStack: [...updatedSavedStack],
         editingNumber,
         drawingMode: action.payload.shape,
-        movingNumber: undefined,
         moveAllShapes: false,
       };
     }
@@ -318,7 +294,6 @@ function stackReducer(
         ),
         editingNumber: undefined,
         moveAllShapes: false,
-        movingNumber: undefined,
       };
     }
     case "move-all-shapes": {
@@ -326,7 +301,6 @@ function stackReducer(
         ...state,
         moveAllShapes: !state.moveAllShapes,
         editingNumber: undefined,
-        movingNumber: undefined,
       };
     }
     case "update-all-shapes": {
@@ -342,10 +316,8 @@ function stackReducer(
 }
 
 export function StackProvider({ children }: PropsWithChildren) {
-  const [
-    { savedStack, editingNumber, drawingMode, movingNumber, moveAllShapes },
-    dispatch,
-  ] = useReducer(stackReducer, initialState);
+  const [{ savedStack, editingNumber, drawingMode, moveAllShapes }, dispatch] =
+    useReducer(stackReducer, initialState);
 
   const stackLength =
     (editingNumber && savedStack[editingNumber]?.coords.length) || 0;
@@ -358,7 +330,7 @@ export function StackProvider({ children }: PropsWithChildren) {
   // @ts-expect-error sort it out
   const activeStack = savedStack[editingNumber] ?? [];
   // @ts-expect-error sort it out
-  const isActiveStackBeingMoved = savedStack[movingNumber]?.coords.length > 0;
+  const isActiveStackBeingEdited = savedStack[editingNumber]?.coords.length > 0;
 
   const savedStackLength = savedStack.length;
 
@@ -372,8 +344,7 @@ export function StackProvider({ children }: PropsWithChildren) {
           stackLength,
           clipPath,
           editingNumber,
-          isActiveStackBeingMoved,
-          movingNumber,
+          isActiveStackBeingEdited,
           savedStackLength,
           moveAllShapes,
         } as StackContextValue

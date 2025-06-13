@@ -80,7 +80,7 @@ const CenterPoint = ({
 
   return (
     <Draggable
-      index={1}
+      index={100}
       top={clamp(middlePoint.percentY, 0, 100)}
       left={clamp(middlePoint.percentX, 0, 100)}
     >
@@ -98,68 +98,67 @@ export const DragAndDropPointsSingleShape = ({
   clickAreaRef,
   drawingMode,
 }: Props) => {
-  const { activeStack, isActiveStackBeingMoved } = useStackContext();
+  const { activeStack, isActiveStackBeingEdited } = useStackContext();
 
   const dispatch = useStackDispatch();
 
-  const handleAllMove = (event: DragMoveEvent) => {
-    const oldCoords = getCenterPoint(activeStack.coords, drawingMode);
-    const newCoords = getDragDropCoords(event, clickAreaRef)!;
-
-    const updatedCoords = activeStack.coords.map((coord) => {
-      return {
-        percentX: coord.percentX + newCoords.percentX - oldCoords.percentX,
-        percentY: coord.percentY + newCoords.percentY - oldCoords.percentY,
-      };
-    });
-
-    dispatch({
-      type: "update-current-shape",
-      payload: { coords: updatedCoords },
-    });
-  };
-  const handleDragMove = (event: DragMoveEvent) => {
-    const coords = getDragDropCoords(event, clickAreaRef)!;
-
+  const handleMove = (event: DragMoveEvent) => {
     //@ts-expect-error AHTODO: Fix this
-    const indexToUpdate = event.activatorEvent.target.textContent - 1;
+    const eventText = event.activatorEvent.target.textContent;
 
-    if (["line", "circle"].includes(drawingMode)) {
-      const updatedCoords = activeStack.coords.map((c, i) => {
-        if (i === indexToUpdate) {
-          return coords;
-        } else {
-          return c;
-        }
-      });
+    if (eventText === "C") {
+      const oldCoords = getCenterPoint(activeStack.coords, drawingMode);
+      const newCoords = getDragDropCoords(event, clickAreaRef)!;
 
-      dispatch({
-        type: "update-current-shape",
-        payload: { coords: updatedCoords },
+      const updatedCoords = activeStack.coords.map((coord) => {
+        return {
+          percentX: coord.percentX + newCoords.percentX - oldCoords.percentX,
+          percentY: coord.percentY + newCoords.percentY - oldCoords.percentY,
+        };
       });
-    } else if (drawingMode === "rectangle") {
-      const updatedCoords = getUpdateRectangleCoords(
-        coords,
-        activeStack.coords,
-        indexToUpdate,
-      );
 
       dispatch({
         type: "update-current-shape",
         payload: { coords: updatedCoords },
       });
     } else {
-      console.error("unknown shape", drawingMode);
+      const coords = getDragDropCoords(event, clickAreaRef)!;
+
+      const indexToUpdate = eventText - 1;
+
+      if (["line", "circle"].includes(drawingMode)) {
+        const updatedCoords = activeStack.coords.map((c, i) => {
+          if (i === indexToUpdate) {
+            return coords;
+          } else {
+            return c;
+          }
+        });
+
+        dispatch({
+          type: "update-current-shape",
+          payload: { coords: updatedCoords },
+        });
+      } else if (drawingMode === "rectangle") {
+        const updatedCoords = getUpdateRectangleCoords(
+          coords,
+          activeStack.coords,
+          indexToUpdate,
+        );
+
+        dispatch({
+          type: "update-current-shape",
+          payload: { coords: updatedCoords },
+        });
+      } else {
+        console.error("unknown shape", drawingMode);
+      }
     }
   };
 
   return (
-    <DndContext
-      onDragMove={isActiveStackBeingMoved ? handleAllMove : handleDragMove}
-    >
-      {!isActiveStackBeingMoved &&
-      activeStack.coords &&
-      activeStack.coords.length > 0
+    <DndContext onDragMove={handleMove}>
+      {activeStack.coords && activeStack.coords.length > 0
         ? activeStack.coords.map((item, index) => {
             return (
               <Draggable
@@ -174,7 +173,7 @@ export const DragAndDropPointsSingleShape = ({
           })
         : null}
 
-      {isActiveStackBeingMoved && (
+      {isActiveStackBeingEdited && (
         <CenterPoint coords={activeStack.coords} drawingMode={drawingMode} />
       )}
     </DndContext>
