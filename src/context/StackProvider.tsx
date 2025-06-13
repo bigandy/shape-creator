@@ -90,12 +90,6 @@ export type StackReducerAction =
       };
     }
   | {
-      type: "update-stack-order";
-      payload: {
-        savedStack: Shape[];
-      };
-    }
-  | {
       type: "update-all-shapes";
       payload: {
         savedStack: Shape[];
@@ -325,13 +319,6 @@ function stackReducer(
         editingNumber: undefined,
         moveAllShapes: false,
         movingNumber: undefined,
-      };
-    }
-    case "update-stack-order": {
-      return {
-        ...state,
-        savedStack: action.payload.savedStack,
-        editingNumber: undefined,
       };
     }
     case "move-all-shapes": {

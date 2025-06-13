@@ -6,6 +6,7 @@
 
 ## Sidebar - Drag and Drop Shapes
 
+- [ ] Remove re-ordering as not useful at all!
 - [x] Re-order shapes in sidebar by dragging and dropping
 
 ## ClickArea - Moving Existing Shapes

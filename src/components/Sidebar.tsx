@@ -1,9 +1,4 @@
-import { useState } from "react";
-
 import { ShapeList } from "@components/ShapeList";
-import { SortableShapeList } from "@components/SortableShapeList";
-
-import { useStackContext } from "@hooks/useStackContext";
 
 type SidebarProps = {
   open: boolean;
@@ -11,11 +6,6 @@ type SidebarProps = {
 };
 
 export const Sidebar = ({ open, handleClose }: SidebarProps) => {
-  const { savedStackLength } = useStackContext();
-  const [dragDropShapeList, setDragDropShapeList] = useState(false);
-
-  const handleToggleReorderList = () => setDragDropShapeList((d) => !d);
-
   return (
     <div className={`sidebar ${open ? "sidebar--open" : ""}`}>
       <div className="sidebar-inner">
@@ -23,13 +13,7 @@ export const Sidebar = ({ open, handleClose }: SidebarProps) => {
           Close
         </button>
 
-        {savedStackLength > 1 && (
-          <button onClick={handleToggleReorderList}>
-            {!dragDropShapeList ? "Re-order" : "Save Order"} List
-          </button>
-        )}
-
-        {dragDropShapeList ? <SortableShapeList /> : <ShapeList />}
+        <ShapeList />
       </div>
     </div>
   );
