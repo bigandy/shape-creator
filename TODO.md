@@ -21,6 +21,8 @@
 
 ## ClickArea - Moving Existing Shapes
 
+- [ ] Snap to existing shapes points i.e. duplicate a shape and move, then want to position adjacent but lined up to original shape
+
 - [x] Bug - center point can be outside of viewport if all shapes moved - set a max/min position
 - [x] bug - single shape moving broken.
 - [x] Move one shape
