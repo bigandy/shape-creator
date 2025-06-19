@@ -1,23 +1,23 @@
-import { DndContext, type DragMoveEvent } from "@dnd-kit/core";
+import { type DragMoveEvent } from "@dnd-kit/core";
 
 import { Draggable } from "@components/Draggable";
 
-import { getDragDropCoords } from "@utils/coordinates";
+import type { Shape } from "@/Types";
 import { useStackContext } from "@hooks/useStackContext";
 import { useStackDispatch } from "@hooks/useStackDispatch";
-import type { Shape } from "@/Types";
+import { getDragDropCoords } from "@utils/coordinates";
+
+import { CustomDnDContext } from "./CustomDnDContext";
 
 type Props = {
   clickAreaRef: React.RefObject<HTMLInputElement | null>;
 };
 
 const getCenterPointAllShapes = (savedStack: Shape[]) => {
-  // 1. get all coords
   const coords = [
     savedStack
       .filter((stack) => stack.coords.length)
-      .map((stack) => stack.coords)
-      .flat(),
+      .flatMap((stack) => stack.coords),
   ];
 
   const coordsX = coords[0].map((coord) => coord.percentX);
@@ -37,8 +37,6 @@ const getCenterPointAllShapes = (savedStack: Shape[]) => {
 export const DragAndDropPointsAllShapes = ({ clickAreaRef }: Props) => {
   const { savedStack } = useStackContext();
 
-  console.log({ savedStack });
-
   const dispatch = useStackDispatch();
 
   const middlePoint = getCenterPointAllShapes(savedStack);
@@ -48,7 +46,7 @@ export const DragAndDropPointsAllShapes = ({ clickAreaRef }: Props) => {
     const newCoords = getDragDropCoords(event, clickAreaRef)!;
 
     const updatedShapes = savedStack.map((stack) => {
-      const updatedCoords = stack.coords.map((coord) => {
+      const coords = stack.coords.map((coord) => {
         return {
           percentX: coord.percentX + newCoords.percentX - oldCoords.percentX,
           percentY: coord.percentY + newCoords.percentY - oldCoords.percentY,
@@ -57,7 +55,7 @@ export const DragAndDropPointsAllShapes = ({ clickAreaRef }: Props) => {
 
       return {
         ...stack,
-        coords: updatedCoords,
+        coords,
       };
     });
 
@@ -72,7 +70,7 @@ export const DragAndDropPointsAllShapes = ({ clickAreaRef }: Props) => {
   }
 
   return (
-    <DndContext onDragMove={handleAllMove}>
+    <CustomDnDContext onDragMove={handleAllMove}>
       <Draggable
         index={1}
         top={middlePoint.percentY}
@@ -80,6 +78,6 @@ export const DragAndDropPointsAllShapes = ({ clickAreaRef }: Props) => {
       >
         <div className="cursor-move">C</div>
       </Draggable>
-    </DndContext>
+    </CustomDnDContext>
   );
 };

@@ -25,7 +25,6 @@ export const CodeViewer = ({ open, handleClose }: Props) => {
   const handleCopyText = () => {
     copy("clip-path:" + clipPath + ";")
       .then(() => {
-        console.log("Copied!", { clipPath });
         toast.success("Copied Successfully");
       })
       .catch((error) => {

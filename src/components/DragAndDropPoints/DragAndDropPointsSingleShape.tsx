@@ -1,17 +1,19 @@
-import { DndContext, type DragMoveEvent } from "@dnd-kit/core";
+import { type DragMoveEvent } from "@dnd-kit/core";
 
 import { Draggable } from "@components/Draggable";
 
-import { getDragDropCoords } from "@utils/coordinates";
+import { CustomDnDContext } from "./CustomDnDContext";
+
+import type { Coords, DrawingMode } from "@/Types";
 import { useStackContext } from "@hooks/useStackContext";
 import { useStackDispatch } from "@hooks/useStackDispatch";
-import type { DrawingMode, Coords } from "@/Types";
 import { clamp } from "@utils/clamp";
+import { getDragDropCoords } from "@utils/coordinates";
 
 const getUpdateRectangleCoords = (
   updatedPositionCoord: Coords,
   previousCoords: Coords[],
-  indexToUpdate: number,
+  indexToUpdate: number
 ) => {
   const newCoords = [...previousCoords];
   newCoords[indexToUpdate] = updatedPositionCoord;
@@ -143,7 +145,7 @@ export const DragAndDropPointsSingleShape = ({
         const updatedCoords = getUpdateRectangleCoords(
           coords,
           activeStack.coords,
-          indexToUpdate,
+          indexToUpdate
         );
 
         dispatch({
@@ -157,7 +159,7 @@ export const DragAndDropPointsSingleShape = ({
   };
 
   return (
-    <DndContext onDragMove={handleMove}>
+    <CustomDnDContext onDragMove={handleMove}>
       {activeStack.coords && activeStack.coords.length > 0
         ? activeStack.coords.map((item, index) => {
             return (
@@ -176,6 +178,6 @@ export const DragAndDropPointsSingleShape = ({
       {isActiveStackBeingEdited && (
         <CenterPoint coords={activeStack.coords} drawingMode={drawingMode} />
       )}
-    </DndContext>
+    </CustomDnDContext>
   );
 };

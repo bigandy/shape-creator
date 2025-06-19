@@ -32,10 +32,22 @@ export const getDragDropCoords = (
     return;
   }
 
-  //@ts-expect-error AHTODO: Fix this
-  const initialX = event.activatorEvent.clientX;
-  //@ts-expect-error AHTODO: Fix this
-  const initialY = event.activatorEvent.clientY;
+  let initialX = 0;
+  let initialY = 0;
+
+  if (event.activatorEvent.type === "mousedown") {
+    //@ts-expect-error AHTODO: Fix this
+    initialX = event.activatorEvent.clientX;
+    //@ts-expect-error AHTODO: Fix this
+    initialY = event.activatorEvent.clientY;
+  } else {
+    // not mouse
+
+    //@ts-expect-error AHTODO: Fix this
+    initialX = event.active.rect.current.initial.left;
+    //@ts-expect-error AHTODO: Fix this
+    initialY = event.active.rect.current.initial.top;
+  }
 
   const { width, height, left, top } = ref.current.getBoundingClientRect();
 
@@ -45,10 +57,8 @@ export const getDragDropCoords = (
   const percentX = (newX / width) * 100;
   const percentY = (newY / height) * 100;
 
-  const updatedStackValue = {
+  return {
     percentX,
     percentY,
   };
-
-  return updatedStackValue;
 };
