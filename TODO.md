@@ -21,9 +21,9 @@
 
 ## ClickArea - Snap to Existing Shapes coordinates i.e. same x or same y as existing point
 
-- [x] UI Toggle to specify if user wants snapping
 - [ ] if a point is within a specific distance, snap the point being moved to that point
-- [ ] UI lines e.g. like Photoshop lines
+- [x] UI lines e.g. like Photoshop lines
+- [x] UI Toggle to specify if user wants snapping
 
 ## ClickArea - Moving Existing Shapes
 

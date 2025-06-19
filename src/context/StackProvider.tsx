@@ -246,10 +246,10 @@ const tempInitialStateForTestingSnapTo: Shape[] = [
 
 const initialState = {
   savedStack: tempInitialStateForTestingSnapTo,
-  editingNumber: undefined,
+  editingNumber: 0,
   drawingMode: "rectangle" as DrawingMode,
   moveAllShapes: false,
-  snapTo: false,
+  snapTo: true,
 };
 
 function stackReducer(

@@ -6,8 +6,10 @@ import { useStackDispatch } from "@hooks/useStackDispatch";
 
 import type { Coords } from "@/Types";
 
-import { getCoords } from "@utils/coordinates";
 import { useStackContext } from "@hooks/useStackContext";
+import { getCoords } from "@utils/coordinates";
+
+import { ClickAreaWrapper } from "@components/ClickArea/index";
 
 export const ClickAreaRectangle = () => {
   const dispatch = useStackDispatch();
@@ -54,18 +56,18 @@ export const ClickAreaRectangle = () => {
     });
   };
 
-  const handleMouseDown = (e: MouseEvent<HTMLDivElement>) => {
+  const handleMouseDown = (event: MouseEvent<HTMLDivElement>) => {
     setFinalPoint(null);
-    const coords = getCoords(e, clickAreaRef)!;
+    const coords = getCoords(event, clickAreaRef)!;
 
     setInitialPoint(coords);
     setRecording(true);
   };
 
-  const handleMouseUp = (e: MouseEvent<HTMLDivElement>) => {
+  const handleMouseUp = (event: MouseEvent<HTMLDivElement>) => {
     // AHTODO: How to handle mouseup or out of bounds movement of the mouse?
 
-    const upCoords = getCoords(e, clickAreaRef)!;
+    const upCoords = getCoords(event, clickAreaRef)!;
 
     setFinalPoint(upCoords);
 
@@ -73,37 +75,36 @@ export const ClickAreaRectangle = () => {
     drawRectangle();
   };
 
-  const handleMouseOver = (e: MouseEvent<HTMLDivElement>) => {
+  const handleMouseMove = (event: MouseEvent<HTMLDivElement>) => {
     if (initialPoint === null || recording === false) {
       return;
     }
-    const coords = getCoords(e, clickAreaRef)!;
+    const coords = getCoords(event, clickAreaRef)!;
 
     setFinalPoint(coords);
   };
 
   if (activeStack.coords || moveAllShapes) {
     return (
-      <div className="click-area" ref={clickAreaRef}>
+      <ClickAreaWrapper clickAreaRef={clickAreaRef}>
         <DragAndDropPoints
           clickAreaRef={clickAreaRef}
           drawingMode="rectangle"
         />
-      </div>
+      </ClickAreaWrapper>
     );
   } else {
     return (
-      <div
-        className="click-area"
-        onMouseDown={handleMouseDown}
-        onMouseUp={handleMouseUp}
-        onMouseMove={handleMouseOver}
-        ref={clickAreaRef}
+      <ClickAreaWrapper
+        handleMouseDown={handleMouseDown}
+        handleMouseUp={handleMouseUp}
+        handleMouseMove={handleMouseMove}
+        clickAreaRef={clickAreaRef}
       >
         {finalPoint !== null && initialPoint !== null && (
           <MiddlePoint initialPoint={initialPoint} finalPoint={finalPoint} />
         )}
-      </div>
+      </ClickAreaWrapper>
     );
   }
 };

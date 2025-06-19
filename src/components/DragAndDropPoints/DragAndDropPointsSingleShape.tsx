@@ -105,7 +105,7 @@ export const DragAndDropPointsSingleShape = ({
   clickAreaRef,
   drawingMode,
 }: Props) => {
-  const { activeStack, isActiveStackBeingEdited } = useStackContext();
+  const { activeStack, isActiveStackBeingEdited, snapTo } = useStackContext();
 
   const dispatch = useStackDispatch();
 
