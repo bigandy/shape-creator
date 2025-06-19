@@ -19,11 +19,15 @@
 - [x] Remove re-ordering as not useful at all!
 - [x] Re-order shapes in sidebar by dragging and dropping
 
+## ClickArea - Snap to Existing Shapes coordinates i.e. same x or same y as existing point
+
+- [x] UI Toggle to specify if user wants snapping
+- [ ] if a point is within a specific distance, snap the point being moved to that point
+- [ ] UI lines e.g. like Photoshop lines
+
 ## ClickArea - Moving Existing Shapes
 
-- [ ] Snap to existing shapes points i.e. duplicate a shape and move, then want to position adjacent but lined up to original shape
 - [x] Keyboard move shapes / points
-
 - [x] Bug - center point can be outside of viewport if all shapes moved - set a max/min position
 - [x] bug - single shape moving broken.
 - [x] Move one shape

@@ -95,6 +95,9 @@ export type StackReducerAction =
       payload: {
         savedStack: Shape[];
       };
+    }
+  | {
+      type: "toggle-snap-to";
     };
 
 type ReducerState = {
@@ -102,18 +105,155 @@ type ReducerState = {
   editingNumber: number | undefined;
   drawingMode: DrawingMode;
   moveAllShapes: boolean;
+  snapTo: boolean;
 };
 
+const tempInitialStateForTestingSnapTo: Shape[] = [
+  {
+    shape: "rectangle",
+    coords: [
+      {
+        percentX: 51.517680983457254,
+        percentY: 18.03005008347246,
+      },
+      {
+        percentX: 51.517680983457254,
+        percentY: 44.01274852026104,
+      },
+      {
+        percentX: 76.16482015480345,
+        percentY: 44.01274852026104,
+      },
+      {
+        percentX: 76.16482015480345,
+        percentY: 18.03005008347246,
+      },
+    ],
+    id: "28fbd87d-4597-4d48-acc6-8cff4033bcdb",
+  },
+  {
+    shape: "rectangle",
+    coords: [
+      {
+        percentX: 9.568978600698133,
+        percentY: 8.802549704052208,
+      },
+      {
+        percentX: 9.568978600698133,
+        percentY: 31.264228259219912,
+      },
+      {
+        percentX: 32.880558506601915,
+        percentY: 31.264228259219912,
+      },
+      {
+        percentX: 32.880558506601915,
+        percentY: 8.802549704052208,
+      },
+    ],
+    id: "2d400555-da54-4659-bf14-cb7864d656a4",
+  },
+  {
+    shape: "rectangle",
+    coords: [
+      {
+        percentX: 19.042713605350773,
+        percentY: 53.02996372105523,
+      },
+      {
+        percentX: 19.042713605350773,
+        percentY: 80.93041310222301,
+      },
+      {
+        percentX: 47.51645989161105,
+        percentY: 80.93041310222301,
+      },
+      {
+        percentX: 47.51645989161105,
+        percentY: 53.02996372105523,
+      },
+    ],
+    id: "7a35b4d8-240b-42ac-88e0-ad13b8a74b2e",
+  },
+  {
+    shape: "rectangle",
+    coords: [
+      {
+        percentX: 60.12899180364582,
+        percentY: 64.68700079126917,
+      },
+      {
+        percentX: 60.12899180364582,
+        percentY: 92.77854914080112,
+      },
+      {
+        percentX: 88.0294411848136,
+        percentY: 92.77854914080112,
+      },
+      {
+        percentX: 88.0294411848136,
+        percentY: 64.68700079126917,
+      },
+    ],
+    id: "b6b5000b-47f0-427d-92fc-83103416ecf9",
+  },
+  {
+    shape: "rectangle",
+    coords: [
+      {
+        percentX: 58.409101088368345,
+        percentY: 48.44358848031531,
+      },
+      {
+        percentX: 58.409101088368345,
+        percentY: 57.42523999343098,
+      },
+      {
+        percentX: 87.45614427972112,
+        percentY: 57.42523999343098,
+      },
+      {
+        percentX: 87.45614427972112,
+        percentY: 48.44358848031531,
+      },
+    ],
+    id: "f804ae66-37e8-4c10-bb7f-75b2c08e8512",
+  },
+  {
+    shape: "rectangle",
+    coords: [
+      {
+        percentX: 81.14987832370375,
+        percentY: 6.40181544019946,
+      },
+      {
+        percentX: 81.14987832370375,
+        percentY: 28.569295770442366,
+      },
+      {
+        percentX: 96.62889476120094,
+        percentY: 28.569295770442366,
+      },
+      {
+        percentX: 96.62889476120094,
+        percentY: 6.40181544019946,
+      },
+    ],
+    id: "2ece1df5-4468-42a2-abe7-a6b9330609da",
+  },
+];
+
 const initialState = {
-  savedStack: [],
-  editingNumber: 0,
+  savedStack: tempInitialStateForTestingSnapTo,
+  editingNumber: undefined,
   drawingMode: "rectangle" as DrawingMode,
   moveAllShapes: false,
+  snapTo: false,
 };
 
 function stackReducer(
   state: ReducerState,
-  action: StackReducerAction,
+  action: StackReducerAction
 ): ReducerState {
   const uuid = self.crypto.randomUUID();
 
@@ -133,7 +273,8 @@ function stackReducer(
       return { ...state, savedStack: [...updatedSavedStack] };
     }
     case "clear-all-stacks": {
-      return initialState;
+      // AHTODO: when finished the snapTo, can move back to just initialState
+      return { ...initialState, savedStack: [] };
     }
     case "update-edit-index": {
       return {
@@ -224,7 +365,7 @@ function stackReducer(
             ...stack,
             coords: stack.coords.filter(
               (_, coordsIndex, stackArray) =>
-                coordsIndex !== stackArray.length - 1,
+                coordsIndex !== stackArray.length - 1
             ),
           };
         } else {
@@ -244,7 +385,7 @@ function stackReducer(
           return {
             ...stack,
             coords: stack.coords.filter(
-              (_, coordsIndex) => coordsIndex !== action.payload.index,
+              (_, coordsIndex) => coordsIndex !== action.payload.index
             ),
           };
         } else {
@@ -282,7 +423,7 @@ function stackReducer(
     }
     case "delete-last-shape": {
       const updatedSavedStack = state.savedStack.filter(
-        (_, index, stackArray) => index !== stackArray.length - 1,
+        (_, index, stackArray) => index !== stackArray.length - 1
       );
 
       return {
@@ -296,7 +437,7 @@ function stackReducer(
       return {
         ...state,
         savedStack: state.savedStack.filter(
-          (_, index) => index !== action.payload.index,
+          (_, index) => index !== action.payload.index
         ),
         editingNumber: undefined,
         moveAllShapes: false,
@@ -331,6 +472,12 @@ function stackReducer(
         savedStack: action.payload.savedStack,
       };
     }
+    case "toggle-snap-to": {
+      return {
+        ...state,
+        snapTo: !state.snapTo,
+      };
+    }
     default: {
       throw Error("Unknown action: " + action.type);
     }
@@ -338,8 +485,10 @@ function stackReducer(
 }
 
 export function StackProvider({ children }: PropsWithChildren) {
-  const [{ savedStack, editingNumber, drawingMode, moveAllShapes }, dispatch] =
-    useReducer(stackReducer, initialState);
+  const [
+    { savedStack, editingNumber, drawingMode, moveAllShapes, snapTo },
+    dispatch,
+  ] = useReducer(stackReducer, initialState);
 
   const stackLength =
     (editingNumber && savedStack[editingNumber]?.coords.length) || 0;
@@ -360,6 +509,7 @@ export function StackProvider({ children }: PropsWithChildren) {
     <StackContext
       value={
         {
+          snapTo,
           activeStack,
           drawingMode,
           savedStack,
