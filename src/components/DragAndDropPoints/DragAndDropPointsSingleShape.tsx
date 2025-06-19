@@ -10,6 +10,26 @@ import { useStackDispatch } from "@hooks/useStackDispatch";
 import { clamp } from "@utils/clamp";
 import { getDragDropCoords } from "@utils/coordinates";
 
+const calculateNextValue = (
+  direction: "up" | "down",
+  indexToUpdate: number
+) => {
+  let num = indexToUpdate;
+  if (direction === "down") {
+    num--;
+  } else if (direction === "up") {
+    num++;
+  }
+
+  // There are 4 sides so a max of 3 with index 0
+  if (num > 3) {
+    return 0;
+  } else if (num < 0) {
+    return 3;
+  }
+  return num;
+};
+
 const getUpdateRectangleCoords = (
   updatedPositionCoord: Coords,
   previousCoords: Coords[],
@@ -18,28 +38,13 @@ const getUpdateRectangleCoords = (
   const newCoords = [...previousCoords];
   newCoords[indexToUpdate] = updatedPositionCoord;
 
-  // AHTODO: refactor this!
-  if (indexToUpdate === 0) {
-    // y of next point
-    newCoords[1].percentX = updatedPositionCoord.percentX;
-    // x of final point
-    newCoords[3].percentY = updatedPositionCoord.percentY;
-  } else if (indexToUpdate === 1) {
-    // x of prev point
-    newCoords[0].percentX = updatedPositionCoord.percentX;
-    // y of next point
-    newCoords[2].percentY = updatedPositionCoord.percentY;
-  } else if (indexToUpdate === 2) {
-    // y of prev point
-    newCoords[1].percentY = updatedPositionCoord.percentY;
-    // x of next point
-    newCoords[3].percentX = updatedPositionCoord.percentX;
-  } else if (indexToUpdate === 3) {
-    // x of prev point
-    newCoords[0].percentY = updatedPositionCoord.percentY;
-    // y of next point
-    newCoords[2].percentX = updatedPositionCoord.percentX;
-  }
+  const isEven = indexToUpdate % 2 === 0;
+
+  const xIndex = calculateNextValue(isEven ? "up" : "down", indexToUpdate);
+  const yIndex = calculateNextValue(isEven ? "down" : "up", indexToUpdate);
+
+  newCoords[xIndex].percentX = updatedPositionCoord.percentX;
+  newCoords[yIndex].percentY = updatedPositionCoord.percentY;
 
   return newCoords;
 };

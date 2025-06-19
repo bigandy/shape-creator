@@ -31,8 +31,6 @@ export const ClickAreaRectangle = () => {
         percentX: initialPoint.percentX,
         percentY: finalPoint.percentY,
       },
-
-      // Third Point
       {
         percentX: finalPoint.percentX,
         percentY: finalPoint.percentY,
@@ -129,5 +127,5 @@ const MiddlePoint = React.memo(
         }}
       />
     );
-  },
+  }
 );

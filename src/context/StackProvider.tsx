@@ -16,6 +16,7 @@ export type StackContextValue = {
   drawingMode: DrawingMode;
   activeStack: Shape;
   moveAllShapes: boolean;
+  snapTo: boolean;
 };
 
 export type StackReducerAction =
