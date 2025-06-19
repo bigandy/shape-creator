@@ -6,9 +6,10 @@ import {
   TouchSensor,
   useSensor,
   useSensors,
+  type KeyboardCoordinateGetter,
 } from "@dnd-kit/core";
 
-const customCoordinatesGetter = (event, args) => {
+const customCoordinatesGetter: KeyboardCoordinateGetter = (event, args) => {
   const { currentCoordinates } = args;
   // AHTODO: Is it possible to know if e.g. ctrl is pressed so can change this value?
   const delta = 25;
