@@ -142,7 +142,7 @@ export const Toolbar = ({ open, selectedImage, handleImageChange }: Props) => {
             Delete All Shapes
           </button>
 
-          <button onClick={handleToggleSnapTo}>
+          <button onClick={handleToggleSnapTo} disabled={moveAllShapes}>
             {snapTo ? "Disable" : "Enable"} Snap-To
           </button>
 

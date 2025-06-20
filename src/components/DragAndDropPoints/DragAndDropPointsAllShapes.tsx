@@ -5,9 +5,10 @@ import { Draggable } from "@components/Draggable";
 import type { Shape } from "@/Types";
 import { useStackContext } from "@hooks/useStackContext";
 import { useStackDispatch } from "@hooks/useStackDispatch";
+
 import { getDragDropCoords } from "@utils/coordinates";
 
-import { CustomDnDContext } from "./CustomDnDContext";
+import { CustomDnDWrapper } from "./CustomDnDWrapper";
 
 type Props = {
   clickAreaRef: React.RefObject<HTMLInputElement | null>;
@@ -35,7 +36,7 @@ const getCenterPointAllShapes = (savedStack: Shape[]) => {
 };
 
 export const DragAndDropPointsAllShapes = ({ clickAreaRef }: Props) => {
-  const { savedStack } = useStackContext();
+  const { savedStack, snapTo } = useStackContext();
 
   const dispatch = useStackDispatch();
 
@@ -70,14 +71,15 @@ export const DragAndDropPointsAllShapes = ({ clickAreaRef }: Props) => {
   }
 
   return (
-    <CustomDnDContext onDragMove={handleAllMove}>
+    <CustomDnDWrapper onDragMove={handleAllMove}>
       <Draggable
         index={1}
         top={middlePoint.percentY}
         left={middlePoint.percentX}
+        isCenter
       >
         <div className="cursor-move">C</div>
       </Draggable>
-    </CustomDnDContext>
+    </CustomDnDWrapper>
   );
 };

@@ -2,7 +2,7 @@ import { type DragMoveEvent } from "@dnd-kit/core";
 
 import { Draggable } from "@components/Draggable";
 
-import { CustomDnDContext } from "./CustomDnDContext";
+import { CustomDnDWrapper } from "./CustomDnDWrapper";
 
 import type { Coords, DrawingMode } from "@/Types";
 import { useStackContext } from "@hooks/useStackContext";
@@ -90,6 +90,7 @@ const CenterPoint = ({
       index={100}
       top={clamp(middlePoint.percentY, 0, 100)}
       left={clamp(middlePoint.percentX, 0, 100)}
+      isCenter
     >
       <div className="cursor-move">C</div>
     </Draggable>
@@ -166,7 +167,7 @@ export const DragAndDropPointsSingleShape = ({
   };
 
   return (
-    <CustomDnDContext onDragMove={handleMove}>
+    <CustomDnDWrapper onDragMove={handleMove}>
       {activeStack.coords && activeStack.coords.length > 0
         ? activeStack.coords.map((item, index) => {
             return (
@@ -185,6 +186,6 @@ export const DragAndDropPointsSingleShape = ({
       {isActiveStackBeingEdited && (
         <CenterPoint coords={activeStack.coords} drawingMode={drawingMode} />
       )}
-    </CustomDnDContext>
+    </CustomDnDWrapper>
   );
 };

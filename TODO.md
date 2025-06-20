@@ -1,5 +1,12 @@
 # Todo List
 
+## ClickArea - Snap to Existing Shapes coordinates i.e. same x or same y as existing point
+
+- [ ] snap grid not showing on line mode
+- [ ] if a point is within a specific distance, snap the point being moved to that point
+- [x] UI lines e.g. like Photoshop lines
+- [x] UI Toggle to specify if user wants snapping
+
 ## Sidebar - Duplicate shape
 
 - [x] Think about having the Ability to duplicate a shape
@@ -18,12 +25,6 @@
 
 - [x] Remove re-ordering as not useful at all!
 - [x] Re-order shapes in sidebar by dragging and dropping
-
-## ClickArea - Snap to Existing Shapes coordinates i.e. same x or same y as existing point
-
-- [ ] if a point is within a specific distance, snap the point being moved to that point
-- [x] UI lines e.g. like Photoshop lines
-- [x] UI Toggle to specify if user wants snapping
 
 ## ClickArea - Moving Existing Shapes
 

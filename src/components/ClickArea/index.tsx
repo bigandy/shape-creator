@@ -1,6 +1,5 @@
 import { type MouseEvent } from "react";
-
-import { GridLines } from "@components/GridLines";
+import { GridLines } from "../GridLines";
 import { useStackContext } from "@hooks/useStackContext";
 
 interface Props extends React.PropsWithChildren {

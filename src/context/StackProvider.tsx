@@ -9,7 +9,7 @@ import { StackContext, StackDispatchContext } from "./StackContext";
 export type StackContextValue = {
   clipPath: string;
   stackLength: number;
-  savedStack: Shape[];
+  savedStack: Array<Shape>;
   savedStackLength: number;
   editingNumber: number | undefined;
   isActiveStackBeingEdited: boolean;
@@ -17,16 +17,18 @@ export type StackContextValue = {
   activeStack: Shape;
   moveAllShapes: boolean;
   snapTo: boolean;
+  xPoints: Array<number>;
+  yPoints: Array<number>;
 };
 
 export type StackReducerAction =
   | {
       type: string;
       payload: {
-        coords: Coords[];
+        coords: Array<Coords>;
         index: number;
         shape: DrawingMode;
-        savedStack: Shape[];
+        savedStack: Array<Shape>;
       };
     } // Is this needed?
   | {
@@ -48,7 +50,7 @@ export type StackReducerAction =
   | {
       type: "update-current-shape";
       payload: {
-        coords: Coords[];
+        coords: Array<Coords>;
       };
     }
   | {
@@ -70,7 +72,7 @@ export type StackReducerAction =
       type: "save-shape";
       payload: {
         shape: DrawingMode;
-        coords: Coords[];
+        coords: Array<Coords>;
       };
     }
   | {
@@ -94,7 +96,7 @@ export type StackReducerAction =
   | {
       type: "update-all-shapes";
       payload: {
-        savedStack: Shape[];
+        savedStack: Array<Shape>;
       };
     }
   | {
@@ -102,14 +104,14 @@ export type StackReducerAction =
     };
 
 type ReducerState = {
-  savedStack: Shape[];
+  savedStack: Array<Shape>;
   editingNumber: number | undefined;
   drawingMode: DrawingMode;
   moveAllShapes: boolean;
   snapTo: boolean;
 };
 
-const tempInitialStateForTestingSnapTo: Shape[] = [
+const tempInitialStateForTestingSnapTo: Array<Shape> = [
   {
     shape: "rectangle",
     coords: [
@@ -465,6 +467,7 @@ function stackReducer(
         ...state,
         moveAllShapes: !state.moveAllShapes,
         editingNumber: undefined,
+        snapTo: false,
       };
     }
     case "update-all-shapes": {
@@ -506,6 +509,16 @@ export function StackProvider({ children }: PropsWithChildren) {
 
   const savedStackLength = savedStack.length;
 
+  // Get All Points vertical and horizontal
+  const allCoords = savedStack
+    .filter((_, stackIndex) => stackIndex !== editingNumber)
+    .flatMap((stack) => {
+      return stack.coords;
+    });
+
+  const yPoints = [...new Set(allCoords.map(({ percentY }) => percentY))];
+  const xPoints = [...new Set(allCoords.map(({ percentX }) => percentX))];
+
   return (
     <StackContext
       value={
@@ -520,6 +533,8 @@ export function StackProvider({ children }: PropsWithChildren) {
           isActiveStackBeingEdited,
           savedStackLength,
           moveAllShapes,
+          xPoints,
+          yPoints,
         } as StackContextValue
       }
     >

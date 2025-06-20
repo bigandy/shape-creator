@@ -1,15 +1,41 @@
+import { useStackContext } from "@/hooks/useStackContext";
 import { useDraggable } from "@dnd-kit/core";
 
 interface Props extends React.PropsWithChildren {
   index: number;
   top: number;
   left: number;
+  isCenter?: boolean;
 }
 
-export function Draggable({ index, top, left, children }: Props) {
+export function Draggable({
+  index,
+  top,
+  left,
+  isCenter = false,
+  children,
+}: Props) {
   const { attributes, listeners, setNodeRef } = useDraggable({
     id: `draggable-${index}`,
   });
+  let overlapTop = false;
+  let overlapLeft = false;
+
+  if (!isCenter) {
+    const { xPoints, yPoints } = useStackContext(); // eslint-disable-line
+    // AHTODO - Doing this in every Draggable seems to be bad. Move into somewhere else to share these values?
+
+    if (yPoints.map((p) => Math.floor(p)).includes(Math.floor(top))) {
+      // console.log("top overlap");
+
+      overlapTop = true;
+    }
+
+    if (xPoints.map((p) => Math.floor(p)).includes(Math.floor(left))) {
+      // console.log("left overlap");
+      overlapLeft = true;
+    }
+  }
 
   return (
     <button
@@ -17,6 +43,13 @@ export function Draggable({ index, top, left, children }: Props) {
       style={{
         top: top + "%",
         left: left + "%",
+        backgroundColor: !isCenter
+          ? overlapLeft
+            ? "red"
+            : overlapTop
+            ? "orange"
+            : "white"
+          : undefined,
       }}
       {...listeners}
       {...attributes}

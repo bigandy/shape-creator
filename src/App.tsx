@@ -2,9 +2,9 @@ import { Fragment, useState, type ChangeEvent } from "react";
 
 import { Toaster } from "react-hot-toast";
 
-import { ClickAreaCircle } from "@components/ClickAreaCircle";
-import { ClickAreaLine } from "@components/ClickAreaLine";
-import { ClickAreaRectangle } from "@components/ClickAreaRectangle";
+import { ClickAreaCircle } from "@components/ClickArea/Circle";
+import { ClickAreaLine } from "@components/ClickArea/Line";
+import { ClickAreaRectangle } from "@components/ClickArea/Rectangle";
 import { CodeViewer } from "@components/CodeViewer";
 import { OutputBox } from "@components/OutputBox";
 import { Sidebar } from "@components/Sidebar";
@@ -23,7 +23,7 @@ function App() {
   const [codeViewerOpen, setCodeViewerOpen] = useState(true);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [backgroundImage, setBackgroundImage] = useState(
-    backgroundImages[0].url,
+    backgroundImages[0].url
   );
   const { drawingMode } = useStackContext();
 
