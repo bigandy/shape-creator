@@ -7,6 +7,7 @@
 - [ ] if a point is within a specific distance, snap the point being moved to that point
 - [x] UI lines e.g. like Photoshop lines
 - [x] UI Toggle to specify if user wants snapping
+- [ ] Look at Performance?!
 
 ## Sidebar - Duplicate shape
 

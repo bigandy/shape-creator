@@ -8,7 +8,10 @@ import type { Coords, DrawingMode } from "@/Types";
 import { useStackContext } from "@hooks/useStackContext";
 import { useStackDispatch } from "@hooks/useStackDispatch";
 import { clamp } from "@utils/clamp";
-import { getDragDropCoords } from "@utils/coordinates";
+import {
+  getDragDropCoords,
+  getDragDropCoordsWithSnapping,
+} from "@utils/coordinates";
 
 const calculateNextValue = (
   direction: "up" | "down",
@@ -49,7 +52,7 @@ const getUpdateRectangleCoords = (
   return newCoords;
 };
 
-const getCenterPoint = (coords: Coords[], drawingMode: DrawingMode) => {
+const getCenterPointCoords = (coords: Coords[], drawingMode: DrawingMode) => {
   if (drawingMode === "rectangle") {
     return {
       percentX: (coords[0].percentX + coords[2].percentX) / 2,
@@ -83,7 +86,7 @@ const CenterPoint = ({
   coords: Coords[];
   drawingMode: DrawingMode;
 }) => {
-  const middlePoint = getCenterPoint(coords, drawingMode);
+  const middlePoint = getCenterPointCoords(coords, drawingMode);
 
   return (
     <Draggable
@@ -106,7 +109,8 @@ export const DragAndDropPointsSingleShape = ({
   clickAreaRef,
   drawingMode,
 }: Props) => {
-  const { activeStack, isActiveStackBeingEdited } = useStackContext();
+  const { activeStack, isActiveStackBeingEdited, snapTo, xPoints, yPoints } =
+    useStackContext();
 
   const dispatch = useStackDispatch();
 
@@ -116,7 +120,7 @@ export const DragAndDropPointsSingleShape = ({
 
     // The center point text is a "C"
     if (eventText === "C") {
-      const oldCoords = getCenterPoint(activeStack.coords, drawingMode);
+      const oldCoords = getCenterPointCoords(activeStack.coords, drawingMode);
       const newCoords = getDragDropCoords(event, clickAreaRef)!;
 
       const updatedCoords = activeStack.coords.map((coord) => {
@@ -132,7 +136,15 @@ export const DragAndDropPointsSingleShape = ({
       });
     } else {
       // Otherwise points are all numbers
-      const coords = getDragDropCoords(event, clickAreaRef)!;
+      const coords = snapTo
+        ? getDragDropCoordsWithSnapping(
+            event,
+            clickAreaRef,
+            snapTo,
+            xPoints,
+            yPoints
+          )!
+        : getDragDropCoords(event, clickAreaRef)!;
 
       const indexToUpdate = Number(eventText) - 1;
 
