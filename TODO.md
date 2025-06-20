@@ -1,5 +1,14 @@
 # Todo List
 
+## ClickArea - Snap to Existing Shapes coordinates i.e. same x or same y as existing point
+
+- [x] snap grid not showing on line mode
+- [x] if a point is within a specific distance, highlight that the point is close by changing its background style
+- [ ] if a point is within a specific distance, snap the point being moved to that point
+- [x] UI lines e.g. like Photoshop lines
+- [x] UI Toggle to specify if user wants snapping
+- [ ] Look at Performance?!
+
 ## Sidebar - Duplicate shape
 
 - [x] Think about having the Ability to duplicate a shape
@@ -21,9 +30,7 @@
 
 ## ClickArea - Moving Existing Shapes
 
-- [ ] Snap to existing shapes points i.e. duplicate a shape and move, then want to position adjacent but lined up to original shape
 - [x] Keyboard move shapes / points
-
 - [x] Bug - center point can be outside of viewport if all shapes moved - set a max/min position
 - [x] bug - single shape moving broken.
 - [x] Move one shape

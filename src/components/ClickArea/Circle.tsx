@@ -9,6 +9,8 @@ import { useStackContext } from "@hooks/useStackContext";
 import { getCoords } from "@utils/coordinates";
 import { useStackDispatch } from "@hooks/useStackDispatch";
 
+import { ClickAreaWrapper } from "@components/ClickArea/index";
+
 export const ClickAreaCircle = () => {
   const dispatch = useStackDispatch();
 
@@ -45,18 +47,18 @@ export const ClickAreaCircle = () => {
     });
   };
 
-  const handleMouseDown = (e: MouseEvent<HTMLDivElement>) => {
+  const handleMouseDown = (event: MouseEvent<HTMLDivElement>) => {
     setFinalPoint(null);
-    const coords = getCoords(e, clickAreaRef)!;
+    const coords = getCoords(event, clickAreaRef)!;
 
     setInitialPoint(coords);
     setRecording(true);
   };
 
-  const handleMouseUp = (e: MouseEvent<HTMLDivElement>) => {
+  const handleMouseUp = (event: MouseEvent<HTMLDivElement>) => {
     // AHTODO: How to handle mouseup or out of bounds movement of the mouse?
 
-    const upCoords = getCoords(e, clickAreaRef)!;
+    const upCoords = getCoords(event, clickAreaRef)!;
 
     setFinalPoint(upCoords);
 
@@ -64,30 +66,29 @@ export const ClickAreaCircle = () => {
     drawCircle();
   };
 
-  const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
+  const handleMouseMove = (event: MouseEvent<HTMLDivElement>) => {
     if (initialPoint === null || recording === false) {
       return;
     }
-    const coords = getCoords(e, clickAreaRef)!;
+    const coords = getCoords(event, clickAreaRef)!;
 
     setFinalPoint(coords);
   };
 
   if (activeStack.coords || moveAllShapes) {
     return (
-      <div className="click-area" ref={clickAreaRef}>
+      <ClickAreaWrapper clickAreaRef={clickAreaRef}>
         <DragAndDropPoints clickAreaRef={clickAreaRef} drawingMode="circle" />
-      </div>
+      </ClickAreaWrapper>
     );
   }
 
   return (
-    <div
-      className="click-area"
-      onMouseDown={handleMouseDown}
-      onMouseUp={handleMouseUp}
-      onMouseMove={handleMouseMove}
-      ref={clickAreaRef}
+    <ClickAreaWrapper
+      handleMouseDown={handleMouseDown}
+      handleMouseUp={handleMouseUp}
+      handleMouseMove={handleMouseMove}
+      clickAreaRef={clickAreaRef}
     >
       {finalPoint !== null && initialPoint !== null && (
         <CircleMiddlePoint
@@ -95,7 +96,7 @@ export const ClickAreaCircle = () => {
           finalPoint={finalPoint}
         />
       )}
-    </div>
+    </ClickAreaWrapper>
   );
 };
 
@@ -126,5 +127,5 @@ const CircleMiddlePoint = React.memo(
         }}
       />
     );
-  },
+  }
 );

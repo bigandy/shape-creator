@@ -6,6 +6,7 @@ import type { Coords } from "@/Types";
 import { getCoords } from "@utils/coordinates";
 import { useStackContext } from "@hooks/useStackContext";
 import { useStackDispatch } from "@hooks/useStackDispatch";
+import { ClickAreaWrapper } from "@components/ClickArea/index";
 
 export const ClickAreaLine = () => {
   const { stackLength } = useStackContext();
@@ -41,12 +42,11 @@ export const ClickAreaLine = () => {
   const handleMouseLeave = () => setMousePosition(null);
 
   return (
-    <div
-      className="click-area"
-      onClick={handleClick}
-      ref={clickAreaRef}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
+    <ClickAreaWrapper
+      handleClick={handleClick}
+      clickAreaRef={clickAreaRef}
+      handleMouseMove={handleMouseMove}
+      handleMouseLeave={handleMouseLeave}
     >
       <DragAndDropPoints clickAreaRef={clickAreaRef} drawingMode="line" />
 
@@ -61,6 +61,6 @@ export const ClickAreaLine = () => {
           {stackLength + 1}
         </div>
       )}
-    </div>
+    </ClickAreaWrapper>
   );
 };
