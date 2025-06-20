@@ -12,23 +12,24 @@ interface Props extends React.PropsWithChildren {
 }
 
 export const ClickAreaWrapper = ({
-  handleClick,
-  handleMouseDown,
-  handleMouseMove,
-  handleMouseUp,
-  handleMouseLeave,
+  handleClick = undefined,
+  handleMouseDown = undefined,
+  handleMouseMove = undefined,
+  handleMouseUp = undefined,
+  handleMouseLeave = undefined,
   clickAreaRef,
   children,
 }: Props) => {
   const { snapTo } = useStackContext();
+
   return (
     <div
       className="click-area"
-      onClick={handleClick ? handleClick : undefined}
-      onMouseDown={handleMouseDown ? handleMouseDown : undefined}
-      onMouseUp={handleMouseUp ? handleMouseUp : undefined}
-      onMouseMove={handleMouseMove ? handleMouseMove : undefined}
-      onMouseLeave={handleMouseLeave ? handleMouseLeave : undefined}
+      onClick={handleClick}
+      onMouseDown={handleMouseDown}
+      onMouseUp={handleMouseUp}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
       ref={clickAreaRef}
     >
       {children}

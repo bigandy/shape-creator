@@ -77,9 +77,9 @@ export const ClickAreaCircle = () => {
 
   if (activeStack.coords || moveAllShapes) {
     return (
-      <div className="click-area" ref={clickAreaRef}>
+      <ClickAreaWrapper clickAreaRef={clickAreaRef}>
         <DragAndDropPoints clickAreaRef={clickAreaRef} drawingMode="circle" />
-      </div>
+      </ClickAreaWrapper>
     );
   }
 

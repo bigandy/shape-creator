@@ -5,6 +5,8 @@ import { useStackContext } from "@hooks/useStackContext";
 export const GridLines = () => {
   const { xPoints, yPoints } = useStackContext();
 
+  console.log({ xPoints, yPoints });
+
   return (
     <Fragment>
       {xPoints.map((x, index) => {
