@@ -36,7 +36,7 @@ const getCenterPointAllShapes = (savedStack: Shape[]) => {
 };
 
 export const DragAndDropPointsAllShapes = ({ clickAreaRef }: Props) => {
-  const { savedStack, snapTo } = useStackContext();
+  const { savedStack } = useStackContext();
 
   const dispatch = useStackDispatch();
 

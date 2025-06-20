@@ -22,9 +22,10 @@ export function Draggable({
   let overlapLeft = false;
 
   if (!isCenter) {
-    const { xPoints, yPoints } = useStackContext(); // eslint-disable-line
-    // AHTODO - Doing this in every Draggable seems to be bad. Move into somewhere else to share these values?
+    /* eslint-disable-next-line react-hooks/rules-of-hooks */
+    const { xPoints, yPoints } = useStackContext();
 
+    // AHTODO - Doing this in every Draggable seems to be bad. Move into somewhere else to share these values?
     if (yPoints.map((p) => Math.floor(p)).includes(Math.floor(top))) {
       // console.log("top overlap");
 
