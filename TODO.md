@@ -2,10 +2,12 @@
 
 ## ClickArea - Snap to Existing Shapes coordinates i.e. same x or same y as existing point
 
+- [ ] Line creation snapping flip-flaps as current point trying to snap to multiple points when moving it.
 - [ ] Move shape and snap??
 - [ ] Keep aspect ratio of shape when moving center point of shape
 - [ ] Look at Performance?!
 - [ ] Snap at the edge of the Click Area?
+- [x] Show grid lines on Line when creating shape (is this a good idea?)
 - [x] line creation change color when hovering near a grid line
 - [x] Snap to line when creating a shape
 - [x] circle creation add points when moving mouse

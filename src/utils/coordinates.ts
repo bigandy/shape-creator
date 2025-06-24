@@ -32,7 +32,7 @@ export const getCoordsWithSnapping = (
   xPoints: number[],
   yPoints: number[]
 ): Coords | undefined => {
-  if (!ref.current) {
+  if (!ref.current || (xPoints.length === 0 && yPoints.length === 0)) {
     return;
   }
 
@@ -43,8 +43,6 @@ export const getCoordsWithSnapping = (
 
   let percentX = (deltaX / width) * 100;
   let percentY = (deltaY / height) * 100;
-
-  console.log("snapTo enabled", xPoints, yPoints);
 
   const filteredX = xPoints.filter((xPoint) => {
     return Math.abs(percentX - xPoint) <= allowableDistance;
@@ -180,8 +178,6 @@ export const updateCoordsToSnap = ({
     percentY = filteredY[0];
   }
 
-  console.log({ filteredX, filteredY });
-  // console.log({ nearX, nearY });
   return {
     percentX,
     percentY,

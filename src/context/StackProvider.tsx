@@ -511,7 +511,12 @@ export function StackProvider({ children }: PropsWithChildren) {
 
   // Get All Points vertical and horizontal
   const allCoords = savedStack
-    .filter((_, stackIndex) => stackIndex !== editingNumber)
+    .filter((stack, stackIndex) => {
+      if (stack.shape === "line" && editingNumber === 0) {
+        return true;
+      }
+      return stackIndex !== editingNumber;
+    })
     .flatMap((stack) => {
       return stack.coords;
     });
