@@ -2,12 +2,17 @@
 
 ## ClickArea - Snap to Existing Shapes coordinates i.e. same x or same y as existing point
 
+- [ ] Keep aspect ratio of shape when moving center point of shape
+- [ ] Look at Performance?!
+- [ ] line creation change color when hovering near a grid line
+- [ ] Snap to line when creating a shape
+- [x] circle creation add points when moving mouse
+- [x] rectangle creation add points when moving mouse
 - [x] snap grid not showing on line mode
 - [x] if a point is within a specific distance, highlight that the point is close by changing its background style
-- [ ] if a point is within a specific distance, snap the point being moved to that point
+- [x] if a point is within a specific distance, snap the point being moved to that point
 - [x] UI lines e.g. like Photoshop lines
 - [x] UI Toggle to specify if user wants snapping
-- [ ] Look at Performance?!
 
 ## Sidebar - Duplicate shape
 

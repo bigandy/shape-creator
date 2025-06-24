@@ -11,6 +11,7 @@ import { clamp } from "@utils/clamp";
 import {
   getDragDropCoords,
   getDragDropCoordsWithSnapping,
+  // updateCoordsToSnap,
 } from "@utils/coordinates";
 
 const calculateNextValue = (
@@ -130,10 +131,34 @@ export const DragAndDropPointsSingleShape = ({
         };
       });
 
+      // if (snapTo) {
+      //   console.log("update the coords to snap");
+
+      //   // AHTODO: Bug: maintain the aspect-ratio. But how??
+      //   const coords = updatedCoords.map((coord) => {
+      //     const { percentX, percentY } = updateCoordsToSnap({
+      //       percentX: coord.percentX,
+      //       percentY: coord.percentY,
+      //       xPoints,
+      //       yPoints,
+      //     });
+
+      //     return {
+      //       percentX,
+      //       percentY,
+      //     };
+      //   });
+
+      //   dispatch({
+      //     type: "update-current-shape",
+      //     payload: { coords: coords },
+      //   });
+      // } else {
       dispatch({
         type: "update-current-shape",
         payload: { coords: updatedCoords },
       });
+      // }
     } else {
       // Otherwise points are all numbers
       const coords = snapTo

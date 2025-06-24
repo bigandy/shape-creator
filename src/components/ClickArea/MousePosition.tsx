@@ -1,42 +1,30 @@
 import { useStackContext } from "@/hooks/useStackContext";
-import { allowableDistance } from "@/utils/consts";
-import { useDraggable } from "@dnd-kit/core";
+import type { Coords } from "@/Types";
+
+import { allowableDistance } from "@utils/consts";
 
 interface Props extends React.PropsWithChildren {
-  index: number;
-  top: number;
-  left: number;
-  isCenter?: boolean;
+  coords: Coords;
 }
 
-export function Draggable({
-  index,
-  top,
-  left,
-  isCenter = false,
-  children,
-}: Props) {
-  const { attributes, listeners, setNodeRef } = useDraggable({
-    id: `draggable-${index}`,
-  });
+export const MousePosition = ({ coords, children }: Props) => {
   let overlapTop = false;
   let overlapLeft = false;
   let nearBoth = false;
-
   const { snapTo } = useStackContext();
 
-  if (!isCenter && snapTo) {
+  if (snapTo) {
     /* eslint-disable-next-line react-hooks/rules-of-hooks */
     const { xPoints, yPoints } = useStackContext();
 
     const nearY =
       yPoints.filter((yPoint) => {
-        return Math.abs(top - yPoint) <= allowableDistance;
+        return Math.abs(coords.percentY - yPoint) <= allowableDistance;
       }).length > 0;
 
     const nearX =
       xPoints.filter((xPoint) => {
-        return Math.abs(left - xPoint) <= allowableDistance;
+        return Math.abs(coords.percentX - xPoint) <= allowableDistance;
       }).length > 0;
     // AHTODO - Doing this in every Draggable seems to be bad. Move into somewhere else to share these values?
 
@@ -54,32 +42,27 @@ export function Draggable({
   }
 
   const getBgColor = () => {
-    if (isCenter) {
-      return undefined;
-    }
     if (nearBoth) {
       return "linear-gradient(to right, red 50%, green 50% 0)";
     } else if (overlapLeft) {
-      const direction = index < 2 ? "right" : "left";
+      const direction = "left";
       return `linear-gradient(to ${direction}, red 50%, transparent 50% 0)`;
     } else if (overlapTop) {
-      const direction = [0, 3].includes(index) ? "top" : "bottom";
+      const direction = "top";
       return `linear-gradient(to ${direction}, transparent 50%, red 50% 0)`;
     }
   };
+
   return (
-    <button
-      ref={setNodeRef}
+    <div
+      className="mouse-position"
       style={{
-        top: top + "%",
-        left: left + "%",
+        left: coords.percentX + "%",
+        top: coords.percentY + "%",
         background: getBgColor(),
       }}
-      {...listeners}
-      {...attributes}
-      className="draggable-button"
     >
       {children}
-    </button>
+    </div>
   );
-}
+};
