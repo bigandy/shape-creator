@@ -11,7 +11,6 @@ import { clamp } from "@utils/clamp";
 import {
   getDragDropCoords,
   getDragDropCoordsWithSnapping,
-  // updateCoordsToSnap,
 } from "@utils/coordinates";
 
 const calculateNextValue = (
@@ -165,7 +164,7 @@ export const DragAndDropPointsSingleShape = ({
         ? getDragDropCoordsWithSnapping(
             event,
             clickAreaRef,
-            snapTo,
+            drawingMode,
             xPoints,
             yPoints
           )!
@@ -220,9 +219,11 @@ export const DragAndDropPointsSingleShape = ({
           })
         : null}
 
-      {isActiveStackBeingEdited && (
-        <CenterPoint coords={activeStack.coords} drawingMode={drawingMode} />
-      )}
+      {drawingMode !== "line" &&
+        isActiveStackBeingEdited &&
+        activeStack.coords.length > 1 && (
+          <CenterPoint coords={activeStack.coords} drawingMode={drawingMode} />
+        )}
     </CustomDnDWrapper>
   );
 };

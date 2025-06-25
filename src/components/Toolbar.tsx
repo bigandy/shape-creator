@@ -58,7 +58,7 @@ export const Toolbar = ({ open, selectedImage, handleImageChange }: Props) => {
   };
 
   const handleDeleteAllShapes = () => {
-    dispatch({ type: "clear-all-stacks" });
+    dispatch({ type: "delete-all-shapes" });
   };
 
   const handleMoveAllShapes = () => {
@@ -137,7 +137,7 @@ export const Toolbar = ({ open, selectedImage, handleImageChange }: Props) => {
 
           <button
             onClick={handleDeleteAllShapes}
-            disabled={savedStackLength === 0}
+            // disabled={savedStackLength === 0}
           >
             Delete All Shapes
           </button>

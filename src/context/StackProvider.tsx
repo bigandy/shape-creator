@@ -35,7 +35,7 @@ export type StackReducerAction =
       type: "clear-current-shape";
     }
   | {
-      type: "clear-all-stacks";
+      type: "delete-all-shapes";
     }
   | {
       type: "add-point";
@@ -275,9 +275,13 @@ function stackReducer(
 
       return { ...state, savedStack: [...updatedSavedStack] };
     }
-    case "clear-all-stacks": {
+    case "delete-all-shapes": {
       // AHTODO: when finished the snapTo, can move back to just initialState
-      return { ...initialState, savedStack: [] };
+      return {
+        ...initialState,
+        savedStack: [],
+        drawingMode: state.drawingMode,
+      };
     }
     case "update-edit-index": {
       return {
@@ -506,8 +510,7 @@ export function StackProvider({ children }: PropsWithChildren) {
   const activeStack = savedStack[editingNumber] ?? [];
   // @ts-expect-error sort it out
   const isActiveStackBeingEdited = savedStack[editingNumber]?.coords.length > 0;
-
-  const savedStackLength = savedStack.length;
+  const savedStackLength = savedStack[editingNumber ?? 0]?.coords.length;
 
   // Get All Points vertical and horizontal
   const allCoords = savedStack

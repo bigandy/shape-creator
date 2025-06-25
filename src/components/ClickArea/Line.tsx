@@ -10,7 +10,7 @@ import { ClickAreaWrapper } from "@components/ClickArea/index";
 import { MousePosition } from "./MousePosition";
 
 export const ClickAreaLine = () => {
-  const { stackLength, snapTo, xPoints, yPoints } = useStackContext();
+  const { snapTo, xPoints, yPoints } = useStackContext();
   const dispatch = useStackDispatch();
 
   const clickAreaRef = useRef<HTMLInputElement>(null);
@@ -57,9 +57,7 @@ export const ClickAreaLine = () => {
     >
       <DragAndDropPoints clickAreaRef={clickAreaRef} drawingMode="line" />
 
-      {mousePosition && (
-        <MousePosition coords={mousePosition}>{stackLength + 1}</MousePosition>
-      )}
+      {mousePosition && <MousePosition coords={mousePosition}>P</MousePosition>}
     </ClickAreaWrapper>
   );
 };

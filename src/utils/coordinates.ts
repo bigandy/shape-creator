@@ -2,7 +2,7 @@ import { type MouseEvent, type RefObject } from "react";
 
 import { type DragMoveEvent } from "@dnd-kit/core";
 
-import type { Coords } from "@/Types";
+import type { Coords, DrawingMode } from "@/Types";
 
 import { allowableDistance } from "@utils/consts";
 
@@ -104,7 +104,7 @@ export const getDragDropCoords = (
 export const getDragDropCoordsWithSnapping = (
   { activatorEvent, delta, active }: DragMoveEvent,
   ref: RefObject<HTMLElement | null>,
-  snapTo?: boolean,
+  drawingMode: DrawingMode,
   xPoints?: number[],
   yPoints?: number[]
 ) => {
@@ -132,12 +132,17 @@ export const getDragDropCoordsWithSnapping = (
   const percentXUnsnapped = (newX / width) * 100;
   const percentYUnsnapped = (newY / height) * 100;
 
-  if (snapTo && xPoints && yPoints) {
+  const ad = drawingMode === "line" ? 0.1 : allowableDistance;
+
+  console.log({ ad });
+
+  if (xPoints && yPoints) {
     const { percentX, percentY } = updateCoordsToSnap({
       percentX: percentXUnsnapped,
       percentY: percentYUnsnapped,
       xPoints,
       yPoints,
+      allowableDistance: ad,
     });
 
     return {
@@ -157,11 +162,13 @@ export const updateCoordsToSnap = ({
   percentY,
   xPoints,
   yPoints,
+  allowableDistance,
 }: {
   percentX: number;
   percentY: number;
   xPoints: number[];
   yPoints: number[];
+  allowableDistance: number;
 }) => {
   const filteredX = xPoints.filter((xPoint) => {
     return Math.abs(percentX - xPoint) <= allowableDistance;
