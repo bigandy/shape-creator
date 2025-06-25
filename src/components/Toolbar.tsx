@@ -31,18 +31,16 @@ type Props = {
 
 export const Toolbar = ({ open, selectedImage, handleImageChange }: Props) => {
   const dispatch = useStackDispatch();
-  const { drawingMode, savedStackLength, moveAllShapes } = useStackContext();
+  const { drawingMode, savedStackLength, moveAllShapes, snapTo } =
+    useStackContext();
 
   const handleChangeDrawingMode = (drawingMode: DrawingMode) => {
-    // if (stackLength > 0) {
     dispatch({
       type: "change-shape",
       payload: {
         shape: drawingMode,
       },
     });
-    // }
-    // setDrawingMode(drawingMode);
   };
 
   const handleDeleteLastShape = () => {
@@ -60,11 +58,15 @@ export const Toolbar = ({ open, selectedImage, handleImageChange }: Props) => {
   };
 
   const handleDeleteAllShapes = () => {
-    dispatch({ type: "clear-all-stacks" });
+    dispatch({ type: "delete-all-shapes" });
   };
 
   const handleMoveAllShapes = () => {
     dispatch({ type: "move-all-shapes" });
+  };
+
+  const handleToggleSnapTo = () => {
+    dispatch({ type: "toggle-snap-to" });
   };
 
   return (
@@ -135,9 +137,13 @@ export const Toolbar = ({ open, selectedImage, handleImageChange }: Props) => {
 
           <button
             onClick={handleDeleteAllShapes}
-            disabled={savedStackLength === 0}
+            // disabled={savedStackLength === 0}
           >
             Delete All Shapes
+          </button>
+
+          <button onClick={handleToggleSnapTo} disabled={moveAllShapes}>
+            {snapTo ? "Disable" : "Enable"} Snap-To
           </button>
 
           {savedStackLength > 0 && (

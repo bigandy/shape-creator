@@ -9,30 +9,33 @@ import { StackContext, StackDispatchContext } from "./StackContext";
 export type StackContextValue = {
   clipPath: string;
   stackLength: number;
-  savedStack: Shape[];
+  savedStack: Array<Shape>;
   savedStackLength: number;
   editingNumber: number | undefined;
   isActiveStackBeingEdited: boolean;
   drawingMode: DrawingMode;
   activeStack: Shape;
   moveAllShapes: boolean;
+  snapTo: boolean;
+  xPoints: Array<number>;
+  yPoints: Array<number>;
 };
 
 export type StackReducerAction =
   | {
       type: string;
       payload: {
-        coords: Coords[];
+        coords: Array<Coords>;
         index: number;
         shape: DrawingMode;
-        savedStack: Shape[];
+        savedStack: Array<Shape>;
       };
     } // Is this needed?
   | {
       type: "clear-current-shape";
     }
   | {
-      type: "clear-all-stacks";
+      type: "delete-all-shapes";
     }
   | {
       type: "add-point";
@@ -47,7 +50,7 @@ export type StackReducerAction =
   | {
       type: "update-current-shape";
       payload: {
-        coords: Coords[];
+        coords: Array<Coords>;
       };
     }
   | {
@@ -69,7 +72,7 @@ export type StackReducerAction =
       type: "save-shape";
       payload: {
         shape: DrawingMode;
-        coords: Coords[];
+        coords: Array<Coords>;
       };
     }
   | {
@@ -93,15 +96,19 @@ export type StackReducerAction =
   | {
       type: "update-all-shapes";
       payload: {
-        savedStack: Shape[];
+        savedStack: Array<Shape>;
       };
+    }
+  | {
+      type: "toggle-snap-to";
     };
 
 type ReducerState = {
-  savedStack: Shape[];
+  savedStack: Array<Shape>;
   editingNumber: number | undefined;
   drawingMode: DrawingMode;
   moveAllShapes: boolean;
+  snapTo: boolean;
 };
 
 const initialState = {
@@ -109,11 +116,12 @@ const initialState = {
   editingNumber: 0,
   drawingMode: "rectangle" as DrawingMode,
   moveAllShapes: false,
+  snapTo: false,
 };
 
 function stackReducer(
   state: ReducerState,
-  action: StackReducerAction,
+  action: StackReducerAction
 ): ReducerState {
   const uuid = self.crypto.randomUUID();
 
@@ -132,8 +140,11 @@ function stackReducer(
 
       return { ...state, savedStack: [...updatedSavedStack] };
     }
-    case "clear-all-stacks": {
-      return initialState;
+    case "delete-all-shapes": {
+      return {
+        ...initialState,
+        drawingMode: state.drawingMode,
+      };
     }
     case "update-edit-index": {
       return {
@@ -224,7 +235,7 @@ function stackReducer(
             ...stack,
             coords: stack.coords.filter(
               (_, coordsIndex, stackArray) =>
-                coordsIndex !== stackArray.length - 1,
+                coordsIndex !== stackArray.length - 1
             ),
           };
         } else {
@@ -244,7 +255,7 @@ function stackReducer(
           return {
             ...stack,
             coords: stack.coords.filter(
-              (_, coordsIndex) => coordsIndex !== action.payload.index,
+              (_, coordsIndex) => coordsIndex !== action.payload.index
             ),
           };
         } else {
@@ -282,7 +293,7 @@ function stackReducer(
     }
     case "delete-last-shape": {
       const updatedSavedStack = state.savedStack.filter(
-        (_, index, stackArray) => index !== stackArray.length - 1,
+        (_, index, stackArray) => index !== stackArray.length - 1
       );
 
       return {
@@ -296,7 +307,7 @@ function stackReducer(
       return {
         ...state,
         savedStack: state.savedStack.filter(
-          (_, index) => index !== action.payload.index,
+          (_, index) => index !== action.payload.index
         ),
         editingNumber: undefined,
         moveAllShapes: false,
@@ -323,12 +334,19 @@ function stackReducer(
         ...state,
         moveAllShapes: !state.moveAllShapes,
         editingNumber: undefined,
+        snapTo: false,
       };
     }
     case "update-all-shapes": {
       return {
         ...state,
         savedStack: action.payload.savedStack,
+      };
+    }
+    case "toggle-snap-to": {
+      return {
+        ...state,
+        snapTo: !state.snapTo,
       };
     }
     default: {
@@ -338,8 +356,10 @@ function stackReducer(
 }
 
 export function StackProvider({ children }: PropsWithChildren) {
-  const [{ savedStack, editingNumber, drawingMode, moveAllShapes }, dispatch] =
-    useReducer(stackReducer, initialState);
+  const [
+    { savedStack, editingNumber, drawingMode, moveAllShapes, snapTo },
+    dispatch,
+  ] = useReducer(stackReducer, initialState);
 
   const stackLength =
     (editingNumber && savedStack[editingNumber]?.coords.length) || 0;
@@ -353,13 +373,40 @@ export function StackProvider({ children }: PropsWithChildren) {
   const activeStack = savedStack[editingNumber] ?? [];
   // @ts-expect-error sort it out
   const isActiveStackBeingEdited = savedStack[editingNumber]?.coords.length > 0;
+  const savedStackLength = savedStack[editingNumber ?? 0]?.coords.length;
 
-  const savedStackLength = savedStack.length;
+  let xPoints: number[] = [];
+  let yPoints: number[] = [];
+
+  if (snapTo) {
+    // Get All Points vertical and horizontal
+    const allCoords = savedStack
+      .filter((stack, stackIndex) => {
+        if (stack.shape === "line" && editingNumber === 0) {
+          return true;
+        }
+        return stackIndex !== editingNumber;
+      })
+      .flatMap((stack) => {
+        return stack.coords;
+      });
+
+    const uniqueXPoints = [
+      ...new Set(allCoords.map(({ percentX }) => percentX)),
+    ];
+    const uniqueYPoints = [
+      ...new Set(allCoords.map(({ percentY }) => percentY)),
+    ];
+
+    yPoints = uniqueYPoints.length > 0 ? [0, ...uniqueYPoints, 99.9] : [];
+    xPoints = uniqueXPoints.length > 0 ? [0, ...uniqueXPoints, 99.9] : [];
+  }
 
   return (
     <StackContext
       value={
         {
+          snapTo,
           activeStack,
           drawingMode,
           savedStack,
@@ -369,6 +416,8 @@ export function StackProvider({ children }: PropsWithChildren) {
           isActiveStackBeingEdited,
           savedStackLength,
           moveAllShapes,
+          xPoints,
+          yPoints,
         } as StackContextValue
       }
     >

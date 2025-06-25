@@ -3,12 +3,14 @@ import { useRef, useState, type MouseEvent } from "react";
 import { DragAndDropPoints } from "@components/DragAndDropPoints/index";
 
 import type { Coords } from "@/Types";
-import { getCoords } from "@utils/coordinates";
+import { getCoords, getCoordsWithSnapping } from "@utils/coordinates";
 import { useStackContext } from "@hooks/useStackContext";
 import { useStackDispatch } from "@hooks/useStackDispatch";
+import { ClickAreaWrapper } from "@components/ClickArea/index";
+import { MousePosition } from "./MousePosition";
 
 export const ClickAreaLine = () => {
-  const { stackLength } = useStackContext();
+  const { snapTo, xPoints, yPoints } = useStackContext();
   const dispatch = useStackDispatch();
 
   const clickAreaRef = useRef<HTMLInputElement>(null);
@@ -20,7 +22,10 @@ export const ClickAreaLine = () => {
    * and is used for the clip-path: shape() generation
    */
   const handleClick = (event: MouseEvent<HTMLElement>) => {
-    const coords = getCoords(event, clickAreaRef)!;
+    const coords =
+      snapTo && xPoints.length > 0 && yPoints.length > 0
+        ? getCoordsWithSnapping(event, clickAreaRef, xPoints, yPoints)!
+        : getCoords(event, clickAreaRef)!;
 
     dispatch({
       type: "add-point",
@@ -32,7 +37,10 @@ export const ClickAreaLine = () => {
    * This handles when the mouse cursor moves inside the click-area. It shows the position of the mouse with a div in the same style as the points on the DragAndDropPoints dots.
    */
   const handleMouseMove = (event: MouseEvent<HTMLElement>) => {
-    const coords = getCoords(event, clickAreaRef)!;
+    const coords =
+      snapTo && xPoints.length > 0 && yPoints.length > 0
+        ? getCoordsWithSnapping(event, clickAreaRef, xPoints, yPoints)!
+        : getCoords(event, clickAreaRef)!;
 
     setMousePosition(coords);
   };
@@ -41,26 +49,15 @@ export const ClickAreaLine = () => {
   const handleMouseLeave = () => setMousePosition(null);
 
   return (
-    <div
-      className="click-area"
-      onClick={handleClick}
-      ref={clickAreaRef}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
+    <ClickAreaWrapper
+      handleClick={handleClick}
+      clickAreaRef={clickAreaRef}
+      handleMouseMove={handleMouseMove}
+      handleMouseLeave={handleMouseLeave}
     >
       <DragAndDropPoints clickAreaRef={clickAreaRef} drawingMode="line" />
 
-      {mousePosition && (
-        <div
-          className="mouse-position"
-          style={{
-            left: mousePosition?.percentX + "%",
-            top: mousePosition?.percentY + "%",
-          }}
-        >
-          {stackLength + 1}
-        </div>
-      )}
-    </div>
+      {mousePosition && <MousePosition coords={mousePosition}>P</MousePosition>}
+    </ClickAreaWrapper>
   );
 };

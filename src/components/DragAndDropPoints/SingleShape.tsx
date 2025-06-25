@@ -2,13 +2,36 @@ import { type DragMoveEvent } from "@dnd-kit/core";
 
 import { Draggable } from "@components/Draggable";
 
-import { CustomDnDContext } from "./CustomDnDContext";
+import { CustomDnDWrapper } from "./CustomDnDWrapper";
 
 import type { Coords, DrawingMode } from "@/Types";
 import { useStackContext } from "@hooks/useStackContext";
 import { useStackDispatch } from "@hooks/useStackDispatch";
 import { clamp } from "@utils/clamp";
-import { getDragDropCoords } from "@utils/coordinates";
+import {
+  getDragDropCoords,
+  getDragDropCoordsWithSnapping,
+} from "@utils/coordinates";
+
+const calculateNextValue = (
+  direction: "up" | "down",
+  indexToUpdate: number
+) => {
+  let num = indexToUpdate;
+  if (direction === "down") {
+    num--;
+  } else if (direction === "up") {
+    num++;
+  }
+
+  // There are 4 sides so a max of 3 with index 0
+  if (num > 3) {
+    return 0;
+  } else if (num < 0) {
+    return 3;
+  }
+  return num;
+};
 
 const getUpdateRectangleCoords = (
   updatedPositionCoord: Coords,
@@ -18,33 +41,18 @@ const getUpdateRectangleCoords = (
   const newCoords = [...previousCoords];
   newCoords[indexToUpdate] = updatedPositionCoord;
 
-  // AHTODO: refactor this!
-  if (indexToUpdate === 0) {
-    // y of next point
-    newCoords[1].percentX = updatedPositionCoord.percentX;
-    // x of final point
-    newCoords[3].percentY = updatedPositionCoord.percentY;
-  } else if (indexToUpdate === 1) {
-    // x of prev point
-    newCoords[0].percentX = updatedPositionCoord.percentX;
-    // y of next point
-    newCoords[2].percentY = updatedPositionCoord.percentY;
-  } else if (indexToUpdate === 2) {
-    // y of prev point
-    newCoords[1].percentY = updatedPositionCoord.percentY;
-    // x of next point
-    newCoords[3].percentX = updatedPositionCoord.percentX;
-  } else if (indexToUpdate === 3) {
-    // x of prev point
-    newCoords[0].percentY = updatedPositionCoord.percentY;
-    // y of next point
-    newCoords[2].percentX = updatedPositionCoord.percentX;
-  }
+  const isEven = indexToUpdate % 2 === 0;
+
+  const xIndex = calculateNextValue(isEven ? "up" : "down", indexToUpdate);
+  const yIndex = calculateNextValue(isEven ? "down" : "up", indexToUpdate);
+
+  newCoords[xIndex].percentX = updatedPositionCoord.percentX;
+  newCoords[yIndex].percentY = updatedPositionCoord.percentY;
 
   return newCoords;
 };
 
-const getCenterPoint = (coords: Coords[], drawingMode: DrawingMode) => {
+const getCenterPointCoords = (coords: Coords[], drawingMode: DrawingMode) => {
   if (drawingMode === "rectangle") {
     return {
       percentX: (coords[0].percentX + coords[2].percentX) / 2,
@@ -78,13 +86,14 @@ const CenterPoint = ({
   coords: Coords[];
   drawingMode: DrawingMode;
 }) => {
-  const middlePoint = getCenterPoint(coords, drawingMode);
+  const middlePoint = getCenterPointCoords(coords, drawingMode);
 
   return (
     <Draggable
       index={100}
       top={clamp(middlePoint.percentY, 0, 100)}
       left={clamp(middlePoint.percentX, 0, 100)}
+      isCenter
     >
       <div className="cursor-move">C</div>
     </Draggable>
@@ -100,7 +109,8 @@ export const DragAndDropPointsSingleShape = ({
   clickAreaRef,
   drawingMode,
 }: Props) => {
-  const { activeStack, isActiveStackBeingEdited } = useStackContext();
+  const { activeStack, isActiveStackBeingEdited, snapTo, xPoints, yPoints } =
+    useStackContext();
 
   const dispatch = useStackDispatch();
 
@@ -110,7 +120,7 @@ export const DragAndDropPointsSingleShape = ({
 
     // The center point text is a "C"
     if (eventText === "C") {
-      const oldCoords = getCenterPoint(activeStack.coords, drawingMode);
+      const oldCoords = getCenterPointCoords(activeStack.coords, drawingMode);
       const newCoords = getDragDropCoords(event, clickAreaRef)!;
 
       const updatedCoords = activeStack.coords.map((coord) => {
@@ -120,13 +130,44 @@ export const DragAndDropPointsSingleShape = ({
         };
       });
 
+      // AHTODO: handle snapTo
+      // AHTODO: Bug: maintain the aspect-ratio. But how??
+      // if (snapTo) {
+      //   const coords = updatedCoords.map((coord) => {
+      //     const { percentX, percentY } = updateCoordsToSnap({
+      //       percentX: coord.percentX,
+      //       percentY: coord.percentY,
+      //       xPoints,
+      //       yPoints,
+      //     });
+
+      //     return {
+      //       percentX,
+      //       percentY,
+      //     };
+      //   });
+
+      //   dispatch({
+      //     type: "update-current-shape",
+      //     payload: { coords: coords },
+      //   });
+      // } else {
       dispatch({
         type: "update-current-shape",
         payload: { coords: updatedCoords },
       });
+      // }
     } else {
       // Otherwise points are all numbers
-      const coords = getDragDropCoords(event, clickAreaRef)!;
+      const coords = snapTo
+        ? getDragDropCoordsWithSnapping(
+            event,
+            clickAreaRef,
+            drawingMode,
+            xPoints,
+            yPoints
+          )!
+        : getDragDropCoords(event, clickAreaRef)!;
 
       const indexToUpdate = Number(eventText) - 1;
 
@@ -161,7 +202,7 @@ export const DragAndDropPointsSingleShape = ({
   };
 
   return (
-    <CustomDnDContext onDragMove={handleMove}>
+    <CustomDnDWrapper onDragMove={handleMove}>
       {activeStack.coords && activeStack.coords.length > 0
         ? activeStack.coords.map((item, index) => {
             return (
@@ -177,9 +218,11 @@ export const DragAndDropPointsSingleShape = ({
           })
         : null}
 
-      {isActiveStackBeingEdited && (
-        <CenterPoint coords={activeStack.coords} drawingMode={drawingMode} />
-      )}
-    </CustomDnDContext>
+      {drawingMode !== "line" &&
+        isActiveStackBeingEdited &&
+        activeStack.coords.length > 1 && (
+          <CenterPoint coords={activeStack.coords} drawingMode={drawingMode} />
+        )}
+    </CustomDnDWrapper>
   );
 };
