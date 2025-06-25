@@ -2,6 +2,8 @@
 
 ## ClickArea - use Translate not left/right/top/bottom positioning
 
+- [x] use translate rather than left/right/top/bottom positioning for performance
+
 ## ClickArea - Snap to Existing Shapes coordinates i.e. same x or same y as existing point
 
 ### v1
