@@ -152,8 +152,9 @@ const MiddlePoint = React.memo(
       <div
         className="dot-bg rectangle-middle-point"
         style={{
-          top: Math.min(initialPoint.percentY, finalPoint.percentY) + "%",
-          left: Math.min(initialPoint.percentX, finalPoint.percentX) + "%",
+          translate: `${
+            Math.min(initialPoint.percentX, finalPoint.percentX) + "cqh"
+          } ${Math.min(initialPoint.percentY, finalPoint.percentY) + "cqw"}`,
           height: Math.abs(initialPoint.percentY - finalPoint.percentY) + "%",
           width: Math.abs(initialPoint.percentX - finalPoint.percentX) + "%",
         }}

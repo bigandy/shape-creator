@@ -71,8 +71,7 @@ export function Draggable({
     <button
       ref={setNodeRef}
       style={{
-        top: top + "%",
-        left: left + "%",
+        translate: `calc(${left}cqw - 50%) calc(${top}cqh - 50%)`,
         background: getBgColor(),
       }}
       {...listeners}

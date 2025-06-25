@@ -114,7 +114,7 @@ type ReducerState = {
 const initialState = {
   savedStack: [],
   editingNumber: 0,
-  drawingMode: "rectangle" as DrawingMode,
+  drawingMode: "circle" as DrawingMode,
   moveAllShapes: false,
   snapTo: false,
 };

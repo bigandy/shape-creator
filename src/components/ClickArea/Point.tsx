@@ -14,8 +14,7 @@ export const Point = ({
         background: type === "initial" ? "red" : "green",
         height: 10,
         width: 10,
-        top: coords.percentY + "%",
-        left: coords.percentX + "%",
+        translate: `calc(${coords.percentX}cqw - 50%) calc(${coords.percentY}cqh - 50%)`,
       }}
     ></div>
   );
