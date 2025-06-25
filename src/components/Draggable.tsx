@@ -41,12 +41,12 @@ export function Draggable({
     // AHTODO - Doing this in every Draggable seems to be bad. Move into somewhere else to share these values?
 
     if (nearY) {
-      // console.log("top overlap");
+      // "top overlap"
       overlapTop = true;
     }
 
     if (nearX) {
-      // console.log("left overlap");
+      // "left overlap"
       overlapLeft = true;
     }
 

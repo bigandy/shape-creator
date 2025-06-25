@@ -130,10 +130,9 @@ export const DragAndDropPointsSingleShape = ({
         };
       });
 
+      // AHTODO: handle snapTo
+      // AHTODO: Bug: maintain the aspect-ratio. But how??
       // if (snapTo) {
-      //   console.log("update the coords to snap");
-
-      //   // AHTODO: Bug: maintain the aspect-ratio. But how??
       //   const coords = updatedCoords.map((coord) => {
       //     const { percentX, percentY } = updateCoordsToSnap({
       //       percentX: coord.percentX,

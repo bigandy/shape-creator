@@ -4,7 +4,7 @@ import { type DragMoveEvent } from "@dnd-kit/core";
 
 import type { Coords, DrawingMode } from "@/Types";
 
-import { allowableDistance } from "@utils/consts";
+import { allowableDistance, allowableDistanceLine } from "@utils/consts";
 
 export const getCoords = (
   event: MouseEvent<HTMLElement>,
@@ -132,17 +132,14 @@ export const getDragDropCoordsWithSnapping = (
   const percentXUnsnapped = (newX / width) * 100;
   const percentYUnsnapped = (newY / height) * 100;
 
-  const ad = drawingMode === "line" ? 0.1 : allowableDistance;
-
-  console.log({ ad });
-
   if (xPoints && yPoints) {
     const { percentX, percentY } = updateCoordsToSnap({
       percentX: percentXUnsnapped,
       percentY: percentYUnsnapped,
       xPoints,
       yPoints,
-      allowableDistance: ad,
+      allowableDistance:
+        drawingMode === "line" ? allowableDistanceLine : allowableDistance,
     });
 
     return {
