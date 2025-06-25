@@ -57,8 +57,7 @@ export const MousePosition = ({ coords, children }: Props) => {
     <div
       className="mouse-position"
       style={{
-        left: coords.percentX + "%",
-        top: coords.percentY + "%",
+        translate: `calc(${coords.percentX}cqi - 50%) calc(${coords.percentY}cqb - 50%)`,
         background: getBgColor(),
       }}
     >

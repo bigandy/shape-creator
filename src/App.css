@@ -28,6 +28,10 @@ main {
   position: relative;
 }
 
+.click-area {
+  container-type: size;
+}
+
 .output-hover,
 .output,
 .click-area {
@@ -36,11 +40,7 @@ main {
   height: 100%;
   width: 100%;
   background: black;
-  /* display: none; */
   overflow: hidden;
-
-  /* aspect-ratio: 1; */
-  /*  */
 }
 
 .output,
@@ -62,8 +62,6 @@ main {
 
 .toolbar {
   z-index: 1;
-  /* position: fixed; */
-  /* top: 0; */
   width: 100%;
   background: white;
 
@@ -108,6 +106,12 @@ main {
 .mouse-position {
   color: white;
   pointer-events: none;
+}
+
+.mouse-position,
+[class$="-point"],
+.circle-circle {
+  will-change: transform;
 }
 
 [class$="-point"] {
@@ -189,7 +193,6 @@ main {
   right: 0;
   top: 0;
   z-index: 1;
-  /* width: 20vw; */
   background: white;
   height: 100%;
 
@@ -246,7 +249,6 @@ main {
 .sidebar--open {
   display: block;
   width: 300px;
-  /* width: calc-size(max-content, size); */
   border: 1px solid;
 }
 
