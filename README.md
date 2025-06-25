@@ -52,7 +52,3 @@ export default tseslint.config({
   },
 });
 ```
-
-### Conditional Hooks
-
-with the introduction of the use hook in React 19 we can conditionally use use(). The rule of hooks states that hooks cannot be used conditionally so flags them. To get round this I am prefixing any hooks that can be used conditionally with conditional e.g. `useConditionalGetAllPoints()` to show that it can be used conditionally.
