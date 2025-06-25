@@ -137,7 +137,7 @@ const CircleMiddlePoint = React.memo(
       <div
         className="dot-bg circle-circle"
         style={{
-          translate: `calc(${midPoint.percentX}cqw - 50%) calc(${midPoint.percentY}cqh - 50%)`,
+          translate: `calc(${midPoint.percentX}cqi - 50%) calc(${midPoint.percentY}cqb - 50%)`,
           height: Math.sqrt(diameter) * 2 + "%",
         }}
       />
