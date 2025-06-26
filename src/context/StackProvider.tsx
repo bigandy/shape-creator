@@ -19,6 +19,7 @@ export type StackContextValue = {
   snapTo: boolean;
   xPoints: Array<number>;
   yPoints: Array<number>;
+  activePoint?: number;
 };
 
 export type StackReducerAction =
@@ -29,6 +30,7 @@ export type StackReducerAction =
         index: number;
         shape: DrawingMode;
         savedStack: Array<Shape>;
+        pointCoord: Coords;
       };
     } // Is this needed?
   | {
@@ -51,6 +53,13 @@ export type StackReducerAction =
       type: "update-current-shape";
       payload: {
         coords: Array<Coords>;
+      };
+    }
+  | {
+      type: "update-current-point";
+      payload: {
+        index: number;
+        pointCoord: Coords;
       };
     }
   | {
@@ -109,14 +118,47 @@ type ReducerState = {
   drawingMode: DrawingMode;
   moveAllShapes: boolean;
   snapTo: boolean;
+  activePoint?: number;
 };
 
+// const initialState = {
+//   savedStack: [],
+//   editingNumber: 0,
+//   drawingMode: "circle" as DrawingMode,
+//   moveAllShapes: false,
+//   snapTo: false,
+// };
+
 const initialState = {
-  savedStack: [],
+  savedStack: [
+    {
+      shape: "line",
+      coords: [
+        {
+          percentX: 23.535283181327088,
+          percentY: 15.689457548851315,
+        },
+        {
+          percentX: 39.119442357367326,
+          percentY: 15.970253209680868,
+        },
+        {
+          percentX: 40.52342066151509,
+          percentY: 26.078896999544803,
+        },
+        {
+          percentX: 23.535283181327088,
+          percentY: 29.729240590329002,
+        },
+      ],
+      id: "2c966664-da55-450f-bdf6-9a57e5a37767",
+    },
+  ],
   editingNumber: 0,
-  drawingMode: "circle" as DrawingMode,
+  drawingMode: "line",
   moveAllShapes: false,
-  snapTo: false,
+  snapTo: true,
+  activePoint: 0,
 };
 
 function stackReducer(
@@ -204,6 +246,29 @@ function stackReducer(
         savedStack: [...updatedSavedStack],
       };
     }
+    case "update-current-point": {
+      const updatedSavedStack = state.savedStack.map((stack, index) => {
+        if (index === state.editingNumber) {
+          const coords = [...stack.coords];
+          coords[action.payload.index] = action.payload.pointCoord;
+
+          // AHTODO: handle snapping here
+
+          return {
+            ...stack,
+            coords: coords,
+          };
+        } else {
+          return stack;
+        }
+      });
+
+      return {
+        ...state,
+        savedStack: [...updatedSavedStack],
+        activePoint: action.payload.index,
+      };
+    }
     case "change-shape": {
       let updatedSavedStack = [];
       const editingNumber =
@@ -287,7 +352,8 @@ function stackReducer(
       return {
         ...state,
         savedStack: [...updatedStack],
-        editingNumber: undefined,
+        editingNumber:
+          action.payload.shape === "line" ? updatedStack.length - 1 : undefined,
         moveAllShapes: false,
       };
     }
@@ -357,7 +423,14 @@ function stackReducer(
 
 export function StackProvider({ children }: PropsWithChildren) {
   const [
-    { savedStack, editingNumber, drawingMode, moveAllShapes, snapTo },
+    {
+      savedStack,
+      editingNumber,
+      drawingMode,
+      moveAllShapes,
+      snapTo,
+      activePoint,
+    },
     dispatch,
   ] = useReducer(stackReducer, initialState);
 
@@ -393,10 +466,10 @@ export function StackProvider({ children }: PropsWithChildren) {
 
     const uniqueXPoints = [
       ...new Set(allCoords?.map(({ percentX }) => percentX)),
-    ];
+    ].filter((_, index) => index !== activePoint);
     const uniqueYPoints = [
       ...new Set(allCoords?.map(({ percentY }) => percentY)),
-    ];
+    ].filter((_, index) => index !== activePoint);
 
     yPoints = uniqueYPoints.length > 0 ? [0, ...uniqueYPoints, 99.9] : [];
     xPoints = uniqueXPoints.length > 0 ? [0, ...uniqueXPoints, 99.9] : [];
@@ -418,6 +491,7 @@ export function StackProvider({ children }: PropsWithChildren) {
           moveAllShapes,
           xPoints,
           yPoints,
+          activePoint,
         } as StackContextValue
       }
     >

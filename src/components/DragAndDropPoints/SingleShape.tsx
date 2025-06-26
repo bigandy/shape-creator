@@ -160,20 +160,30 @@ export const DragAndDropPointsSingleShape = ({
       });
       // }
     } else {
-      // Otherwise points are all numbers
-      const coords = snapTo
-        ? getDragDropCoordsWithSnapping(
-            event,
-            clickAreaRef,
-            drawingMode,
-            xPoints,
-            yPoints,
-          )!
-        : getDragDropCoords(event, clickAreaRef)!;
-
       const indexToUpdate = Number(eventText) - 1;
 
-      if (["line", "circle"].includes(drawingMode)) {
+      // Otherwise points are all numbers
+      const coords =
+        snapTo && drawingMode !== "line"
+          ? getDragDropCoordsWithSnapping(
+              event,
+              clickAreaRef,
+              drawingMode,
+              xPoints,
+              yPoints,
+            )!
+          : getDragDropCoords(event, clickAreaRef)!;
+
+      if (drawingMode === "line") {
+        // update point being moved
+        dispatch({
+          type: "update-current-point",
+          payload: {
+            index: indexToUpdate,
+            pointCoord: coords!,
+          },
+        });
+      } else if (drawingMode === "circle") {
         const updatedCoords = activeStack.coords.map((c, i) => {
           if (i === indexToUpdate) {
             return coords;

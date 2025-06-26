@@ -2,8 +2,8 @@ import { Fragment } from "react";
 
 import { SidebarItem } from "@components/SidebarItem";
 
-import { useStackDispatch } from "@hooks/useStackDispatch";
 import { useStackContext } from "@hooks/useStackContext";
+import { useStackDispatch } from "@hooks/useStackDispatch";
 
 import { type Shape } from "@/Types";
 
@@ -56,6 +56,7 @@ export const ShapeListItem = ({
           <button onClick={onEditShape}>
             {!canEdit ? "Edit" : "Unedit"} Shape?
           </button>
+          <br />
 
           <button onClick={onDuplicateShape}>Duplicate Shape?</button>
           <br />
@@ -63,23 +64,22 @@ export const ShapeListItem = ({
         </Fragment>
       )}
 
-      {stack.shape === "line" ? (
-        <ol>
-          {stack.coords.map(({ percentX, percentY }, index) => {
-            return (
-              <SidebarItem
-                key={`item-${index}`}
-                x={percentX}
-                y={percentY}
-                currentIndex={index}
-                editable={canEdit}
-              />
-            );
-          })}
-        </ol>
-      ) : (
+      {stack.shape === "line" && canEdit && (
         <Fragment>
-          {canEdit && <pre>{JSON.stringify(stack.coords, null, 2)}</pre>}
+          <ol>
+            {stack.coords.map(({ percentX, percentY }, index) => {
+              return (
+                <SidebarItem
+                  key={`item-${index}`}
+                  x={percentX}
+                  y={percentY}
+                  currentIndex={index}
+                  editable={canEdit}
+                />
+              );
+            })}
+          </ol>
+          {/* {<pre>{JSON.stringify(stack.coords, null, 2)}</pre>} */}
         </Fragment>
       )}
     </li>
