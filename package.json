@@ -29,8 +29,8 @@
     "eslint-plugin-react-hooks": "6.0.0-rc.1",
     "eslint-plugin-react-refresh": "0.4.20",
     "globals": "16.2.0",
-    "typescript": "~5.8.3",
+    "typescript": "5.8.3",
     "typescript-eslint": "8.35.0",
-    "vite": "npm:rolldown-vite@^7.0.1"
+    "vite": "npm:rolldown-vite@^7.0.2"
   }
 }

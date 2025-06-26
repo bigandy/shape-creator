@@ -1,9 +1,11 @@
+import { type PropsWithChildren } from "react";
+
 import { useStackContext } from "@/hooks/useStackContext";
 import type { Coords } from "@/Types";
 
 import { allowableDistance } from "@utils/consts";
 
-interface Props extends React.PropsWithChildren {
+interface Props extends PropsWithChildren {
   coords: Coords;
 }
 

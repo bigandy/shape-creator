@@ -2,7 +2,7 @@ import { useReducer, type PropsWithChildren } from "react";
 
 import { useClipPathStyle } from "@hooks/useClipPathStyle";
 
-import { type DrawingMode, type Coords, type Shape } from "@/Types";
+import { type Coords, type DrawingMode, type Shape } from "@/Types";
 
 import { StackContext, StackDispatchContext } from "./StackContext";
 
@@ -121,7 +121,7 @@ const initialState = {
 
 function stackReducer(
   state: ReducerState,
-  action: StackReducerAction
+  action: StackReducerAction,
 ): ReducerState {
   const uuid = self.crypto.randomUUID();
 
@@ -235,7 +235,7 @@ function stackReducer(
             ...stack,
             coords: stack.coords.filter(
               (_, coordsIndex, stackArray) =>
-                coordsIndex !== stackArray.length - 1
+                coordsIndex !== stackArray.length - 1,
             ),
           };
         } else {
@@ -255,7 +255,7 @@ function stackReducer(
           return {
             ...stack,
             coords: stack.coords.filter(
-              (_, coordsIndex) => coordsIndex !== action.payload.index
+              (_, coordsIndex) => coordsIndex !== action.payload.index,
             ),
           };
         } else {
@@ -293,7 +293,7 @@ function stackReducer(
     }
     case "delete-last-shape": {
       const updatedSavedStack = state.savedStack.filter(
-        (_, index, stackArray) => index !== stackArray.length - 1
+        (_, index, stackArray) => index !== stackArray.length - 1,
       );
 
       return {
@@ -307,7 +307,7 @@ function stackReducer(
       return {
         ...state,
         savedStack: state.savedStack.filter(
-          (_, index) => index !== action.payload.index
+          (_, index) => index !== action.payload.index,
         ),
         editingNumber: undefined,
         moveAllShapes: false,
@@ -392,10 +392,10 @@ export function StackProvider({ children }: PropsWithChildren) {
       });
 
     const uniqueXPoints = [
-      ...new Set(allCoords.map(({ percentX }) => percentX)),
+      ...new Set(allCoords?.map(({ percentX }) => percentX)),
     ];
     const uniqueYPoints = [
-      ...new Set(allCoords.map(({ percentY }) => percentY)),
+      ...new Set(allCoords?.map(({ percentY }) => percentY)),
     ];
 
     yPoints = uniqueYPoints.length > 0 ? [0, ...uniqueYPoints, 99.9] : [];

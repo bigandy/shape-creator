@@ -1,8 +1,10 @@
+import { type PropsWithChildren } from "react";
+
 import { useStackContext } from "@/hooks/useStackContext";
 import { allowableDistance } from "@/utils/consts";
 import { useDraggable } from "@dnd-kit/core";
 
-interface Props extends React.PropsWithChildren {
+interface Props extends PropsWithChildren {
   index: number;
   top: number;
   left: number;

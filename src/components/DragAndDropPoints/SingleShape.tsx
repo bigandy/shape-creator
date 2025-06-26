@@ -1,3 +1,5 @@
+import { type RefObject } from "react";
+
 import { type DragMoveEvent } from "@dnd-kit/core";
 
 import { Draggable } from "@components/Draggable";
@@ -15,7 +17,7 @@ import {
 
 const calculateNextValue = (
   direction: "up" | "down",
-  indexToUpdate: number
+  indexToUpdate: number,
 ) => {
   let num = indexToUpdate;
   if (direction === "down") {
@@ -36,7 +38,7 @@ const calculateNextValue = (
 const getUpdateRectangleCoords = (
   updatedPositionCoord: Coords,
   previousCoords: Coords[],
-  indexToUpdate: number
+  indexToUpdate: number,
 ) => {
   const newCoords = [...previousCoords];
   newCoords[indexToUpdate] = updatedPositionCoord;
@@ -101,7 +103,7 @@ const CenterPoint = ({
 };
 
 type Props = {
-  clickAreaRef: React.RefObject<HTMLInputElement | null>;
+  clickAreaRef: RefObject<HTMLDivElement | null>;
   drawingMode: DrawingMode;
 };
 
@@ -165,7 +167,7 @@ export const DragAndDropPointsSingleShape = ({
             clickAreaRef,
             drawingMode,
             xPoints,
-            yPoints
+            yPoints,
           )!
         : getDragDropCoords(event, clickAreaRef)!;
 
@@ -188,7 +190,7 @@ export const DragAndDropPointsSingleShape = ({
         const updatedCoords = getUpdateRectangleCoords(
           coords,
           activeStack.coords,
-          indexToUpdate
+          indexToUpdate,
         );
 
         dispatch({
