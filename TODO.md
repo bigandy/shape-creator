@@ -9,6 +9,7 @@
 - [ ] Move Single shape and snap??
 - [ ] Keep aspect ratio of shape when moving center point of shape
 - [ ] Look at Performance?!
+- [ ] move xPoints, yPoints into provider and also snap setting
 
 ### v1
 
