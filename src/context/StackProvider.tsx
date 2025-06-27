@@ -453,14 +453,11 @@ export function StackProvider({ children }: PropsWithChildren) {
         return stack.coords;
       });
 
-    yPoints =
-      allCoords.length > 0
-        ? [0, ...allCoords.map(({ percentX }) => percentX), 99.9]
-        : [];
-    xPoints =
-      allCoords.length > 0
-        ? [0, ...allCoords.map(({ percentY }) => percentY), 99.9]
-        : [];
+    const uniqueXPoints = allCoords?.map(({ percentX }) => percentX) ?? [];
+    const uniqueYPoints = allCoords?.map(({ percentY }) => percentY) ?? [];
+
+    yPoints = allCoords.length > 0 ? [0, ...uniqueYPoints, 99.9] : [];
+    xPoints = allCoords.length > 0 ? [0, ...uniqueXPoints, 99.9] : [];
   }
 
   return (
