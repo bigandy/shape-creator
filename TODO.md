@@ -4,8 +4,8 @@
 
 ### v2
 
+- [x] Bug - Line creation snapping flip-flaps as current point trying to snap to multiple points when moving it. Wow, what a bug!
 - [ ] Bug - Circle snapping
-- [ ] Bug - Line creation snapping flip-flaps as current point trying to snap to multiple points when moving it.
 - [ ] Move Single shape and snap??
 - [ ] Keep aspect ratio of shape when moving center point of shape
 - [ ] Look at Performance?!

@@ -8,7 +8,7 @@ import { allowableDistance, allowableDistanceLine } from "@utils/consts";
 
 export const getCoords = (
   event: MouseEvent<HTMLElement>,
-  ref: RefObject<HTMLElement | null>
+  ref: RefObject<HTMLElement | null>,
 ): Coords | undefined => {
   if (!ref.current) {
     return;
@@ -30,7 +30,7 @@ export const getCoordsWithSnapping = (
   event: MouseEvent<HTMLElement>,
   ref: RefObject<HTMLElement | null>,
   xPoints: number[],
-  yPoints: number[]
+  yPoints: number[],
 ): Coords | undefined => {
   if (!ref.current || (xPoints.length === 0 && yPoints.length === 0)) {
     return;
@@ -66,7 +66,7 @@ export const getCoordsWithSnapping = (
 
 export const getDragDropCoords = (
   { activatorEvent, delta, active }: DragMoveEvent,
-  ref: RefObject<HTMLElement | null>
+  ref: RefObject<HTMLElement | null>,
 ) => {
   if (!ref.current) {
     return;
@@ -106,7 +106,7 @@ export const getDragDropCoordsWithSnapping = (
   ref: RefObject<HTMLElement | null>,
   drawingMode: DrawingMode,
   xPoints?: number[],
-  yPoints?: number[]
+  yPoints?: number[],
 ) => {
   if (!ref.current) {
     return;

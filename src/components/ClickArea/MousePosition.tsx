@@ -3,8 +3,6 @@ import { type PropsWithChildren } from "react";
 import { useStackContext } from "@/hooks/useStackContext";
 import type { Coords } from "@/Types";
 
-import { allowableDistance } from "@utils/consts";
-
 interface Props extends PropsWithChildren {
   coords: Coords;
 }
@@ -19,16 +17,16 @@ export const MousePosition = ({ coords, children }: Props) => {
     /* eslint-disable-next-line react-hooks/rules-of-hooks */
     const { xPoints, yPoints } = useStackContext();
 
+    // AHTODO - Doing this in every Draggable seems to be bad. Move into somewhere else to share these values?
     const nearY =
       yPoints.filter((yPoint) => {
-        return Math.abs(coords.percentY - yPoint) <= allowableDistance;
+        return Math.abs(coords.percentY - yPoint) <= 0;
       }).length > 0;
 
     const nearX =
       xPoints.filter((xPoint) => {
-        return Math.abs(coords.percentX - xPoint) <= allowableDistance;
+        return Math.abs(coords.percentX - xPoint) <= 0;
       }).length > 0;
-    // AHTODO - Doing this in every Draggable seems to be bad. Move into somewhere else to share these values?
 
     if (nearY) {
       // "top overlap"

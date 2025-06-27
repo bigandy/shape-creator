@@ -163,27 +163,17 @@ export const DragAndDropPointsSingleShape = ({
       const indexToUpdate = Number(eventText) - 1;
 
       // Otherwise points are all numbers
-      const coords =
-        snapTo && drawingMode !== "line"
-          ? getDragDropCoordsWithSnapping(
-              event,
-              clickAreaRef,
-              drawingMode,
-              xPoints,
-              yPoints,
-            )!
-          : getDragDropCoords(event, clickAreaRef)!;
+      const coords = snapTo
+        ? getDragDropCoordsWithSnapping(
+            event,
+            clickAreaRef,
+            drawingMode,
+            xPoints,
+            yPoints,
+          )!
+        : getDragDropCoords(event, clickAreaRef)!;
 
-      if (drawingMode === "line") {
-        // update point being moved
-        dispatch({
-          type: "update-current-point",
-          payload: {
-            index: indexToUpdate,
-            pointCoord: coords!,
-          },
-        });
-      } else if (drawingMode === "circle") {
+      if (["circle", "line"].includes(drawingMode)) {
         const updatedCoords = activeStack.coords.map((c, i) => {
           if (i === indexToUpdate) {
             return coords;
