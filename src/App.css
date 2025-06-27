@@ -1,302 +1,298 @@
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 html,
 body,
 #root {
-  height: 100%;
+    height: 100%;
 }
 
 body {
-  margin: unset;
+    margin: unset;
 }
 
 #root {
-  display: flex;
-  flex-direction: column;
+    display: flex;
+    flex-direction: column;
 }
 
 main {
-  aspect-ratio: 1;
-  margin-inline: auto;
+    aspect-ratio: 1;
+    margin-inline: auto;
 
-  height: 100%;
-  max-width: 100%;
+    height: 100%;
+    max-width: 100%;
 
-  background: red;
-  position: relative;
+    background: red;
+    position: relative;
 }
 
 .click-area {
-  container-type: size;
+    container-type: size;
 }
 
 .output-hover,
 .output,
 .click-area {
-  position: absolute;
-  inset: 0;
-  height: 100%;
-  width: 100%;
-  background: black;
-  overflow: hidden;
+    position: absolute;
+    inset: 0;
+    height: 100%;
+    width: 100%;
+    background: black;
+    overflow: hidden;
 }
 
 .output,
 .output-hover {
-  pointer-events: none;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: 0;
+    pointer-events: none;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: 0;
 }
 
 .output-hover {
-  opacity: 0;
-  transition: opacity 300ms;
+    opacity: 0;
+    transition: opacity 300ms;
 }
 
 .click-area:hover ~ .output-hover {
-  opacity: 0.75;
+    opacity: 0.75;
 }
 
 .toolbar {
-  z-index: 1;
-  width: 100%;
-  background: white;
-
-  .inner {
+    z-index: 1;
     width: 100%;
-    padding: 1rem;
-    text-align: center;
-    display: flex;
-    gap: 1rem;
-    flex-direction: column;
-  }
+    background: white;
 
-  :where(.buttons) {
-    display: flex;
-    gap: 1rem;
-    place-content: center;
-  }
+    .inner {
+        width: 100%;
+        padding: 1rem;
+        text-align: center;
+        display: flex;
+        gap: 1rem;
+        flex-direction: column;
+    }
+
+    :where(.buttons) {
+        display: flex;
+        gap: 1rem;
+        place-content: center;
+    }
 }
 
 .mouse-position,
 .draggable-button {
-  height: 3px;
-  width: 3px;
-  position: absolute;
-  z-index: 2;
-  border: unset;
-  padding: 1rem;
-  translate: -50% -50%;
-  display: grid;
-  place-content: center;
-  border-radius: 50%;
-  cursor: grab;
+    height: 3px;
+    width: 3px;
+    position: absolute;
+    z-index: 2;
+    border: unset;
+    padding: 1rem;
+    translate: -50% -50%;
+    display: grid;
+    place-content: center;
+    border-radius: 50%;
+    cursor: grab;
 }
 
 .mouse-position,
 .draggable-button:active {
-  background: grey;
-  opacity: 0.5;
-  cursor: none;
+    background: grey;
+    opacity: 0.5;
+    cursor: none;
 }
 
 .mouse-position {
-  color: white;
-  pointer-events: none;
+    color: white;
+    pointer-events: none;
 }
 
 .mouse-position,
 [class$="-point"],
 .circle-circle {
-  will-change: transform;
+    will-change: transform;
 }
 
 [class$="-point"] {
-  z-index: 1;
-  position: absolute;
+    z-index: 1;
+    position: absolute;
 }
 
 .dot-bg {
-  /* Technique found here: https://css-irl.info/css-halftone-patterns/	 */
-  --dotSize: 0.15rem;
-  --bgSize: 0.5rem;
-  --bgPosition: calc(var(--bgSize) / 2);
+    /* Technique found here: https://css-irl.info/css-halftone-patterns/	 */
+    --dotSize: 0.15rem;
+    --bgSize: 0.5rem;
+    --bgPosition: calc(var(--bgSize) / 2);
 
-  background: radial-gradient(red, hotpink);
+    background: radial-gradient(red, hotpink);
 
-  mask-image: radial-gradient(
-      circle at center,
-      black var(--dotSize),
-      transparent 0
-    ),
-    radial-gradient(circle at center, black var(--dotSize), transparent 0);
-  mask-size: var(--bgSize) var(--bgSize);
-  mask-position: 0 0, var(--bgPosition) var(--bgPosition);
+    mask-image:
+        radial-gradient(circle at center, black var(--dotSize), transparent 0),
+        radial-gradient(circle at center, black var(--dotSize), transparent 0);
+    mask-size: var(--bgSize) var(--bgSize);
+    mask-position:
+        0 0,
+        var(--bgPosition) var(--bgPosition);
 }
 
 .circle-circle {
-  position: absolute;
-  z-index: 1;
-  border-radius: 50%;
-  aspect-ratio: 1;
-  translate: -50% -50%;
+    position: absolute;
+    z-index: 1;
+    border-radius: 50%;
+    aspect-ratio: 1;
+    translate: -50% -50%;
 }
 
 .code-viewer {
-  anchor-name: --code-viewer;
-  width: 100%;
-  z-index: 1;
-  background: white;
-  position: relative;
+    anchor-name: --code-viewer;
+    width: 100%;
+    z-index: 1;
+    background: white;
+    position: relative;
 
-  form {
-    display: inline-block;
-  }
+    form {
+        display: inline-block;
+    }
 
-  button {
-    margin-inline-end: 1rem;
-  }
+    button {
+        margin-inline-end: 1rem;
+    }
 
-  .inner {
-    padding: 1rem;
-  }
+    .inner {
+        padding: 1rem;
+    }
 
-  .close-button {
-    top: 0;
-    right: 0;
-    position: absolute;
-  }
+    .close-button {
+        top: 0;
+        right: 0;
+        position: absolute;
+    }
 
-  .copy-button {
-    bottom: 0;
-    right: 0;
-  }
+    .copy-button {
+        bottom: 0;
+        right: 0;
+    }
 }
 
 .code-viewer,
 .toolbar {
-  transition: height 0.2s ease-in-out;
-  transition-behavior: allow-discrete;
-  overflow: clip;
-  height: 0;
-
-  @starting-style {
+    transition: height 0.2s ease-in-out;
+    transition-behavior: allow-discrete;
+    overflow: clip;
     height: 0;
-  }
+
+    @starting-style {
+        height: 0;
+    }
 }
 
 .sidebar {
-  position: fixed;
-  right: 0;
-  top: 0;
-  z-index: 1;
-  background: white;
-  height: 100%;
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 1;
+    background: white;
+    height: 100%;
 
-  transition: width 0.2s ease-in-out;
-  transition-behavior: allow-discrete;
-  overflow: clip;
-  width: 0;
-  anchor-name: --sidebar;
-
-  @starting-style {
+    transition: width 0.2s ease-in-out;
+    transition-behavior: allow-discrete;
+    overflow: clip;
     width: 0;
-  }
+    anchor-name: --sidebar;
+
+    @starting-style {
+        width: 0;
+    }
 }
 
 .sidebar-inner {
-  padding-inline: 1rem;
-  padding-block-start: 3rem;
-  overflow: auto;
-  height: 100%;
-  padding-bottom: 100px;
+    padding-inline: 1rem;
+    padding-block-start: 3rem;
+    overflow: auto;
+    height: 100%;
+    padding-bottom: 100px;
 }
 
 .sidebar-shape {
-  border: 2px solid transparent;
+    border: 2px solid transparent;
 
-  &.editable-shape {
-    border-color: green;
-  }
+    &.editable-shape {
+        border-color: green;
+    }
 
-  &.movable-shape {
-    border-color: hotpink;
-  }
+    &.movable-shape {
+        border-color: hotpink;
+    }
 }
 
 .toolbar {
-  background: rgb(from white r g b / 0.75);
-  anchor-name: --toolbar;
-  position: relative;
+    background: rgb(from white r g b / 0.75);
+    anchor-name: --toolbar;
+    position: relative;
 }
 
 .toolbar--open,
 .code-viewer--open {
-  display: block;
-  height: max-content;
-  height: calc-size(max-content, size);
-  border: 1px solid;
+    display: block;
+    height: max-content;
+    height: calc-size(max-content, size);
+    border: 1px solid;
 }
 
 .code-viewer--open {
-  height: 100px;
-  overflow: auto;
+    height: 100px;
+    overflow: auto;
 }
 
 .sidebar--open {
-  display: block;
-  width: 300px;
-  border: 1px solid;
+    display: block;
+    width: 300px;
+    border: 1px solid;
 }
 
 .toggle-toolbar-button {
-  position: absolute;
-  position-anchor: --toolbar;
-  position-area: bottom center;
-  z-index: 1;
+    position: absolute;
+    position-anchor: --toolbar;
+    position-area: bottom center;
+    z-index: 1;
 }
 
 .toggle-code-button {
-  position: absolute;
-  position-anchor: --code-viewer;
-  position-area: top center;
+    position: absolute;
+    position-anchor: --code-viewer;
+    position-area: top center;
 }
 
 .toggle-sidebar-button {
-  position: absolute;
-  position-anchor: --sidebar;
-  position-area: left;
+    position: absolute;
+    position-anchor: --sidebar;
+    position-area: left;
 }
 
 .close-button {
-  position: absolute;
-  top: 1rlh;
-  right: 1rlh;
+    position: absolute;
+    top: 1rlh;
+    right: 1rlh;
 }
 
 .cursor-move {
-  cursor: move;
+    cursor: move;
 }
 
 .line {
-  z-index: 1;
-  position: absolute;
-  top: 50%;
+    z-index: 1;
+    position: absolute;
 }
 
 .line-horizontal {
-  width: 100%;
-  height: 1px;
-  left: 0;
-  border-top: 1px dashed hotpink;
+    width: 100%;
+    height: 1px;
+    border-top: 1px dashed hotpink;
 }
 
 .line-vertical {
-  top: 0;
-  width: 1px;
-  height: 100%;
-  border-left: 1px dashed hotpink;
+    width: 1px;
+    height: 100%;
+    border-left: 1px dashed hotpink;
 }
