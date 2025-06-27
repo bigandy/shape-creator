@@ -1,14 +1,15 @@
-import { type MouseEvent } from "react";
-import { GridLines } from "../GridLines";
+import { type MouseEvent, type PropsWithChildren, type RefObject } from "react";
+
+import { GridLines } from "@components/GridLines";
 import { useStackContext } from "@hooks/useStackContext";
 
-interface Props extends React.PropsWithChildren {
+interface Props extends PropsWithChildren {
   handleClick?: (event: MouseEvent<HTMLDivElement>) => void;
   handleMouseDown?: (event: MouseEvent<HTMLDivElement>) => void;
   handleMouseMove?: (event: MouseEvent<HTMLDivElement>) => void;
   handleMouseUp?: (event: MouseEvent<HTMLDivElement>) => void;
   handleMouseLeave?: (event: MouseEvent<HTMLDivElement>) => void;
-  clickAreaRef: React.RefObject<HTMLInputElement | null>;
+  clickAreaRef: RefObject<HTMLDivElement | null>;
 }
 
 export const ClickAreaWrapper = ({

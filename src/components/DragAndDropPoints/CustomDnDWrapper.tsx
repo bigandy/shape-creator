@@ -1,3 +1,5 @@
+import { type PropsWithChildren } from "react";
+
 import {
   DndContext,
   KeyboardSensor,
@@ -10,7 +12,7 @@ import {
 
 import { customCoordinatesGetter } from "./customCoordinatesGetter";
 
-interface Props extends React.PropsWithChildren {
+interface Props extends PropsWithChildren {
   onDragMove: (event: DragMoveEvent) => void;
 }
 

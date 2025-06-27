@@ -1,3 +1,5 @@
+import { type RefObject } from "react";
+
 import { type DragMoveEvent } from "@dnd-kit/core";
 
 import { Draggable } from "@components/Draggable";
@@ -11,7 +13,7 @@ import { getDragDropCoords } from "@utils/coordinates";
 import { CustomDnDWrapper } from "./CustomDnDWrapper";
 
 type Props = {
-  clickAreaRef: React.RefObject<HTMLInputElement | null>;
+  clickAreaRef: RefObject<HTMLDivElement | null>;
 };
 
 const getCenterPointAllShapes = (savedStack: Shape[]) => {

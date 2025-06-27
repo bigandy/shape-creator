@@ -1,9 +1,9 @@
-import React, { useRef, useState, type MouseEvent } from "react";
+import { Fragment, useRef, useState, type MouseEvent } from "react";
 
-import { DragAndDropPoints } from "@components/DragAndDropPoints/index";
 import { ClickAreaWrapper } from "@components/ClickArea/index";
 import { MousePosition } from "@components/ClickArea/MousePosition";
 import { Point } from "@components/ClickArea/Point";
+import { DragAndDropPoints } from "@components/DragAndDropPoints/index";
 
 import type { Coords } from "@/Types";
 
@@ -19,7 +19,7 @@ export const ClickAreaCircle = () => {
     useStackContext();
 
   const [recording, setRecording] = useState(false);
-  const clickAreaRef = useRef<HTMLInputElement>(null);
+  const clickAreaRef = useRef<HTMLDivElement>(null);
 
   const [mousePosition, setMousePosition] = useState<Coords | null>(null);
   const [initialPoint, setInitialPoint] = useState<Coords | null>(null);
@@ -99,7 +99,6 @@ export const ClickAreaCircle = () => {
       handleMouseMove={handleMouseMove}
       clickAreaRef={clickAreaRef}
     >
-      {initialPoint !== null && <Point coords={initialPoint} type="initial" />}
       {finalPoint !== null && initialPoint !== null && (
         <CircleMiddlePoint
           initialPoint={initialPoint}
@@ -107,7 +106,15 @@ export const ClickAreaCircle = () => {
         />
       )}
 
-      {finalPoint !== null && <Point coords={finalPoint} type="final" />}
+      {snapTo && (
+        <Fragment>
+          {initialPoint !== null && (
+            <Point coords={initialPoint} type="initial" />
+          )}
+
+          {finalPoint !== null && <Point coords={finalPoint} type="final" />}
+        </Fragment>
+      )}
 
       {mousePosition !== null && (
         <MousePosition coords={mousePosition}>P</MousePosition>
@@ -116,31 +123,29 @@ export const ClickAreaCircle = () => {
   );
 };
 
-const CircleMiddlePoint = React.memo(
-  ({
-    initialPoint,
-    finalPoint,
-  }: {
-    initialPoint: Coords;
-    finalPoint: Coords;
-  }) => {
-    const midPoint = {
-      percentX: (initialPoint.percentX + finalPoint.percentX) / 2,
-      percentY: (initialPoint.percentY + finalPoint.percentY) / 2,
-    };
+const CircleMiddlePoint = ({
+  initialPoint,
+  finalPoint,
+}: {
+  initialPoint: Coords;
+  finalPoint: Coords;
+}) => {
+  const midPoint = {
+    percentX: (initialPoint.percentX + finalPoint.percentX) / 2,
+    percentY: (initialPoint.percentY + finalPoint.percentY) / 2,
+  };
 
-    const diameter =
-      Math.pow(midPoint.percentX - initialPoint.percentX, 2) +
-      Math.pow(midPoint.percentY - initialPoint.percentY, 2);
+  const diameter =
+    Math.pow(midPoint.percentX - initialPoint.percentX, 2) +
+    Math.pow(midPoint.percentY - initialPoint.percentY, 2);
 
-    return (
-      <div
-        className="dot-bg circle-circle"
-        style={{
-          translate: `calc(${midPoint.percentX}cqi - 50%) calc(${midPoint.percentY}cqb - 50%)`,
-          height: Math.sqrt(diameter) * 2 + "%",
-        }}
-      />
-    );
-  }
-);
+  return (
+    <div
+      className="dot-bg circle-circle"
+      style={{
+        translate: `calc(${midPoint.percentX}cqi - 50%) calc(${midPoint.percentY}cqb - 50%)`,
+        height: Math.sqrt(diameter) * 2 + "%",
+      }}
+    />
+  );
+};

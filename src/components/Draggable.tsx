@@ -1,8 +1,9 @@
+import { type PropsWithChildren } from "react";
+
 import { useStackContext } from "@/hooks/useStackContext";
-import { allowableDistance } from "@/utils/consts";
 import { useDraggable } from "@dnd-kit/core";
 
-interface Props extends React.PropsWithChildren {
+interface Props extends PropsWithChildren {
   index: number;
   top: number;
   left: number;
@@ -31,12 +32,12 @@ export function Draggable({
 
     const nearY =
       yPoints.filter((yPoint) => {
-        return Math.abs(top - yPoint) <= allowableDistance;
+        return Math.abs(top - yPoint) <= 0;
       }).length > 0;
 
     const nearX =
       xPoints.filter((xPoint) => {
-        return Math.abs(left - xPoint) <= allowableDistance;
+        return Math.abs(left - xPoint) <= 0;
       }).length > 0;
     // AHTODO - Doing this in every Draggable seems to be bad. Move into somewhere else to share these values?
 

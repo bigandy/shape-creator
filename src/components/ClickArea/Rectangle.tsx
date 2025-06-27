@@ -1,12 +1,12 @@
-import React, { useRef, useState, type MouseEvent } from "react";
+import { Fragment, useRef, useState, type MouseEvent } from "react";
 
-import { DragAndDropPoints } from "@components/DragAndDropPoints/index";
 import { ClickAreaWrapper } from "@components/ClickArea/index";
 import { MousePosition } from "@components/ClickArea/MousePosition";
 import { Point } from "@components/ClickArea/Point";
+import { DragAndDropPoints } from "@components/DragAndDropPoints/index";
 
-import { useStackDispatch } from "@hooks/useStackDispatch";
 import { useStackContext } from "@hooks/useStackContext";
+import { useStackDispatch } from "@hooks/useStackDispatch";
 
 import type { Coords } from "@/Types";
 
@@ -15,7 +15,7 @@ import { getCoords, getCoordsWithSnapping } from "@utils/coordinates";
 export const ClickAreaRectangle = () => {
   const dispatch = useStackDispatch();
   const [recording, setRecording] = useState(false);
-  const clickAreaRef = useRef<HTMLInputElement>(null);
+  const clickAreaRef = useRef<HTMLDivElement>(null);
   const [mousePosition, setMousePosition] = useState<Coords | null>(null);
   const [initialPoint, setInitialPoint] = useState<Coords | null>(null);
   const [finalPoint, setFinalPoint] = useState<Coords | null>(null);
@@ -123,14 +123,19 @@ export const ClickAreaRectangle = () => {
         handleMouseLeave={handleMouseLeave}
         clickAreaRef={clickAreaRef}
       >
-        {initialPoint !== null && (
-          <Point coords={initialPoint} type="initial" />
+        {snapTo && (
+          <Fragment>
+            {initialPoint !== null && (
+              <Point coords={initialPoint} type="initial" />
+            )}
+
+            {finalPoint !== null && <Point coords={finalPoint} type="final" />}
+          </Fragment>
         )}
+
         {finalPoint !== null && initialPoint !== null && (
           <MiddlePoint initialPoint={initialPoint} finalPoint={finalPoint} />
         )}
-
-        {finalPoint !== null && <Point coords={finalPoint} type="final" />}
 
         {mousePosition !== null && (
           <MousePosition coords={mousePosition}>P</MousePosition>
@@ -140,25 +145,23 @@ export const ClickAreaRectangle = () => {
   }
 };
 
-const MiddlePoint = React.memo(
-  ({
-    initialPoint,
-    finalPoint,
-  }: {
-    initialPoint: Coords;
-    finalPoint: Coords;
-  }) => {
-    return (
-      <div
-        className="dot-bg rectangle-middle-point"
-        style={{
-          translate: `${
-            Math.min(initialPoint.percentX, finalPoint.percentX) + "cqb"
-          } ${Math.min(initialPoint.percentY, finalPoint.percentY) + "cqi"}`,
-          height: Math.abs(initialPoint.percentY - finalPoint.percentY) + "%",
-          width: Math.abs(initialPoint.percentX - finalPoint.percentX) + "%",
-        }}
-      />
-    );
-  }
-);
+const MiddlePoint = ({
+  initialPoint,
+  finalPoint,
+}: {
+  initialPoint: Coords;
+  finalPoint: Coords;
+}) => {
+  return (
+    <div
+      className="dot-bg rectangle-middle-point"
+      style={{
+        translate: `${
+          Math.min(initialPoint.percentX, finalPoint.percentX) + "cqb"
+        } ${Math.min(initialPoint.percentY, finalPoint.percentY) + "cqi"}`,
+        height: Math.abs(initialPoint.percentY - finalPoint.percentY) + "%",
+        width: Math.abs(initialPoint.percentX - finalPoint.percentX) + "%",
+      }}
+    />
+  );
+};

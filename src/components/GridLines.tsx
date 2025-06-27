@@ -12,7 +12,9 @@ export const GridLines = () => {
           <div
             key={`line-${index}`}
             className="line line-vertical"
-            style={{ left: x + "%" }}
+            style={{
+              translate: `calc(${x}cqi - 50%) calc(${0}cqb)`,
+            }}
           ></div>
         );
       })}
@@ -22,7 +24,9 @@ export const GridLines = () => {
           <div
             key={`line-${index}`}
             className="line line-horizontal"
-            style={{ top: y + "%" }}
+            style={{
+              translate: `calc(${0}cqi) calc(${y}cqb - 0%)`,
+            }}
           ></div>
         );
       })}

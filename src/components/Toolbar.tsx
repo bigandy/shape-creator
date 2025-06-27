@@ -1,9 +1,9 @@
-import { backgroundImages } from "@utils/sharedImages";
 import type { DrawingMode } from "@/Types";
+import { backgroundImages } from "@utils/sharedImages";
 import { Fragment, type ChangeEvent } from "react";
 
-import { useStackDispatch } from "@hooks/useStackDispatch";
 import { useStackContext } from "@hooks/useStackContext";
+import { useStackDispatch } from "@hooks/useStackDispatch";
 
 type ShapeOption = { label: string; id: DrawingMode };
 
@@ -69,6 +69,16 @@ export const Toolbar = ({ open, selectedImage, handleImageChange }: Props) => {
     dispatch({ type: "toggle-snap-to" });
   };
 
+  const handleSaveShape = () => {
+    dispatch({
+      type: "save-shape",
+      payload: {
+        shape: "line",
+        coords: [],
+      },
+    });
+  };
+
   return (
     <div className={`toolbar ${open ? "toolbar--open" : ""}`}>
       <div className="inner">
@@ -131,7 +141,7 @@ export const Toolbar = ({ open, selectedImage, handleImageChange }: Props) => {
               >
                 Reset Current Shape
               </button>
-              {/* <button onClick={handleSaveShape}>Save Shape</button> */}
+              <button onClick={handleSaveShape}>Save Shape</button>
             </Fragment>
           )}
 

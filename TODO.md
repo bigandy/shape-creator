@@ -1,10 +1,19 @@
 # Todo List
 
-## ClickArea - use Translate not left/right/top/bottom positioning
-
-- [x] use translate rather than left/right/top/bottom positioning for performance
-
 ## ClickArea - Snap to Existing Shapes coordinates i.e. same x or same y as existing point
+
+### v2
+
+- [x] Bug - Line creation snapping flip-flaps as current point trying to snap to multiple points when moving it. Wow, what a bug!
+- [x] Use translate for GridLines
+
+### v3
+
+- [ ] Minor Bug - Circle snapping points not quite snapped
+- [ ] Move Single shape and snap??
+- [ ] Keep aspect ratio of shape when moving center point of shape
+- [ ] Look at Performance?!
+- [ ] move xPoints, yPoints into provider and also snap setting
 
 ### v1
 
@@ -20,13 +29,38 @@
 - [x] UI lines e.g. like Photoshop lines
 - [x] UI Toggle to specify if user wants snapping
 
-### v2
+## Testing
 
-- [ ] Bug - Circle snapping
-- [ ] Bug - Line creation snapping flip-flaps as current point trying to snap to multiple points when moving it.
-- [ ] Move Single shape and snap??
-- [ ] Keep aspect ratio of shape when moving center point of shape
-- [ ] Look at Performance?!
+- [ ] Investigate options for testing
+
+## Styles
+
+- [ ] Think about styles
+- [ ] Use modular self-contained styles. CSS / CSS-in-JS / SCSS??
+
+## DragAndDropPoints
+
+- [x] Fix bug in moving positions of points (following the change to a centered click area.)
+- [ ] when moving a point, hide the number in .mouse-position.
+- [ ] Different style of .mouse-position
+
+## General
+
+- [ ] Save to localStorage a set of shape(s)
+- [ ] Custom Image(s)
+- [ ] Hover over point / shape in sidebar - could show something in the main click-area to show that shape is being edited??
+- [x] Toast messages for e.g. when copied text to clipboard / error messages etc
+- [x] Extract the clipPathStyle into a re-usable hook useClipPathStyle
+- [x] Move components into src/components directory
+
+## Sidebar - Drag and Drop Shapes
+
+- [x] Remove re-ordering as not useful at all!
+- [x] Re-order shapes in sidebar by dragging and dropping
+
+## ClickArea - use Translate not left/right/top/bottom positioning
+
+- [x] use translate rather than left/right/top/bottom positioning for performance
 
 ## Sidebar - Duplicate shape
 
@@ -37,15 +71,6 @@
 ## Sidebar - combine move and edit
 
 - [x] Combine move and edit so that the user can do either and it is less confusing
-
-## Testing
-
-- [ ] Investigate options for testing
-
-## Sidebar - Drag and Drop Shapes
-
-- [x] Remove re-ordering as not useful at all!
-- [x] Re-order shapes in sidebar by dragging and dropping
 
 ## ClickArea - Moving Existing Shapes
 
@@ -58,11 +83,6 @@
   - [x] Circle
 - [x] Move all Shapes i.e. drag a selector and move all the points in the selected area by the amount that the selected area moves by.
 
-## Styles
-
-- [ ] Think about styles
-- [ ] Use modular self-contained styles. CSS / CSS-in-JS / SCSS??
-
 ## Code Viewer
 
 - [x] Height changes when adding more shapes. Need to fix the height so not causing the main click area to jump.
@@ -71,21 +91,6 @@
 ## Circle
 
 - [x] Refactor coords to use % as elsewhere in app.
-
-## General
-
-- [ ] Save to localStorage a set of shape(s)
-- [ ] Custom Image(s)
-- [ ] Hover over point / shape in sidebar - could show something in the main click-area to show that shape is being edited??
-- [x] Toast messages for e.g. when copied text to clipboard / error messages etc
-- [x] Extract the clipPathStyle into a re-usable hook useClipPathStyle
-- [x] Move components into src/components directory
-
-## DragAndDropPoints
-
-- [x] Fix bug in moving positions of points (following the change to a centered click area.)
-- [ ] when moving a point, hide the number in .mouse-position.
-- [ ] Different style of .mouse-position
 
 ## ClickArea
 

@@ -1,11 +1,13 @@
-import { useStackContext } from "@hooks/useStackContext";
+import { type RefObject } from "react";
+
 import type { DrawingMode } from "@/Types";
+import { useStackContext } from "@hooks/useStackContext";
 
 import { DragAndDropPointsAllShapes } from "@components/DragAndDropPoints/AllShapes";
 import { DragAndDropPointsSingleShape } from "@components/DragAndDropPoints/SingleShape";
 
 type Props = {
-  clickAreaRef: React.RefObject<HTMLInputElement | null>;
+  clickAreaRef: RefObject<HTMLDivElement | null>;
   drawingMode: DrawingMode;
 };
 

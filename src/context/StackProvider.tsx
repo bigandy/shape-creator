@@ -2,7 +2,7 @@ import { useReducer, type PropsWithChildren } from "react";
 
 import { useClipPathStyle } from "@hooks/useClipPathStyle";
 
-import { type DrawingMode, type Coords, type Shape } from "@/Types";
+import { type Coords, type DrawingMode, type Shape } from "@/Types";
 
 import { StackContext, StackDispatchContext } from "./StackContext";
 
@@ -29,6 +29,7 @@ export type StackReducerAction =
         index: number;
         shape: DrawingMode;
         savedStack: Array<Shape>;
+        pointCoord: Coords;
       };
     } // Is this needed?
   | {
@@ -51,6 +52,13 @@ export type StackReducerAction =
       type: "update-current-shape";
       payload: {
         coords: Array<Coords>;
+      };
+    }
+  | {
+      type: "update-current-point";
+      payload: {
+        index: number;
+        pointCoord: Coords;
       };
     }
   | {
@@ -114,14 +122,45 @@ type ReducerState = {
 const initialState = {
   savedStack: [],
   editingNumber: 0,
-  drawingMode: "circle" as DrawingMode,
+  drawingMode: "line" as DrawingMode,
   moveAllShapes: false,
   snapTo: false,
 };
 
+// const initialState = {
+//   savedStack: [
+//     {
+//       shape: "line",
+//       coords: [
+//         {
+//           percentX: 23.535283181327088,
+//           percentY: 15.689457548851315,
+//         },
+//         {
+//           percentX: 39.119442357367326,
+//           percentY: 15.970253209680868,
+//         },
+//         {
+//           percentX: 40.52342066151509,
+//           percentY: 26.078896999544803,
+//         },
+//         {
+//           percentX: 23.535283181327088,
+//           percentY: 29.729240590329002,
+//         },
+//       ],
+//       id: "2c966664-da55-450f-bdf6-9a57e5a37767",
+//     },
+//   ],
+//   editingNumber: 0,
+//   drawingMode: "line",
+//   moveAllShapes: false,
+//   snapTo: true,
+// };
+
 function stackReducer(
   state: ReducerState,
-  action: StackReducerAction
+  action: StackReducerAction,
 ): ReducerState {
   const uuid = self.crypto.randomUUID();
 
@@ -204,6 +243,28 @@ function stackReducer(
         savedStack: [...updatedSavedStack],
       };
     }
+    case "update-current-point": {
+      const updatedSavedStack = state.savedStack.map((stack, index) => {
+        if (index === state.editingNumber) {
+          const coords = [...stack.coords];
+          coords[action.payload.index] = action.payload.pointCoord;
+
+          // AHTODO: handle snapping here
+
+          return {
+            ...stack,
+            coords: coords,
+          };
+        } else {
+          return stack;
+        }
+      });
+
+      return {
+        ...state,
+        savedStack: [...updatedSavedStack],
+      };
+    }
     case "change-shape": {
       let updatedSavedStack = [];
       const editingNumber =
@@ -235,7 +296,7 @@ function stackReducer(
             ...stack,
             coords: stack.coords.filter(
               (_, coordsIndex, stackArray) =>
-                coordsIndex !== stackArray.length - 1
+                coordsIndex !== stackArray.length - 1,
             ),
           };
         } else {
@@ -255,7 +316,7 @@ function stackReducer(
           return {
             ...stack,
             coords: stack.coords.filter(
-              (_, coordsIndex) => coordsIndex !== action.payload.index
+              (_, coordsIndex) => coordsIndex !== action.payload.index,
             ),
           };
         } else {
@@ -287,13 +348,14 @@ function stackReducer(
       return {
         ...state,
         savedStack: [...updatedStack],
-        editingNumber: undefined,
+        editingNumber:
+          action.payload.shape === "line" ? updatedStack.length - 1 : undefined,
         moveAllShapes: false,
       };
     }
     case "delete-last-shape": {
       const updatedSavedStack = state.savedStack.filter(
-        (_, index, stackArray) => index !== stackArray.length - 1
+        (_, index, stackArray) => index !== stackArray.length - 1,
       );
 
       return {
@@ -307,7 +369,7 @@ function stackReducer(
       return {
         ...state,
         savedStack: state.savedStack.filter(
-          (_, index) => index !== action.payload.index
+          (_, index) => index !== action.payload.index,
         ),
         editingNumber: undefined,
         moveAllShapes: false,
@@ -391,15 +453,11 @@ export function StackProvider({ children }: PropsWithChildren) {
         return stack.coords;
       });
 
-    const uniqueXPoints = [
-      ...new Set(allCoords.map(({ percentX }) => percentX)),
-    ];
-    const uniqueYPoints = [
-      ...new Set(allCoords.map(({ percentY }) => percentY)),
-    ];
+    const uniqueXPoints = allCoords?.map(({ percentX }) => percentX) ?? [];
+    const uniqueYPoints = allCoords?.map(({ percentY }) => percentY) ?? [];
 
-    yPoints = uniqueYPoints.length > 0 ? [0, ...uniqueYPoints, 99.9] : [];
-    xPoints = uniqueXPoints.length > 0 ? [0, ...uniqueXPoints, 99.9] : [];
+    yPoints = allCoords.length > 0 ? [0, ...uniqueYPoints, 99.9] : [];
+    xPoints = allCoords.length > 0 ? [0, ...uniqueXPoints, 99.9] : [];
   }
 
   return (
