@@ -1,5 +1,9 @@
 # Todo List
 
+## Shapes
+
+- [ ] Create Octagon
+
 ## ClickArea - Snap to Existing Shapes coordinates i.e. same x or same y as existing point
 
 ### v2

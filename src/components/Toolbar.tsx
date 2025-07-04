@@ -20,6 +20,10 @@ const shapeOptions: Array<ShapeOption> = [
     label: "Circle",
     id: "circle",
   },
+  {
+    label: "Octagon",
+    id: "octagon",
+  },
 ];
 
 type Props = {

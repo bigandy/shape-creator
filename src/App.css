@@ -296,3 +296,17 @@ main {
     height: 100%;
     border-left: 1px dashed hotpink;
 }
+
+.octagon-middle-point {
+    border: 1px solid;
+    /* clip-path: polygon(
+        30% 0%,
+        70% 0%,
+        100% 30%,
+        100% 70%,
+        70% 100%,
+        30% 100%,
+        0% 70%,
+        0% 30%
+    ); */
+}

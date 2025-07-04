@@ -17,7 +17,7 @@ import {
 
 const calculateNextValue = (
   direction: "up" | "down",
-  indexToUpdate: number,
+  indexToUpdate: number
 ) => {
   let num = indexToUpdate;
   if (direction === "down") {
@@ -38,7 +38,7 @@ const calculateNextValue = (
 const getUpdateRectangleCoords = (
   updatedPositionCoord: Coords,
   previousCoords: Coords[],
-  indexToUpdate: number,
+  indexToUpdate: number
 ) => {
   const newCoords = [...previousCoords];
   newCoords[indexToUpdate] = updatedPositionCoord;
@@ -169,11 +169,11 @@ export const DragAndDropPointsSingleShape = ({
             clickAreaRef,
             drawingMode,
             xPoints,
-            yPoints,
+            yPoints
           )!
         : getDragDropCoords(event, clickAreaRef)!;
 
-      if (["circle", "line"].includes(drawingMode)) {
+      if (["circle", "line", "octagon"].includes(drawingMode)) {
         const updatedCoords = activeStack.coords.map((c, i) => {
           if (i === indexToUpdate) {
             return coords;
@@ -190,7 +190,7 @@ export const DragAndDropPointsSingleShape = ({
         const updatedCoords = getUpdateRectangleCoords(
           coords,
           activeStack.coords,
-          indexToUpdate,
+          indexToUpdate
         );
 
         dispatch({
@@ -220,7 +220,7 @@ export const DragAndDropPointsSingleShape = ({
           })
         : null}
 
-      {drawingMode !== "line" &&
+      {["line", "octagon"].includes(drawingMode) &&
         isActiveStackBeingEdited &&
         activeStack.coords.length > 1 && (
           <CenterPoint coords={activeStack.coords} drawingMode={drawingMode} />

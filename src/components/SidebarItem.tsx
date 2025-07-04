@@ -58,8 +58,8 @@ export const SidebarItem = ({ x, y, currentIndex, editable = true }: Props) => {
 
   return (
     <li>
-      y: {x.toFixed(2)}% <br />
-      x: {y.toFixed(2)}% <br />
+      x: {x.toFixed(2)}% <br />
+      y: {y.toFixed(2)}% <br />
       {editable && (
         <Fragment>
           <button onClick={deletePoint}>Delete Point</button>

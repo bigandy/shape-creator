@@ -119,10 +119,86 @@ type ReducerState = {
   snapTo: boolean;
 };
 
+// const initialPoint = {
+//   percentX: 27,
+//   percentY: 4.5,
+// };
+
+// const finalPoint = {
+//   percentX: 50,
+//   // percentY: 60,
+// };
+
+// const xLength = Math.abs(initialPoint.percentX - finalPoint.percentX);
+// // const xLength = 30;
+// // const yLength = Math.abs(initialPoint.percentY - finalPoint.percentY);
+// const cornerSide = Math.sqrt(2) * (xLength / 2);
+
+// console.log({ cornerSide });
+
 const initialState = {
-  savedStack: [],
+  savedStack: [
+    // {
+    //   shape: "octagon",
+    //   coords: [
+    //     { percentX: 30, percentY: 0 },
+    //     { percentX: 70, percentY: 0 },
+    //     { percentX: 100, percentY: 30 },
+    //     { percentX: 100, percentY: 70 },
+    //     { percentX: 70, percentY: 100 },
+    //     { percentX: 30, percentY: 100 },
+    //     { percentX: 0, percentY: 70 },
+    //     { percentX: 0, percentY: 30 },
+    //   ],
+    //   id: "2c966664-da55-450f-bdf6-9a57e5a37111",
+    // },
+    // {
+    //   shape: "octagon",
+    //   coords: [
+    //     // 1 - First mouse point
+    //     { percentX: initialPoint.percentX, percentY: initialPoint.percentY },
+    //     // 2 - Along the top to the right
+    //     {
+    //       percentX: initialPoint.percentX + xLength,
+    //       percentY: initialPoint.percentY,
+    //     },
+    //     // 3 - Top of right down side
+    //     {
+    //       percentX: initialPoint.percentX + xLength + cornerSide,
+    //       percentY: initialPoint.percentY + cornerSide,
+    //     },
+    //     // 4 - bottom of right down side
+    //     {
+    //       percentX: initialPoint.percentX + xLength + cornerSide,
+    //       percentY: initialPoint.percentY + cornerSide + xLength,
+    //     },
+    //     // 5 - Second Mouse Point ??
+    //     {
+    //       percentX: initialPoint.percentX + xLength,
+    //       percentY: initialPoint.percentY + cornerSide + xLength + cornerSide,
+    //     },
+    //     // { percentX: finalPoint.percentX, percentY: finalPoint.percentY },
+    //     // 6 - right of bottom side
+    //     {
+    //       percentX: initialPoint.percentX,
+    //       percentY: initialPoint.percentY + cornerSide + xLength + cornerSide,
+    //     },
+    //     // 7 - bottom of left side
+    //     {
+    //       percentX: initialPoint.percentX - cornerSide,
+    //       percentY: initialPoint.percentY + xLength + cornerSide,
+    //     },
+    //     // 8 - top of left side
+    //     {
+    //       percentX: initialPoint.percentX - cornerSide,
+    //       percentY: initialPoint.percentY + cornerSide,
+    //     },
+    //   ],
+    //   id: "2c966664-da55-450f-bdf6-9a57e5a37767",
+    // },
+  ],
   editingNumber: 0,
-  drawingMode: "line" as DrawingMode,
+  drawingMode: "octagon" as DrawingMode,
   moveAllShapes: false,
   snapTo: false,
 };

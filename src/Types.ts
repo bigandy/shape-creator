@@ -11,4 +11,4 @@ export type Shape = {
   coords: Coords[];
 };
 
-export type DrawingMode = "line" | "rectangle" | "circle";
+export type DrawingMode = "line" | "rectangle" | "circle" | "octagon";

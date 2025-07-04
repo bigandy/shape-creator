@@ -64,7 +64,7 @@ export const ShapeListItem = ({
         </Fragment>
       )}
 
-      {stack.shape === "line" && canEdit && (
+      {["line", "octagon"].includes(stack.shape) && canEdit && (
         <Fragment>
           <ol>
             {stack.coords.map(({ percentX, percentY }, index) => {
