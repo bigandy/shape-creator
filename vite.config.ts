@@ -2,10 +2,6 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
 
-const ReactCompilerConfig = {
-  target: "19",
-};
-
 // https://vite.dev/config/
 export default defineConfig({
   resolve: {
@@ -20,7 +16,7 @@ export default defineConfig({
   plugins: [
     react({
       babel: {
-        plugins: [["babel-plugin-react-compiler", ReactCompilerConfig]],
+        plugins: ['babel-plugin-react-compiler'],
       },
     }),
   ],
