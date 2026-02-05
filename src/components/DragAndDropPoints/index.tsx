@@ -7,21 +7,21 @@ import { DragAndDropPointsAllShapes } from "@components/DragAndDropPoints/AllSha
 import { DragAndDropPointsSingleShape } from "@components/DragAndDropPoints/SingleShape";
 
 type Props = {
-  clickAreaRef: RefObject<HTMLDivElement | null>;
-  drawingMode: DrawingMode;
+	clickAreaRef: RefObject<HTMLDivElement | null>;
+	drawingMode: DrawingMode;
 };
 
 export const DragAndDropPoints = ({ clickAreaRef, drawingMode }: Props) => {
-  const { moveAllShapes } = useStackContext();
+	const { moveAllShapes } = useStackContext();
 
-  if (moveAllShapes) {
-    return <DragAndDropPointsAllShapes clickAreaRef={clickAreaRef} />;
-  } else {
-    return (
-      <DragAndDropPointsSingleShape
-        clickAreaRef={clickAreaRef}
-        drawingMode={drawingMode}
-      />
-    );
-  }
+	if (moveAllShapes) {
+		return <DragAndDropPointsAllShapes clickAreaRef={clickAreaRef} />;
+	} else {
+		return (
+			<DragAndDropPointsSingleShape
+				clickAreaRef={clickAreaRef}
+				drawingMode={drawingMode}
+			/>
+		);
+	}
 };

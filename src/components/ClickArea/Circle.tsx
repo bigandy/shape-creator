@@ -13,139 +13,139 @@ import { useStackDispatch } from "@hooks/useStackDispatch";
 import { getCoords, getCoordsWithSnapping } from "@utils/coordinates";
 
 export const ClickAreaCircle = () => {
-  const dispatch = useStackDispatch();
+	const dispatch = useStackDispatch();
 
-  const { activeStack, moveAllShapes, snapTo, xPoints, yPoints } =
-    useStackContext();
+	const { activeStack, moveAllShapes, snapTo, xPoints, yPoints } =
+		useStackContext();
 
-  const [recording, setRecording] = useState(false);
-  const clickAreaRef = useRef<HTMLDivElement>(null);
+	const [recording, setRecording] = useState(false);
+	const clickAreaRef = useRef<HTMLDivElement>(null);
 
-  const [mousePosition, setMousePosition] = useState<Coords | null>(null);
-  const [initialPoint, setInitialPoint] = useState<Coords | null>(null);
-  const [finalPoint, setFinalPoint] = useState<Coords | null>(null);
+	const [mousePosition, setMousePosition] = useState<Coords | null>(null);
+	const [initialPoint, setInitialPoint] = useState<Coords | null>(null);
+	const [finalPoint, setFinalPoint] = useState<Coords | null>(null);
 
-  const drawCircle = () => {
-    if (initialPoint === null || finalPoint === null) {
-      return;
-    }
+	const drawCircle = () => {
+		if (initialPoint === null || finalPoint === null) {
+			return;
+		}
 
-    const points = [
-      { percentX: initialPoint.percentX, percentY: initialPoint.percentY },
-      { percentX: finalPoint.percentX, percentY: finalPoint.percentY },
-    ];
-    const updatedState = [...points];
+		const points = [
+			{ percentX: initialPoint.percentX, percentY: initialPoint.percentY },
+			{ percentX: finalPoint.percentX, percentY: finalPoint.percentY },
+		];
+		const updatedState = [...points];
 
-    setInitialPoint(null);
-    setFinalPoint(null);
+		setInitialPoint(null);
+		setFinalPoint(null);
 
-    // AHTODO: THis currently only works exactly correctly when the background is a square i.e. height === width. Need to investigate why!
-    // Possibly a difference between pixel value at recording time and percent in this function??
+		// AHTODO: THis currently only works exactly correctly when the background is a square i.e. height === width. Need to investigate why!
+		// Possibly a difference between pixel value at recording time and percent in this function??
 
-    dispatch({
-      type: "save-shape",
-      payload: {
-        coords: updatedState,
-        shape: "circle",
-      },
-    });
-  };
+		dispatch({
+			type: "save-shape",
+			payload: {
+				coords: updatedState,
+				shape: "circle",
+			},
+		});
+	};
 
-  const handleMouseDown = (event: MouseEvent<HTMLDivElement>) => {
-    setFinalPoint(null);
-    const coords = getCoords(event, clickAreaRef)!;
+	const handleMouseDown = (event: MouseEvent<HTMLDivElement>) => {
+		setFinalPoint(null);
+		const coords = getCoords(event, clickAreaRef)!;
 
-    setInitialPoint(coords);
-    setRecording(true);
-  };
+		setInitialPoint(coords);
+		setRecording(true);
+	};
 
-  const handleMouseUp = (event: MouseEvent<HTMLDivElement>) => {
-    // AHTODO: How to handle mouseup or out of bounds movement of the mouse?
+	const handleMouseUp = (event: MouseEvent<HTMLDivElement>) => {
+		// AHTODO: How to handle mouseup or out of bounds movement of the mouse?
 
-    const upCoords = getCoords(event, clickAreaRef)!;
+		const upCoords = getCoords(event, clickAreaRef)!;
 
-    setFinalPoint(upCoords);
+		setFinalPoint(upCoords);
 
-    setRecording(false);
-    drawCircle();
-  };
+		setRecording(false);
+		drawCircle();
+	};
 
-  const handleMouseMove = (event: MouseEvent<HTMLDivElement>) => {
-    const coords =
-      snapTo && xPoints.length > 0 && yPoints.length > 0
-        ? getCoordsWithSnapping(event, clickAreaRef, xPoints, yPoints)!
-        : getCoords(event, clickAreaRef)!;
+	const handleMouseMove = (event: MouseEvent<HTMLDivElement>) => {
+		const coords =
+			snapTo && xPoints.length > 0 && yPoints.length > 0
+				? getCoordsWithSnapping(event, clickAreaRef, xPoints, yPoints)!
+				: getCoords(event, clickAreaRef)!;
 
-    setMousePosition(coords);
+		setMousePosition(coords);
 
-    if (initialPoint === null || recording === false) {
-      return;
-    }
-    setFinalPoint(coords);
-  };
+		if (initialPoint === null || recording === false) {
+			return;
+		}
+		setFinalPoint(coords);
+	};
 
-  if (activeStack.coords || moveAllShapes) {
-    return (
-      <ClickAreaWrapper clickAreaRef={clickAreaRef}>
-        <DragAndDropPoints clickAreaRef={clickAreaRef} drawingMode="circle" />
-      </ClickAreaWrapper>
-    );
-  }
+	if (activeStack.coords || moveAllShapes) {
+		return (
+			<ClickAreaWrapper clickAreaRef={clickAreaRef}>
+				<DragAndDropPoints clickAreaRef={clickAreaRef} drawingMode="circle" />
+			</ClickAreaWrapper>
+		);
+	}
 
-  return (
-    <ClickAreaWrapper
-      handleMouseDown={handleMouseDown}
-      handleMouseUp={handleMouseUp}
-      handleMouseMove={handleMouseMove}
-      clickAreaRef={clickAreaRef}
-    >
-      {finalPoint !== null && initialPoint !== null && (
-        <CircleMiddlePoint
-          initialPoint={initialPoint}
-          finalPoint={finalPoint}
-        />
-      )}
+	return (
+		<ClickAreaWrapper
+			handleMouseDown={handleMouseDown}
+			handleMouseUp={handleMouseUp}
+			handleMouseMove={handleMouseMove}
+			clickAreaRef={clickAreaRef}
+		>
+			{finalPoint !== null && initialPoint !== null && (
+				<CircleMiddlePoint
+					initialPoint={initialPoint}
+					finalPoint={finalPoint}
+				/>
+			)}
 
-      {snapTo && (
-        <Fragment>
-          {initialPoint !== null && (
-            <Point coords={initialPoint} type="initial" />
-          )}
+			{snapTo && (
+				<Fragment>
+					{initialPoint !== null && (
+						<Point coords={initialPoint} type="initial" />
+					)}
 
-          {finalPoint !== null && <Point coords={finalPoint} type="final" />}
-        </Fragment>
-      )}
+					{finalPoint !== null && <Point coords={finalPoint} type="final" />}
+				</Fragment>
+			)}
 
-      {mousePosition !== null && (
-        <MousePosition coords={mousePosition}>P</MousePosition>
-      )}
-    </ClickAreaWrapper>
-  );
+			{mousePosition !== null && (
+				<MousePosition coords={mousePosition}>P</MousePosition>
+			)}
+		</ClickAreaWrapper>
+	);
 };
 
 const CircleMiddlePoint = ({
-  initialPoint,
-  finalPoint,
+	initialPoint,
+	finalPoint,
 }: {
-  initialPoint: Coords;
-  finalPoint: Coords;
+	initialPoint: Coords;
+	finalPoint: Coords;
 }) => {
-  const midPoint = {
-    percentX: (initialPoint.percentX + finalPoint.percentX) / 2,
-    percentY: (initialPoint.percentY + finalPoint.percentY) / 2,
-  };
+	const midPoint = {
+		percentX: (initialPoint.percentX + finalPoint.percentX) / 2,
+		percentY: (initialPoint.percentY + finalPoint.percentY) / 2,
+	};
 
-  const diameter =
-    Math.pow(midPoint.percentX - initialPoint.percentX, 2) +
-    Math.pow(midPoint.percentY - initialPoint.percentY, 2);
+	const diameter =
+		Math.pow(midPoint.percentX - initialPoint.percentX, 2) +
+		Math.pow(midPoint.percentY - initialPoint.percentY, 2);
 
-  return (
-    <div
-      className="dot-bg circle-circle"
-      style={{
-        translate: `calc(${midPoint.percentX}cqi - 50%) calc(${midPoint.percentY}cqb - 50%)`,
-        height: Math.sqrt(diameter) * 2 + "%",
-      }}
-    />
-  );
+	return (
+		<div
+			className="dot-bg circle-circle"
+			style={{
+				translate: `calc(${midPoint.percentX}cqi - 50%) calc(${midPoint.percentY}cqb - 50%)`,
+				height: Math.sqrt(diameter) * 2 + "%",
+			}}
+		/>
+	);
 };
