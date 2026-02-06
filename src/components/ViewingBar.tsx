@@ -39,10 +39,10 @@ export const ViewingBar = ({
 						backgroundImage={backgroundImage}
 						headerAfter={
 							<>
-								<p>{items} boxes</p>
-								<button onClick={handleMore}>More</button> or{" "}
+								<button onClick={handleMore}>&#8593;</button>
+								<p>{items}</p>
 								<button onClick={handleLess} disabled={items === 1}>
-									Less
+									&#8595;
 								</button>
 							</>
 						}

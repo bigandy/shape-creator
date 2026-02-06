@@ -1,7 +1,6 @@
-import { type PropsWithChildren } from "react";
-
-import { useStackContext } from "@/hooks/useStackContext";
 import { useDraggable } from "@dnd-kit/core";
+import type { PropsWithChildren } from "react";
+import { useStackContext } from "@/hooks/useStackContext";
 
 interface Props extends PropsWithChildren {
 	index: number;
