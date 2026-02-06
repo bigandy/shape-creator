@@ -1,12 +1,6 @@
-import { type RefObject } from "react";
-
-import { type DragMoveEvent } from "@dnd-kit/core";
-
 import { Draggable } from "@components/Draggable";
 
-import { CustomDnDWrapper } from "./CustomDnDWrapper";
-
-import type { Coords, DrawingMode } from "@/Types";
+import type { DragMoveEvent } from "@dnd-kit/core";
 import { useStackContext } from "@hooks/useStackContext";
 import { useStackDispatch } from "@hooks/useStackDispatch";
 import { clamp } from "@utils/clamp";
@@ -14,6 +8,9 @@ import {
 	getDragDropCoords,
 	getDragDropCoordsWithSnapping,
 } from "@utils/coordinates";
+import type { RefObject } from "react";
+import type { Coords, DrawingMode } from "@/Types";
+import { CustomDnDWrapper } from "./CustomDnDWrapper";
 
 const calculateNextValue = (
 	direction: "up" | "down",

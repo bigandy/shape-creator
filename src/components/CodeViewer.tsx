@@ -1,9 +1,7 @@
+import { CodepenCreatorButton } from "@components/CodepenCreatorButton";
+import { useStackContext } from "@hooks/useStackContext";
 import toast from "react-hot-toast";
 import { useCopyToClipboard } from "usehooks-ts";
-
-import { CodepenCreatorButton } from "@components/CodepenCreatorButton";
-
-import { useStackContext } from "@hooks/useStackContext";
 
 type Props = {
 	open: boolean;

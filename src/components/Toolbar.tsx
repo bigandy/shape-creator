@@ -1,9 +1,8 @@
-import type { DrawingMode } from "@/Types";
-import { backgroundImages } from "@utils/sharedImages";
-import { Fragment, type ChangeEvent } from "react";
-
 import { useStackContext } from "@hooks/useStackContext";
 import { useStackDispatch } from "@hooks/useStackDispatch";
+import { backgroundImages } from "@utils/sharedImages";
+import { type ChangeEvent, Fragment } from "react";
+import type { DrawingMode } from "@/Types";
 
 type ShapeOption = { label: string; id: DrawingMode };
 
@@ -34,14 +33,14 @@ export const Toolbar = ({ open, selectedImage, handleImageChange }: Props) => {
 	const { drawingMode, savedStackLength, moveAllShapes, snapTo } =
 		useStackContext();
 
-	const handleChangeDrawingMode = (drawingMode: DrawingMode) => {
-		dispatch({
-			type: "change-shape",
-			payload: {
-				shape: drawingMode,
-			},
-		});
-	};
+	// const handleChangeDrawingMode = (drawingMode: DrawingMode) => {
+	// 	dispatch({
+	// 		type: "change-shape",
+	// 		payload: {
+	// 			shape: drawingMode,
+	// 		},
+	// 	});
+	// };
 
 	const handleDeleteLastShape = () => {
 		dispatch({
@@ -89,7 +88,7 @@ export const Toolbar = ({ open, selectedImage, handleImageChange }: Props) => {
         </div> */}
 
 				<div className="buttons">
-					{shapeOptions.map((option) => {
+					{/* {shapeOptions.map((option) => {
 						return (
 							<label key={option.id}>
 								{option.label}
@@ -102,7 +101,7 @@ export const Toolbar = ({ open, selectedImage, handleImageChange }: Props) => {
 								/>
 							</label>
 						);
-					})}
+					})} */}
 
 					<label>
 						Select a background Image:{" "}

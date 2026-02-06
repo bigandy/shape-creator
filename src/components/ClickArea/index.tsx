@@ -9,6 +9,7 @@ interface Props extends PropsWithChildren {
 	handleMouseUp?: (event: MouseEvent<HTMLDivElement>) => void;
 	handleMouseLeave?: (event: MouseEvent<HTMLDivElement>) => void;
 	clickAreaRef: RefObject<HTMLDivElement | null>;
+	innerRef: RefObject<HTMLDivElement | null>;
 }
 
 export const ClickAreaWrapper = ({
@@ -18,6 +19,7 @@ export const ClickAreaWrapper = ({
 	handleMouseUp = undefined,
 	handleMouseLeave = undefined,
 	clickAreaRef,
+	innerRef,
 	children,
 }: Props) => {
 	const { snapTo } = useStackContext();
@@ -32,10 +34,9 @@ export const ClickAreaWrapper = ({
 			onMouseMove={handleMouseMove}
 			onMouseLeave={handleMouseLeave}
 		>
-			<div className="click-area">
-				{children}
-				{snapTo && <GridLines />}
-			</div>
+			<div className="click-area" ref={innerRef}></div>
+			{children}
+			{snapTo && <GridLines />}
 		</div>
 	);
 };

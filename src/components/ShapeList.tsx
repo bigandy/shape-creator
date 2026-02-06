@@ -1,6 +1,5 @@
-import { useStackContext } from "@hooks/useStackContext";
-
 import { ShapeListItem } from "@components/ShapeListItem";
+import { useStackContext } from "@hooks/useStackContext";
 
 export const ShapeList = () => {
 	const { savedStack } = useStackContext();

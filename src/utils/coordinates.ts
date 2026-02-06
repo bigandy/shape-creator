@@ -1,15 +1,12 @@
-import { type MouseEvent, type RefObject } from "react";
-
-import { type DragMoveEvent } from "@dnd-kit/core";
-
+import type { DragMoveEvent } from "@dnd-kit/core";
+import { allowableDistance, allowableDistanceLine } from "@utils/consts";
+import type { MouseEvent, RefObject } from "react";
 import type { Coords, DrawingMode } from "@/Types";
 
-import { allowableDistance, allowableDistanceLine } from "@utils/consts";
-
-export const getCoords = (
-	event: MouseEvent<HTMLElement>,
+const getCoordsFromRef = (
 	ref: RefObject<HTMLElement | null>,
-): Coords | undefined => {
+	event: MouseEvent<HTMLElement>,
+) => {
 	if (!ref.current) {
 		return;
 	}
@@ -22,22 +19,42 @@ export const getCoords = (
 	const percentX = (deltaX / width) * 100;
 	const percentY = (deltaY / height) * 100;
 	const coords = { percentX, percentY };
-
 	return coords;
+};
+
+type GetCoordsReturn = {
+	refCoords: Coords | undefined;
+	innerRefCoords: Coords | undefined;
+};
+
+export const getCoords = (
+	event: MouseEvent<HTMLElement>,
+	ref: RefObject<HTMLElement | null>,
+	innerRef: RefObject<HTMLElement | null>,
+): GetCoordsReturn => {
+	const refCoords = getCoordsFromRef(ref, event);
+	const innerRefCoords = getCoordsFromRef(innerRef, event);
+
+	return { refCoords, innerRefCoords };
 };
 
 export const getCoordsWithSnapping = (
 	event: MouseEvent<HTMLElement>,
 	ref: RefObject<HTMLElement | null>,
+	innerRef: RefObject<HTMLElement | null>,
 	xPoints: number[],
 	yPoints: number[],
 ): Coords | undefined => {
-	if (!ref.current || (xPoints.length === 0 && yPoints.length === 0)) {
+	if (
+		!innerRef.current ||
+		!ref.current ||
+		(xPoints.length === 0 && yPoints.length === 0)
+	) {
 		return;
 	}
 
 	const { clientX, clientY } = event;
-	const { width, height, left, top } = ref.current.getBoundingClientRect();
+	const { width, height, left, top } = innerRef.current.getBoundingClientRect();
 	const deltaX = clientX - left;
 	const deltaY = clientY - top;
 

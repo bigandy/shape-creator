@@ -1,4 +1,4 @@
-import { type PropsWithChildren } from "react";
+import type { PropsWithChildren } from "react";
 
 import { useStackContext } from "@/hooks/useStackContext";
 import type { Coords } from "@/Types";

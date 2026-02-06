@@ -1,6 +1,5 @@
-import { Fragment } from "react";
-
 import { useStackContext } from "@hooks/useStackContext";
+import { Fragment } from "react";
 
 export const GridLines = () => {
 	const { xPoints, yPoints } = useStackContext();

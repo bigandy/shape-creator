@@ -1,12 +1,11 @@
-import { useRef, useState, type MouseEvent } from "react";
+import { ClickAreaWrapper } from "@components/ClickArea/index";
 
 import { DragAndDropPoints } from "@components/DragAndDropPoints/index";
-
-import type { Coords } from "@/Types";
-import { ClickAreaWrapper } from "@components/ClickArea/index";
 import { useStackContext } from "@hooks/useStackContext";
 import { useStackDispatch } from "@hooks/useStackDispatch";
 import { getCoords, getCoordsWithSnapping } from "@utils/coordinates";
+import { type MouseEvent, useRef, useState } from "react";
+import type { Coords } from "@/Types";
 import { MousePosition } from "./MousePosition";
 
 export const ClickAreaLineWrapper = () => {
@@ -24,6 +23,7 @@ const ClickAreaLineSnapped = () => {
 	const dispatch = useStackDispatch();
 
 	const clickAreaRef = useRef<HTMLDivElement>(null);
+	const innerRef = useRef<HTMLDivElement>(null);
 
 	const [mousePosition, setMousePosition] = useState<Coords | null>(null);
 
@@ -35,6 +35,7 @@ const ClickAreaLineSnapped = () => {
 		const coords = getCoordsWithSnapping(
 			event,
 			clickAreaRef,
+			innerRef,
 			xPoints,
 			yPoints,
 		)!;
@@ -52,6 +53,7 @@ const ClickAreaLineSnapped = () => {
 		const coords = getCoordsWithSnapping(
 			event,
 			clickAreaRef,
+			innerRef,
 			xPoints,
 			yPoints,
 		)!;
@@ -66,6 +68,7 @@ const ClickAreaLineSnapped = () => {
 		<ClickAreaWrapper
 			handleClick={handleClick}
 			clickAreaRef={clickAreaRef}
+			innerRef={innerRef}
 			handleMouseMove={handleMouseMove}
 			handleMouseLeave={handleMouseLeave}
 		>
@@ -80,6 +83,7 @@ const ClickAreaLine = () => {
 	const dispatch = useStackDispatch();
 
 	const clickAreaRef = useRef<HTMLDivElement>(null);
+	const innerRef = useRef<HTMLDivElement>(null);
 
 	const [mousePosition, setMousePosition] = useState<Coords | null>(null);
 
@@ -88,7 +92,11 @@ const ClickAreaLine = () => {
 	 * and is used for the clip-path: shape() generation
 	 */
 	const handleClick = (event: MouseEvent<HTMLElement>) => {
-		const coords = getCoords(event, clickAreaRef)!;
+		const { innerRefCoords: coords } = getCoords(
+			event,
+			clickAreaRef,
+			innerRef,
+		)!;
 
 		dispatch({
 			type: "add-point",
@@ -100,7 +108,7 @@ const ClickAreaLine = () => {
 	 * This handles when the mouse cursor moves inside the click-area. It shows the position of the mouse with a div in the same style as the points on the DragAndDropPoints dots.
 	 */
 	const handleMouseMove = (event: MouseEvent<HTMLElement>) => {
-		const coords = getCoords(event, clickAreaRef)!;
+		const { refCoords: coords } = getCoords(event, clickAreaRef, innerRef)!;
 
 		setMousePosition(coords);
 	};
@@ -112,6 +120,7 @@ const ClickAreaLine = () => {
 		<ClickAreaWrapper
 			handleClick={handleClick}
 			clickAreaRef={clickAreaRef}
+			innerRef={innerRef}
 			handleMouseMove={handleMouseMove}
 			handleMouseLeave={handleMouseLeave}
 		>

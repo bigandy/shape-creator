@@ -1,6 +1,5 @@
-import { use } from "react";
-
 import { StackContext } from "@context/StackContext";
+import { use } from "react";
 
 export const useStackContext = () => {
 	const context = use(StackContext);

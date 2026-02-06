@@ -1,6 +1,5 @@
-import { useContext } from "react";
-
 import { StackDispatchContext } from "@context/StackContext";
+import { useContext } from "react";
 
 export const useStackDispatch = () => {
 	const dispatch = useContext(StackDispatchContext);

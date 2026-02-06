@@ -1,16 +1,12 @@
-import { Fragment, useRef, useState, type MouseEvent } from "react";
-
 import { ClickAreaWrapper } from "@components/ClickArea/index";
 import { MousePosition } from "@components/ClickArea/MousePosition";
 import { Point } from "@components/ClickArea/Point";
 import { DragAndDropPoints } from "@components/DragAndDropPoints/index";
-
 import { useStackContext } from "@hooks/useStackContext";
 import { useStackDispatch } from "@hooks/useStackDispatch";
-
-import type { Coords } from "@/Types";
-
 import { getCoords, getCoordsWithSnapping } from "@utils/coordinates";
+import { Fragment, type MouseEvent, useRef, useState } from "react";
+import type { Coords } from "@/Types";
 
 export const ClickAreaRectangle = () => {
 	const dispatch = useStackDispatch();

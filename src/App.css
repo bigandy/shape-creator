@@ -36,6 +36,13 @@ main {
 	container-type: size;
 }
 
+.click-area {
+	border: 1px dashed white;
+	position: absolute;
+	inset: 10%;
+	z-index: 1;
+}
+
 .output-hover,
 .output,
 .click-area-wrapper {

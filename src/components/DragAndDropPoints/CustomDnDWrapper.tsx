@@ -1,14 +1,13 @@
-import { type PropsWithChildren } from "react";
-
 import {
 	DndContext,
+	type DragMoveEvent,
 	KeyboardSensor,
 	MouseSensor,
 	TouchSensor,
 	useSensor,
 	useSensors,
-	type DragMoveEvent,
 } from "@dnd-kit/core";
+import type { PropsWithChildren } from "react";
 
 import { customCoordinatesGetter } from "./customCoordinatesGetter";
 

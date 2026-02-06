@@ -1,4 +1,4 @@
-import { type KeyboardCoordinateGetter } from "@dnd-kit/core";
+import type { KeyboardCoordinateGetter } from "@dnd-kit/core";
 
 export const customCoordinatesGetter: KeyboardCoordinateGetter = (
 	event,

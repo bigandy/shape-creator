@@ -1,9 +1,6 @@
 import { createContext } from "react";
 
-import {
-	type StackContextValue,
-	type StackReducerAction,
-} from "./StackProvider";
+import type { StackContextValue, StackReducerAction } from "./StackProvider";
 
 export type StackDispatchValue = (query: StackReducerAction) => void;
 

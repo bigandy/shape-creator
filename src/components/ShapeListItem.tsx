@@ -1,11 +1,9 @@
-import { Fragment } from "react";
-
 import { SidebarItem } from "@components/SidebarItem";
-
 import { useStackContext } from "@hooks/useStackContext";
 import { useStackDispatch } from "@hooks/useStackDispatch";
+import { Fragment } from "react";
 
-import { type Shape } from "@/Types";
+import type { Shape } from "@/Types";
 
 export const ShapeListItem = ({
 	stackIndex,

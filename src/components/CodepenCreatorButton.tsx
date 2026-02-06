@@ -61,7 +61,12 @@ body {
 	}, [clipPathStyle]);
 
 	return (
-		<form action="https://codepen.io/pen/define" method="POST" target="_blank">
+		<form
+			action="https://codepen.io/pen/define"
+			method="POST"
+			target="_blank"
+			rel="noopener"
+		>
 			<input type="hidden" name="data" value={json} />
 			<button type="submit" disabled={disabled}>
 				Create Codepen Demo with this Code!

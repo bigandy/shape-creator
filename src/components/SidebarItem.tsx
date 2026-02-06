@@ -1,8 +1,8 @@
-import { Fragment, useState } from "react";
+import { Dialog } from "@components/Dialog";
 
 import { useStackContext } from "@hooks/useStackContext";
-import { Dialog } from "@components/Dialog";
 import { useStackDispatch } from "@hooks/useStackDispatch";
+import { Fragment, useState } from "react";
 
 type Props = {
 	x: number;
