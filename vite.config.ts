@@ -8,11 +8,11 @@ import { defineConfig } from "vite";
 export default defineConfig({
 	resolve: {
 		alias: {
-			"@": path.resolve(__dirname, "./src"),
-			"@components": path.resolve(__dirname, "./src/components"),
-			"@utils": path.resolve(__dirname, "./src/utils"),
-			"@hooks": path.resolve(__dirname, "./src/hooks"),
-			"@context": path.resolve(__dirname, "./src/context"),
+			"@": path.resolve(import.meta.dirname, "./src"),
+			"@components": path.resolve(import.meta.dirname, "./src/components"),
+			"@utils": path.resolve(import.meta.dirname, "./src/utils"),
+			"@hooks": path.resolve(import.meta.dirname, "./src/hooks"),
+			"@context": path.resolve(import.meta.dirname, "./src/context"),
 		},
 	},
 	plugins: [react(), babel({ presets: [reactCompilerPreset()] })],
