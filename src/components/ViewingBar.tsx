@@ -1,16 +1,18 @@
 import { useStackContext } from "@hooks/useStackContext";
 import type { CSSProperties, PropsWithChildren } from "react";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 
 type ViewingBarProps = {
 	open: boolean;
 	handleClose: () => void;
+	handleToggle: () => void;
 	backgroundImage: string;
 };
 
 export const ViewingBar = ({
 	open,
 	handleClose,
+	handleToggle,
 	backgroundImage,
 }: ViewingBarProps) => {
 	const [items, setItems] = useState(14);
@@ -23,32 +25,37 @@ export const ViewingBar = ({
 	};
 
 	return (
-		<div className={`viewing-bar ${open ? "viewing-bar--open" : ""}`}>
-			<div className="inner">
-				<button onClick={handleClose} className="close-button">
-					Close
-				</button>
-				<div className="box-wrapper">
-					<ViewingBarBox type="clip-path" backgroundImage={backgroundImage} />
-					<ViewingBarBox
-						type="border-shape"
-						backgroundImage={backgroundImage}
-					/>
-					<ViewingBarBox
-						type="offset-path"
-						backgroundImage={backgroundImage}
-						headerAfter={
-							<>
-								<button onClick={handleMore}>&#8593;</button>
-								<p>{items}</p>
-								<button onClick={handleLess} disabled={items === 1}>
-									&#8595;
-								</button>
-							</>
-						}
-					>
-						<Boxes key={items} items={items} />
-					</ViewingBarBox>
+		<div className="viewing-bar-wrapper">
+			<button className="toggle-viewing-bar" onClick={handleToggle}>
+				{open ? "Hide" : "Show"} Viewing Bar
+			</button>
+			<div className={`viewing-bar ${open ? "viewing-bar--open" : ""}`}>
+				<div className="inner">
+					<button onClick={handleClose} className="close-button">
+						Close
+					</button>
+					<div className="box-wrapper">
+						<ViewingBarBox type="clip-path" backgroundImage={backgroundImage} />
+						<ViewingBarBox
+							type="border-shape"
+							backgroundImage={backgroundImage}
+						/>
+						<ViewingBarBox
+							type="offset-path"
+							backgroundImage={backgroundImage}
+							headerAfter={
+								<>
+									<button onClick={handleMore}>&#8593;</button>
+									<p>{items}</p>
+									<button onClick={handleLess} disabled={items === 1}>
+										&#8595;
+									</button>
+								</>
+							}
+						>
+							<Boxes key={items} items={items} />
+						</ViewingBarBox>
+					</div>
 				</div>
 			</div>
 		</div>

@@ -1,0 +1,55 @@
+.the-code-wrapper {
+	border-radius: 0.5rem;
+
+	border: 1px solid;
+
+	margin-bottom: 1rem;
+
+	/* scroll-snap-type: ; */
+}
+
+.the-code {
+	font-family: monospace;
+	font-size: 150%;
+	padding: 1rem;
+	overscroll-behavior: contain;
+	overflow: auto;
+	height: 4lh;
+}
+
+.code-viewer {
+	anchor-name: --code-viewer;
+	width: 100%;
+	z-index: 1;
+	background: white;
+	position: relative;
+
+	form {
+		display: inline-block;
+	}
+
+	button {
+		margin-inline-end: 1rem;
+	}
+
+	.inner {
+		padding: 1rem;
+	}
+
+	/* .close-button {
+		top: 0;
+		right: 0;
+		position: absolute;
+	} */
+
+	/* .copy-button {
+		bottom: 0;
+		right: 0;
+	} */
+}
+
+.toggle-code-button {
+	position: absolute;
+	position-anchor: --code-viewer;
+	position-area: top center;
+}

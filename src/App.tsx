@@ -1,9 +1,9 @@
 import { ClickAreaCircle } from "@components/ClickArea/Circle";
 import { ClickAreaLineWrapper } from "@components/ClickArea/Line";
 import { ClickAreaRectangle } from "@components/ClickArea/Rectangle";
-import { CodeViewer } from "@components/CodeViewer";
+import { CodeViewer } from "@/components/CodeViewer";
 import { OutputBox } from "@components/OutputBox";
-import { Sidebar } from "@components/Sidebar";
+import { Sidebar } from "@/components/Sidebar";
 import { Toolbar } from "@components/Toolbar";
 import { ViewingBar } from "@components/ViewingBar";
 import { StackProvider } from "@context/StackProvider";
@@ -17,18 +17,19 @@ import { useStackContext } from "./hooks/useStackContext";
 
 function App() {
 	const [toolbarOpen, setToolbarOpen] = useState(true);
-	const [codeViewerOpen, setCodeViewerOpen] = useState(false);
-	const [sidebarOpen, setSidebarOpen] = useState(false);
+	const [codeViewerOpen, setCodeViewerOpen] = useState(true);
+	const [sidebarOpen, setSidebarOpen] = useState(true);
+	const [viewingBarOpen, setViewingBarOpen] = useState(true);
+
 	const [backgroundImage, setBackgroundImage] = useState(
 		backgroundImages[0].url,
 	);
-	const [viewingBarOpen, setViewingBarOpen] = useState(true);
 
 	const { drawingMode } = useStackContext();
 
-	const handleEditToggle = () => {
-		setSidebarOpen((open) => !open);
-	};
+	// const handleEditToggle = () => {
+	// 	setSidebarOpen((open) => !open);
+	// };
 
 	const handleCloseSidebar = () => setSidebarOpen(false);
 	const handleCloseViewingBar = () => setViewingBarOpen(false);
@@ -45,45 +46,42 @@ function App() {
 
 	return (
 		<Fragment>
-			<Toolbar
-				open={toolbarOpen}
-				selectedImage={backgroundImage}
-				handleEditToggle={handleEditToggle}
-				handleImageChange={handleImageChange}
-			/>
 			<main>
-				{drawingMode === "line" && <ClickAreaLineWrapper />}
-				{drawingMode === "rectangle" && <ClickAreaRectangle />}
-				{drawingMode === "circle" && <ClickAreaCircle />}
+				<Toolbar
+					open={toolbarOpen}
+					selectedImage={backgroundImage}
+					handleToggle={handleToolbarToggle}
+					handleImageChange={handleImageChange}
+				/>
 
-				<OutputBox backgroundImage={backgroundImage} />
+				<div className="drawing-area">
+					{drawingMode === "line" && <ClickAreaLineWrapper />}
+					{drawingMode === "rectangle" && <ClickAreaRectangle />}
+					{drawingMode === "circle" && <ClickAreaCircle />}
+
+					<OutputBox backgroundImage={backgroundImage} />
+				</div>
+
+				<CodeViewer
+					open={codeViewerOpen}
+					handleToggle={handleShowCodeToggle}
+					handleClose={handleCodeViewerClose}
+				/>
+
+				<ViewingBar
+					open={viewingBarOpen}
+					handleToggle={handleViewingBarToggle}
+					handleClose={handleCloseViewingBar}
+					backgroundImage={backgroundImage}
+				/>
 			</main>
 
-			<CodeViewer open={codeViewerOpen} handleClose={handleCodeViewerClose} />
-
-			<button className="toggle-code-button" onClick={handleShowCodeToggle}>
-				{codeViewerOpen ? "Hide" : "Show"} Code
-			</button>
-
-			<button className="toggle-toolbar-button" onClick={handleToolbarToggle}>
-				{toolbarOpen ? "Hide" : "Show"} Toolbar
-			</button>
-
-			<Sidebar open={sidebarOpen} handleClose={handleCloseSidebar} />
-
-			<ViewingBar
-				open={viewingBarOpen}
-				handleClose={handleCloseViewingBar}
-				backgroundImage={backgroundImage}
+			<Sidebar
+				open={sidebarOpen}
+				handleToggle={handleSidebarToggle}
+				handleClose={handleCloseSidebar}
 			/>
 
-			<button className="toggle-sidebar-button" onClick={handleSidebarToggle}>
-				{sidebarOpen ? "Hide" : "Show"} Sidebar
-			</button>
-
-			<button className="toggle-viewing-bar" onClick={handleViewingBarToggle}>
-				{viewingBarOpen ? "Hide" : "Show"} Viewing Bar
-			</button>
 			<Toaster position="bottom-center" />
 		</Fragment>
 	);
