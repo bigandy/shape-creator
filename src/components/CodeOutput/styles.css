@@ -1,11 +1,10 @@
 .the-code-wrapper {
+	anchor-name: --code-viewer;
 	border-radius: 0.5rem;
 
 	border: 1px solid;
 
 	margin-bottom: 1rem;
-
-	/* scroll-snap-type: ; */
 }
 
 .the-code {
@@ -17,8 +16,7 @@
 	height: 4lh;
 }
 
-.code-viewer {
-	anchor-name: --code-viewer;
+.code-output {
 	width: 100%;
 	z-index: 1;
 	background: white;

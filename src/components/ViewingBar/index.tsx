@@ -1,12 +1,25 @@
-import { useStackContext } from "@hooks/useStackContext";
-import type { CSSProperties, PropsWithChildren } from "react";
-import { Fragment, useState } from "react";
+import { useState } from "react";
+
+import { ViewingBarBox } from './ViewingBarBox';
 
 type ViewingBarProps = {
 	open: boolean;
 	handleClose: () => void;
 	handleToggle: () => void;
 	backgroundImage: string;
+};
+
+const Boxes = ({ items }: { items: number }) => {
+	if (items === 0) {
+		return null;
+	}
+	return (
+		<>
+			{Array.from(Array(items).keys()).map((i) => {
+				return <div className="item" key={`item-${i}`}></div>;
+			})}
+		</>
+	);
 };
 
 export const ViewingBar = ({
@@ -16,6 +29,7 @@ export const ViewingBar = ({
 	backgroundImage,
 }: ViewingBarProps) => {
 	const [items, setItems] = useState(14);
+
 	const handleMore = () => {
 		setItems((n) => n + 1);
 	};
@@ -29,7 +43,7 @@ export const ViewingBar = ({
 			<button className="toggle-viewing-bar" onClick={handleToggle}>
 				{open ? "Hide" : "Show"} Viewing Bar
 			</button>
-			<div className={`viewing-bar ${open ? "viewing-bar--open" : ""}`}>
+			<div className={`viewing-bar horiz-bar ${open ? "horiz-bar--open" : ""}`}>
 				<div className="inner">
 					<button onClick={handleClose} className="close-button">
 						Close
@@ -56,54 +70,6 @@ export const ViewingBar = ({
 							<Boxes key={items} items={items} />
 						</ViewingBarBox>
 					</div>
-				</div>
-			</div>
-		</div>
-	);
-};
-
-const Boxes = ({ items }: { items: number }) => {
-	if (items === 0) {
-		return null;
-	}
-	return (
-		<>
-			{Array.from(Array(items).keys()).map((i) => {
-				return <div className="item" key={`item-${i}`}></div>;
-			})}
-		</>
-	);
-};
-
-interface ViewingBarBoxProps extends PropsWithChildren {
-	type: "clip-path" | "offset-path" | "border-shape";
-	headerAfter?: React.ReactNode;
-	backgroundImage?: string;
-}
-
-const ViewingBarBox = ({
-	backgroundImage,
-	type,
-	headerAfter,
-	children,
-}: ViewingBarBoxProps) => {
-	const { clipPath } = useStackContext();
-
-	const boxStyle = {
-		"--clip-path": clipPath,
-		backgroundImage: `url(${backgroundImage})`,
-		backgroundSize: "cover",
-	} as CSSProperties;
-
-	return (
-		<div className="viewing-bar-box">
-			<header>
-				<h2>{type}</h2>
-				{clipPath !== "" && headerAfter}
-			</header>
-			<div className="box-outer">
-				<div className={`box box--${type}`} style={boxStyle}>
-					{clipPath !== "" && children}
 				</div>
 			</div>
 		</div>

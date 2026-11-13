@@ -1,12 +1,12 @@
-import { useRef, useState, type MouseEvent } from "react";
+import { ClickAreaWrapper } from "@components/ClickArea/index";
 
 import { DragAndDropPoints } from "@components/DragAndDropPoints/index";
-
-import type { Coords } from "@/Types";
-import { ClickAreaWrapper } from "@components/ClickArea/index";
 import { useStackContext } from "@hooks/useStackContext";
 import { useStackDispatch } from "@hooks/useStackDispatch";
 import { getCoords, getCoordsWithSnapping } from "@utils/coordinates";
+import { type MouseEvent, useRef, useState } from "react";
+import { ALLOWED_REDUCER_TYPES } from "@/context/StackProvider";
+import type { Coords } from "@/Types";
 import { MousePosition } from "./MousePosition";
 
 export const ClickAreaLineWrapper = () => {
@@ -40,7 +40,7 @@ const ClickAreaLineSnapped = () => {
 		)!;
 
 		dispatch({
-			type: "add-point",
+			type: ALLOWED_REDUCER_TYPES.addPoint,
 			payload: { coords },
 		});
 	};
@@ -91,7 +91,7 @@ const ClickAreaLine = () => {
 		const coords = getCoords(event, clickAreaRef)!;
 
 		dispatch({
-			type: "add-point",
+			type: ALLOWED_REDUCER_TYPES.addPoint,
 			payload: { coords },
 		});
 	};

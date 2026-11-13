@@ -1,16 +1,13 @@
-import { Fragment, useRef, useState, type MouseEvent } from "react";
-
 import { ClickAreaWrapper } from "@components/ClickArea/index";
 import { MousePosition } from "@components/ClickArea/MousePosition";
 import { Point } from "@components/ClickArea/Point";
 import { DragAndDropPoints } from "@components/DragAndDropPoints/index";
-
-import type { Coords } from "@/Types";
-
 import { useStackContext } from "@hooks/useStackContext";
 import { useStackDispatch } from "@hooks/useStackDispatch";
-
 import { getCoords, getCoordsWithSnapping } from "@utils/coordinates";
+import { Fragment, type MouseEvent, useRef, useState } from "react";
+import { ALLOWED_REDUCER_TYPES } from "@/context/StackProvider";
+import type { Coords } from "@/Types";
 
 export const ClickAreaCircle = () => {
 	const dispatch = useStackDispatch();
@@ -43,7 +40,7 @@ export const ClickAreaCircle = () => {
 		// Possibly a difference between pixel value at recording time and percent in this function??
 
 		dispatch({
-			type: "save-shape",
+			type: ALLOWED_REDUCER_TYPES.saveShape,
 			payload: {
 				coords: updatedState,
 				shape: "circle",
@@ -136,8 +133,8 @@ const CircleMiddlePoint = ({
 	};
 
 	const diameter =
-		Math.pow(midPoint.percentX - initialPoint.percentX, 2) +
-		Math.pow(midPoint.percentY - initialPoint.percentY, 2);
+		(midPoint.percentX - initialPoint.percentX) ** 2 +
+		(midPoint.percentY - initialPoint.percentY) ** 2;
 
 	return (
 		<div

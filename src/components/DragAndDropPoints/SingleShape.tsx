@@ -1,12 +1,6 @@
-import { type RefObject } from "react";
-
-import { type DragMoveEvent } from "@dnd-kit/core";
-
 import { Draggable } from "@components/Draggable";
 
-import { CustomDnDWrapper } from "./CustomDnDWrapper";
-
-import type { Coords, DrawingMode } from "@/Types";
+import type { DragMoveEvent } from "@dnd-kit/core";
 import { useStackContext } from "@hooks/useStackContext";
 import { useStackDispatch } from "@hooks/useStackDispatch";
 import { clamp } from "@utils/clamp";
@@ -14,6 +8,10 @@ import {
 	getDragDropCoords,
 	getDragDropCoordsWithSnapping,
 } from "@utils/coordinates";
+import type { RefObject } from "react";
+import { ALLOWED_REDUCER_TYPES } from "@/context/StackProvider";
+import type { Coords, DrawingMode } from "@/Types";
+import { CustomDnDWrapper } from "./CustomDnDWrapper";
 
 const calculateNextValue = (
 	direction: "up" | "down",
@@ -150,12 +148,12 @@ export const DragAndDropPointsSingleShape = ({
 			//   });
 
 			//   dispatch({
-			//     type: "update-current-shape",
+			//     type: ALLOWED_REDUCER_TYPES.updateCurrentShape,
 			//     payload: { coords: coords },
 			//   });
 			// } else {
 			dispatch({
-				type: "update-current-shape",
+				type: ALLOWED_REDUCER_TYPES.updateCurrentShape,
 				payload: { coords: updatedCoords },
 			});
 			// }
@@ -165,12 +163,12 @@ export const DragAndDropPointsSingleShape = ({
 			// Otherwise points are all numbers
 			const coords = snapTo
 				? getDragDropCoordsWithSnapping(
-						event,
-						clickAreaRef,
-						drawingMode,
-						xPoints,
-						yPoints,
-					)!
+					event,
+					clickAreaRef,
+					drawingMode,
+					xPoints,
+					yPoints,
+				)!
 				: getDragDropCoords(event, clickAreaRef)!;
 
 			if (["circle", "line"].includes(drawingMode)) {
@@ -183,7 +181,7 @@ export const DragAndDropPointsSingleShape = ({
 				});
 
 				dispatch({
-					type: "update-current-shape",
+					type: ALLOWED_REDUCER_TYPES.updateCurrentShape,
 					payload: { coords: updatedCoords },
 				});
 			} else if (drawingMode === "rectangle") {
@@ -194,7 +192,7 @@ export const DragAndDropPointsSingleShape = ({
 				);
 
 				dispatch({
-					type: "update-current-shape",
+					type: ALLOWED_REDUCER_TYPES.updateCurrentShape,
 					payload: { coords: updatedCoords },
 				});
 			} else {
@@ -207,17 +205,17 @@ export const DragAndDropPointsSingleShape = ({
 		<CustomDnDWrapper onDragMove={handleMove}>
 			{activeStack.coords && activeStack.coords.length > 0
 				? activeStack.coords.map((item, index) => {
-						return (
-							<Draggable
-								index={index}
-								key={`item-${index}`}
-								top={item.percentY}
-								left={item.percentX}
-							>
-								<div>{index + 1}</div>
-							</Draggable>
-						);
-					})
+					return (
+						<Draggable
+							index={index}
+							key={`item-${index}`}
+							top={item.percentY}
+							left={item.percentX}
+						>
+							<div>{index + 1}</div>
+						</Draggable>
+					);
+				})
 				: null}
 
 			{drawingMode !== "line" &&

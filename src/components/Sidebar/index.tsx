@@ -1,21 +1,21 @@
 import { ShapeList } from "@components/ShapeList";
+import { useState } from "react";
 
-import './styles.css';
+import "./styles.css";
 
-type SidebarProps = {
-	open: boolean;
-	handleClose: () => void;
-	handleToggle: () => void;
-};
+export const Sidebar = () => {
+	const [open, setOpen] = useState(true);
 
-export const Sidebar = ({ open, handleClose, handleToggle }: SidebarProps) => {
+	const handleClose = () => setOpen(false);
+
+	const handleToggle = () => setOpen((o) => !o);
+
 	return (
 		<div className="sidebar-wrapper">
 			<button className="toggle-sidebar-button" onClick={handleToggle}>
 				{open ? "Hide" : "Show"} Sidebar
 			</button>
 			<div className={`sidebar ${open ? "sidebar--open" : ""}`}>
-
 				<div className="sidebar-inner">
 					<button onClick={handleClose} className="close-button">
 						Close

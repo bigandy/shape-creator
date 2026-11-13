@@ -11,7 +11,7 @@ type Props = {
 	handleToggle: () => void;
 };
 
-export const CodeViewer = ({ open, handleToggle, handleClose }: Props) => {
+export const CodeOutput = ({ open, handleToggle, handleClose }: Props) => {
 	const [_, copy] = useCopyToClipboard(); // eslint-disable-line  @typescript-eslint/no-unused-vars
 
 	// AHTODO: Handle Precision again.
@@ -38,11 +38,11 @@ export const CodeViewer = ({ open, handleToggle, handleClose }: Props) => {
 	};
 
 	return (
-		<div className="code-viewer-wrapper">
+		<div className="code-output-wrapper">
 			<button className="toggle-code-button" onClick={handleToggle}>
 				{open ? "Hide" : "Show"} Code
 			</button>
-			<div className={`code-viewer horiz-bar ${open ? "horiz-bar--open" : ""}`}>
+			<div className={`code-output horiz-bar ${open ? "horiz-bar--open" : ""}`}>
 				<div className="inner">
 					{/* <label>
           Precision

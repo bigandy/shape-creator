@@ -1,11 +1,11 @@
-import { Fragment } from "react";
-
 import { SidebarItem } from "@components/SidebarItem";
-
 import { useStackContext } from "@hooks/useStackContext";
 import { useStackDispatch } from "@hooks/useStackDispatch";
+import { Fragment } from "react";
 
-import { type Shape } from "@/Types";
+import { ALLOWED_REDUCER_TYPES } from "@/context/StackProvider";
+
+import type { Shape } from "@/Types";
 
 export const ShapeListItem = ({
 	stackIndex,
@@ -21,12 +21,12 @@ export const ShapeListItem = ({
 	const dispatch = useStackDispatch();
 
 	const onEditShape = () => {
-		dispatch({ type: "update-edit-index", payload: { index: stackIndex } });
+		dispatch({ type: ALLOWED_REDUCER_TYPES.updateEditIndex, payload: { index: stackIndex } });
 	};
 
 	const onDeleteShape = () => {
 		dispatch({
-			type: "delete-shape",
+			type: ALLOWED_REDUCER_TYPES.deleteShape,
 			payload: {
 				index: stackIndex,
 			},
@@ -35,7 +35,7 @@ export const ShapeListItem = ({
 
 	const onDuplicateShape = () => {
 		dispatch({
-			type: "duplicate-shape",
+			type: ALLOWED_REDUCER_TYPES.duplicateShape,
 			payload: {
 				index: stackIndex,
 			},

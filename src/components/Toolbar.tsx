@@ -2,6 +2,7 @@ import { useStackContext } from "@hooks/useStackContext";
 import { useStackDispatch } from "@hooks/useStackDispatch";
 import { backgroundImages } from "@utils/sharedImages";
 import { type ChangeEvent, Fragment } from "react";
+import { ALLOWED_REDUCER_TYPES } from "@/context/StackProvider";
 import type { DrawingMode } from "@/Types";
 
 type ShapeOption = { label: string; id: DrawingMode };
@@ -40,7 +41,7 @@ export const Toolbar = ({
 
 	const handleChangeDrawingMode = (drawingMode: DrawingMode) => {
 		dispatch({
-			type: "change-shape",
+			type: ALLOWED_REDUCER_TYPES.changeShape,
 			payload: {
 				shape: drawingMode,
 			},
@@ -49,33 +50,33 @@ export const Toolbar = ({
 
 	const handleDeleteLastShape = () => {
 		dispatch({
-			type: "delete-last-shape",
+			type: ALLOWED_REDUCER_TYPES.deleteLastShape,
 		});
 	};
 
 	const handleDeleteLastPoint = () => {
-		dispatch({ type: "delete-final-point" });
+		dispatch({ type: ALLOWED_REDUCER_TYPES.deleteFinalPoint });
 	};
 
 	const handleResetCurrentStack = () => {
-		dispatch({ type: "clear-current-shape" });
+		dispatch({ type: ALLOWED_REDUCER_TYPES.clearCurrentShape });
 	};
 
 	const handleDeleteAllShapes = () => {
-		dispatch({ type: "delete-all-shapes" });
+		dispatch({ type: ALLOWED_REDUCER_TYPES.deleteAllShapes });
 	};
 
 	const handleMoveAllShapes = () => {
-		dispatch({ type: "move-all-shapes" });
+		dispatch({ type: ALLOWED_REDUCER_TYPES.moveAllShapes });
 	};
 
 	const handleToggleSnapTo = () => {
-		dispatch({ type: "toggle-snap-to" });
+		dispatch({ type: ALLOWED_REDUCER_TYPES.toggleSnapTo });
 	};
 
-	const handleSaveShape = () => {
+	const handleCompleteShape = () => {
 		dispatch({
-			type: "save-shape",
+			type: ALLOWED_REDUCER_TYPES.saveShape,
 			payload: {
 				shape: "line",
 				coords: [],
@@ -149,7 +150,7 @@ export const Toolbar = ({
 								>
 									Reset Current Shape
 								</button>
-								<button onClick={handleSaveShape}>Save Shape</button>
+								<button onClick={handleCompleteShape}>Complete Shape</button>
 							</Fragment>
 						)}
 

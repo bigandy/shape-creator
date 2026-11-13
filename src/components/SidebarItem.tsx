@@ -1,8 +1,10 @@
-import { Fragment, useState } from "react";
+import { Dialog } from "@components/Dialog";
 
 import { useStackContext } from "@hooks/useStackContext";
-import { Dialog } from "@components/Dialog";
 import { useStackDispatch } from "@hooks/useStackDispatch";
+import { Fragment, useState } from "react";
+
+import { ALLOWED_REDUCER_TYPES } from "@/context/StackProvider";
 
 type Props = {
 	x: number;
@@ -23,7 +25,7 @@ export const SidebarItem = ({ x, y, currentIndex, editable = true }: Props) => {
 	};
 
 	const handleDeletePoint = () =>
-		dispatch({ type: "delete-index", payload: { index: currentIndex } });
+		dispatch({ type: ALLOWED_REDUCER_TYPES.deleteIndex, payload: { index: currentIndex } });
 
 	const handleInsertPoint = () => {
 		// Insert a new point in between existing points. Put the new point half-way between the two existing points.
@@ -43,7 +45,7 @@ export const SidebarItem = ({ x, y, currentIndex, editable = true }: Props) => {
 			...activeStack.coords.slice(currentIndex + 1),
 		];
 		dispatch({
-			type: "update-current-shape",
+			type: ALLOWED_REDUCER_TYPES.updateCurrentShape,
 			payload: {
 				coords: nextStack,
 			},

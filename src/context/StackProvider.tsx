@@ -20,95 +20,116 @@ export type StackContextValue = {
 	yPoints: Array<number>;
 };
 
+export const ALLOWED_REDUCER_TYPES = {
+	clearCurrentShape: "clear-current-shape",
+	deleteAllShapes: "delete-all-shapes",
+	addPoint: "add-point",
+	updateEditIndex: "update-edit-index",
+	updateCurrentShape: "update-current-shape",
+	updateCurrentPoint: "update-current-point",
+	deleteFinalPoint: "delete-final-point",
+	moveAllShapes: "move-all-shapes",
+	deleteLastShape: "delete-last-shape",
+	deleteIndex: "delete-index",
+	saveShape: "save-shape",
+	changeShape: "change-shape",
+	deleteShape: "delete-shape",
+	duplicateShape: "duplicate-shape",
+	updateAllShapes: "update-all-shapes",
+	toggleSnapTo: "toggle-snap-to",
+} as const
+
+type AllowedReducerTypes = keyof typeof ALLOWED_REDUCER_TYPES
+
 export type StackReducerAction =
 	| {
-			type: string;
-			payload: {
-				coords: Array<Coords>;
-				index: number;
-				shape: DrawingMode;
-				savedStack: Array<Shape>;
-				pointCoord: Coords;
-			};
-	  } // Is this needed?
+		type: AllowedReducerTypes;
+		payload: {
+			coords: Array<Coords>;
+			index: number;
+			shape: DrawingMode;
+			savedStack: Array<Shape>;
+			pointCoord: Coords;
+		};
+	} // Is this needed?
 	| {
-			type: "clear-current-shape";
-	  }
+		type: typeof ALLOWED_REDUCER_TYPES.clearCurrentShape;
+	}
 	| {
-			type: "delete-all-shapes";
-	  }
+		type: typeof ALLOWED_REDUCER_TYPES.deleteAllShapes;
+	}
 	| {
-			type: "add-point";
-			payload: {
-				coords: Coords;
-			};
-	  }
+		type: typeof ALLOWED_REDUCER_TYPES.addPoint;
+		payload: {
+			coords: Coords;
+		};
+	}
 	| {
-			type: "update-edit-index";
-			payload: { index: number };
-	  }
+		type: typeof ALLOWED_REDUCER_TYPES.updateEditIndex;
+		payload: { index: number };
+	}
 	| {
-			type: "update-current-shape";
-			payload: {
-				coords: Array<Coords>;
-			};
-	  }
+		type: typeof ALLOWED_REDUCER_TYPES.updateCurrentShape;
+		payload: {
+			coords: Array<Coords>;
+		};
+	}
 	| {
-			type: "update-current-point";
-			payload: {
-				index: number;
-				pointCoord: Coords;
-			};
-	  }
+		type: typeof ALLOWED_REDUCER_TYPES.updateCurrentPoint;
+		payload: {
+			index: number;
+			pointCoord: Coords;
+		};
+	}
 	| {
-			type: "delete-final-point";
-	  }
+		type: typeof ALLOWED_REDUCER_TYPES.deleteFinalPoint;
+	}
 	| {
-			type: "move-all-shapes";
-	  }
+		type: typeof ALLOWED_REDUCER_TYPES.moveAllShapes;
+	}
 	| {
-			type: "delete-last-shape";
-	  }
+		type: typeof ALLOWED_REDUCER_TYPES.deleteLastShape;
+	}
 	| {
-			type: "delete-index";
-			payload: {
-				index: number;
-			};
-	  }
+		type: typeof ALLOWED_REDUCER_TYPES.deleteIndex;
+		payload: {
+			index: number;
+		};
+	}
 	| {
-			type: "save-shape";
-			payload: {
-				shape: DrawingMode;
-				coords: Array<Coords>;
-			};
-	  }
+		type: typeof ALLOWED_REDUCER_TYPES.saveShape;
+		payload: {
+			shape: DrawingMode;
+			coords: Array<Coords>;
+		};
+	}
 	| {
-			type: "change-shape";
-			payload: {
-				shape: DrawingMode;
-			};
-	  }
+		type: typeof ALLOWED_REDUCER_TYPES.changeShape;
+		payload: {
+			shape: DrawingMode;
+		};
+	}
 	| {
-			type: "delete-shape";
-			payload: {
-				index: number;
-			};
-	  }
+		type: typeof ALLOWED_REDUCER_TYPES.deleteShape;
+		payload: {
+			index: number;
+		};
+	}
 	| {
-			type: "duplicate-shape";
-			payload: {
-				index: number;
-			};
-	  }
+		type: typeof ALLOWED_REDUCER_TYPES.duplicateShape;
+		payload: {
+			index: number;
+		};
+	}
 	| {
-			type: "update-all-shapes";
-			payload: {
-				savedStack: Array<Shape>;
-			};
-	  }
+		type: typeof ALLOWED_REDUCER_TYPES.updateAllShapes;
+		payload: {
+			savedStack: Array<Shape>;
+		};
+	}
 	| {
-			type: "toggle-snap-to";
-	  };
+		type: typeof ALLOWED_REDUCER_TYPES.toggleSnapTo;
+	};
 
 type ReducerState = {
 	savedStack: Array<Shape>;
@@ -164,7 +185,7 @@ function stackReducer(
 	const uuid = self.crypto.randomUUID();
 
 	switch (action.type) {
-		case "clear-current-shape": {
+		case ALLOWED_REDUCER_TYPES.clearCurrentShape: {
 			const updatedSavedStack = state.savedStack.map((stack, index) => {
 				if (index === state.editingNumber) {
 					return {
@@ -178,13 +199,13 @@ function stackReducer(
 
 			return { ...state, savedStack: [...updatedSavedStack] };
 		}
-		case "delete-all-shapes": {
+		case ALLOWED_REDUCER_TYPES.deleteAllShapes: {
 			return {
 				...initialState,
 				drawingMode: state.drawingMode,
 			};
 		}
-		case "update-edit-index": {
+		case ALLOWED_REDUCER_TYPES.updateEditIndex: {
 			return {
 				...state,
 				editingNumber:
@@ -195,7 +216,7 @@ function stackReducer(
 				moveAllShapes: false,
 			};
 		}
-		case "add-point": {
+		case ALLOWED_REDUCER_TYPES.addPoint: {
 			if (
 				state.savedStack.length === 0 &&
 				(state.editingNumber === undefined || state.editingNumber === 0)
@@ -228,7 +249,7 @@ function stackReducer(
 				};
 			}
 		}
-		case "update-current-shape": {
+		case ALLOWED_REDUCER_TYPES.updateCurrentShape: {
 			const updatedSavedStack = state.savedStack.map((stack, index) => {
 				if (index === state.editingNumber) {
 					return { ...stack, coords: action.payload.coords };
@@ -242,7 +263,7 @@ function stackReducer(
 				savedStack: [...updatedSavedStack],
 			};
 		}
-		case "update-current-point": {
+		case ALLOWED_REDUCER_TYPES.updateCurrentPoint: {
 			const updatedSavedStack = state.savedStack.map((stack, index) => {
 				if (index === state.editingNumber) {
 					const coords = [...stack.coords];
@@ -264,7 +285,7 @@ function stackReducer(
 				savedStack: [...updatedSavedStack],
 			};
 		}
-		case "change-shape": {
+		case ALLOWED_REDUCER_TYPES.changeShape: {
 			let updatedSavedStack = [];
 			const editingNumber =
 				action.payload.shape === "line" ? state.savedStack.length : undefined;
@@ -288,7 +309,7 @@ function stackReducer(
 				moveAllShapes: false,
 			};
 		}
-		case "delete-final-point": {
+		case ALLOWED_REDUCER_TYPES.deleteFinalPoint: {
 			const updatedSavedStack = state.savedStack.map((stack, index) => {
 				if (index === state.editingNumber) {
 					return {
@@ -309,7 +330,7 @@ function stackReducer(
 			};
 		}
 
-		case "delete-index": {
+		case ALLOWED_REDUCER_TYPES.deleteIndex: {
 			const updatedSavedStack = state.savedStack.map((stack, index) => {
 				if (index === state.editingNumber) {
 					return {
@@ -328,7 +349,7 @@ function stackReducer(
 				savedStack: [...updatedSavedStack],
 			};
 		}
-		case "save-shape": {
+		case ALLOWED_REDUCER_TYPES.saveShape: {
 			const updatedStack = [...state.savedStack];
 			if (state.savedStack[updatedStack.length - 1]?.coords.length === 0) {
 				updatedStack[updatedStack.length - 1] = {
@@ -352,7 +373,7 @@ function stackReducer(
 				moveAllShapes: false,
 			};
 		}
-		case "delete-last-shape": {
+		case ALLOWED_REDUCER_TYPES.deleteLastShape: {
 			const updatedSavedStack = state.savedStack.filter(
 				(_, index, stackArray) => index !== stackArray.length - 1,
 			);
@@ -364,7 +385,7 @@ function stackReducer(
 				moveAllShapes: false,
 			};
 		}
-		case "delete-shape": {
+		case ALLOWED_REDUCER_TYPES.deleteShape: {
 			return {
 				...state,
 				savedStack: state.savedStack.filter(
@@ -374,7 +395,7 @@ function stackReducer(
 				moveAllShapes: false,
 			};
 		}
-		case "duplicate-shape": {
+		case ALLOWED_REDUCER_TYPES.duplicateShape: {
 			const positionToInsertAt = action.payload.index + 1;
 
 			const updatedStack = [
@@ -390,7 +411,7 @@ function stackReducer(
 				moveAllShapes: false,
 			};
 		}
-		case "move-all-shapes": {
+		case ALLOWED_REDUCER_TYPES.moveAllShapes: {
 			return {
 				...state,
 				moveAllShapes: !state.moveAllShapes,
@@ -398,20 +419,20 @@ function stackReducer(
 				snapTo: false,
 			};
 		}
-		case "update-all-shapes": {
+		case ALLOWED_REDUCER_TYPES.updateAllShapes: {
 			return {
 				...state,
 				savedStack: action.payload.savedStack,
 			};
 		}
-		case "toggle-snap-to": {
+		case ALLOWED_REDUCER_TYPES.toggleSnapTo: {
 			return {
 				...state,
 				snapTo: !state.snapTo,
 			};
 		}
 		default: {
-			throw Error("Unknown action: " + action.type);
+			throw Error(`Unknown action: ${action.type}`);
 		}
 	}
 }

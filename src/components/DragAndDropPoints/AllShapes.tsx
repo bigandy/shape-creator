@@ -1,14 +1,12 @@
-import { type RefObject } from "react";
-
-import { type DragMoveEvent } from "@dnd-kit/core";
-
 import { Draggable } from "@components/Draggable";
 
-import type { Shape } from "@/Types";
+import type { DragMoveEvent } from "@dnd-kit/core";
 import { useStackContext } from "@hooks/useStackContext";
 import { useStackDispatch } from "@hooks/useStackDispatch";
-
 import { getDragDropCoords } from "@utils/coordinates";
+import type { RefObject } from "react";
+import { ALLOWED_REDUCER_TYPES } from "@/context/StackProvider";
+import type { Shape } from "@/Types";
 
 import { CustomDnDWrapper } from "./CustomDnDWrapper";
 
@@ -63,7 +61,7 @@ export const DragAndDropPointsAllShapes = ({ clickAreaRef }: Props) => {
 		});
 
 		dispatch({
-			type: "update-all-shapes",
+			type: ALLOWED_REDUCER_TYPES.updateAllShapes,
 			payload: { savedStack: updatedShapes },
 		});
 	};

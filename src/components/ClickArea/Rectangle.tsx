@@ -1,16 +1,13 @@
-import { Fragment, useRef, useState, type MouseEvent } from "react";
-
 import { ClickAreaWrapper } from "@components/ClickArea/index";
 import { MousePosition } from "@components/ClickArea/MousePosition";
 import { Point } from "@components/ClickArea/Point";
 import { DragAndDropPoints } from "@components/DragAndDropPoints/index";
-
 import { useStackContext } from "@hooks/useStackContext";
 import { useStackDispatch } from "@hooks/useStackDispatch";
-
-import type { Coords } from "@/Types";
-
 import { getCoords, getCoordsWithSnapping } from "@utils/coordinates";
+import { Fragment, type MouseEvent, useRef, useState } from "react";
+import { ALLOWED_REDUCER_TYPES } from '@/context/StackProvider'
+import type { Coords } from "@/Types";
 
 export const ClickAreaRectangle = () => {
 	const dispatch = useStackDispatch();
@@ -51,7 +48,7 @@ export const ClickAreaRectangle = () => {
 		setFinalPoint(null);
 
 		dispatch({
-			type: "save-shape",
+			type: ALLOWED_REDUCER_TYPES.saveShape,
 			payload: {
 				coords: updatedState,
 				shape: "rectangle",
@@ -156,9 +153,8 @@ const MiddlePoint = ({
 		<div
 			className="dot-bg rectangle-middle-point"
 			style={{
-				translate: `${
-					Math.min(initialPoint.percentX, finalPoint.percentX) + "cqb"
-				} ${Math.min(initialPoint.percentY, finalPoint.percentY) + "cqi"}`,
+				translate: `${Math.min(initialPoint.percentX, finalPoint.percentX) + "cqb"
+					} ${Math.min(initialPoint.percentY, finalPoint.percentY) + "cqi"}`,
 				height: Math.abs(initialPoint.percentY - finalPoint.percentY) + "%",
 				width: Math.abs(initialPoint.percentX - finalPoint.percentX) + "%",
 			}}
